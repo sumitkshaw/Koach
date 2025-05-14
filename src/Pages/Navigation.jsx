@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { Menu, Search } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import { useState, useEffect, useRef } from "react";
+import { Menu, Search } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 function Navigation() {
   const location = useLocation();
@@ -16,8 +16,8 @@ function Navigation() {
         setIsMenuOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -33,15 +33,23 @@ function Navigation() {
 
           {/* Middle: Nav Links - Hidden on mobile */}
           <div className="hidden md:flex space-x-12 text-xl ml-12">
-            <a href="/about" className="text-[#2D488F] hover:text-blue-700">About</a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">Connect</a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">Resources</a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">Circles</a>
+            <a href="/about" className="text-[#2D488F] hover:text-blue-700">
+              About
+            </a>
+            <a href="#" className="text-[#2D488F] hover:text-blue-700">
+              Connect
+            </a>
+            <a href="#" className="text-[#2D488F] hover:text-blue-700">
+              Resources
+            </a>
+            <a href="#" className="text-[#2D488F] hover:text-blue-700">
+              Circles
+            </a>
           </div>
 
-          {/* Right: Search + Auth - Always visible on all screen sizes */}
-          <div className="flex items-center space-x-4 absolute right-4 top-3 md:static">
-            {location.pathname !== '/about' && (
+          {/* Right: Search + Auth (Only shown on md and above) */}
+          <div className="hidden md:flex items-center space-x-4">
+            {location.pathname !== "/about" && (
               <>
                 <div className="relative">
                   {isSearchOpen && (
@@ -72,31 +80,72 @@ function Navigation() {
               </>
             )}
           </div>
+
+          {/* Hamburger Icon - visible on mobile */}
+          <div className="md:hidden flex items-center">
+            <button
+              className="text-gray-600 hover:text-gray-900"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
 
-        {/* Hamburger Icon - Positioned below on mobile */}
-        <div className="md:hidden mt-1 flex justify-end pr-4">
-          <button className="text-gray-600 hover:text-gray-900" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <Menu className="h-6 w-6" />
-          </button>
-        </div>
-
-        {/* Mobile Menu - Appears when isMenuOpen is true */}
+        {/* Mobile Menu Dropdown */}
         {isMenuOpen && (
-          <div ref={menuRef} className="md:hidden absolute top-16 right-4 bg-white shadow-lg p-4 rounded-md w-48">
-            <a href="/about" className="block text-[#2D488F] hover:text-blue-700 py-2" onClick={() => setIsMenuOpen(false)}>
+          <div
+            ref={menuRef}
+            className="md:hidden absolute top-16 right-4 bg-white shadow-lg p-4 rounded-md w-64 z-50 space-y-2"
+          >
+            <a
+              href="/about"
+              className="block text-[#2D488F] hover:text-blue-700"
+            >
               About
             </a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700 py-2" onClick={() => setIsMenuOpen(false)}>
+            <a href="#" className="block text-[#2D488F] hover:text-blue-700">
               Connect
             </a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700 py-2" onClick={() => setIsMenuOpen(false)}>
+            <a href="#" className="block text-[#2D488F] hover:text-blue-700">
               Resources
             </a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700 py-2" onClick={() => setIsMenuOpen(false)}>
+            <a href="#" className="block text-[#2D488F] hover:text-blue-700">
               Circles
             </a>
-           
+
+            {/* Mobile Login/Register/Search */}
+            {location.pathname !== "/about" && (
+              <>
+                <hr className="my-2" />
+                <div className="flex items-center gap-2">
+                  <Search
+                    className="h-5 w-5 text-[#2D488F] cursor-pointer"
+                    onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  />
+                  {isSearchOpen && (
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="w-full px-3 py-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-[#2D488F] text-sm bg-white"
+                      autoFocus
+                    />
+                  )}
+                </div>
+                <a
+                  href="#"
+                  className="block text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full text-center"
+                >
+                  Log in
+                </a>
+                <a
+                  href="#"
+                  className="block text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full text-center"
+                >
+                  Register
+                </a>
+              </>
+            )}
           </div>
         )}
       </div>
