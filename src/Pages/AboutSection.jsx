@@ -39,47 +39,54 @@ const AnimatedImage = ({ src, className, delay = 0 }) => {
 
 export default function AboutSection() {
   return (
-    <div className="max-w-[1200px] mx-auto  py-12">
-      <div className='flex justify-start gap-2 items-start'>
-        <div className='text-[30px] font-bold text-left'>Global Reach with Multilingual Support
-            <p className='text-[20px] font-normal'>Koach is a global platform that supports cross-border growth. We offer a wide range of linguistic options to ensure 
-                that language does not stand in the way of your success.</p>
-        </div>
-        
-        <div className='relative'>
-            <img src={Shade} className='object-cover w-[1700px] h-[600px] object-[30%_40%] -ml-56 -mt-28' />
-            <img src={Mentee} alt='dashboard' className='absolute object-cover inset-0 h-[350px] w-[560px]'/>
-            <AnimatedImage src={AS1} className='absolute inset-0 w-[310px] h-[310px] left-64 ml-3 top-28' delay={300} />
-            <AnimatedImage src={AS2} className='absolute inset-0 -top-14 left-20 w-[300px] h-[150px]' delay={600} />
-        </div>
-      </div>
-      <div className='flex justify-start gap-20 items-start '>
-        <div className='text-[30px] font-bold text-left w-1/2'>Expert Coaches & Mentors
-            <p className='text-[20px] font-normal'>Koach has a unique principle that all the professionals working on its site are
-                 highly qualified professionals. Each of our coaches and mentors is a practicing coach with many years of experience 
-                 in this particular industry.</p>
-        </div>
-        
-        <div className='relative w-1/2 '>
-            <img src={Shade} className='object-cover w-[1700px] h-[600px] object-[30%_40%] ml-36 -mt-28' />
-            <img src={Mentee} alt='dashboard' className='absolute object-cover inset-0 h-[350px] w-[560px]'/>
-            <AnimatedImage src={Calender} className='absolute inset-0 w-[260px] top-2 -left-16' delay={300} />
-            <AnimatedImage src={Message} className='absolute inset-0 top-20 left-72 ml-10 w-[300px]' delay={600} />
-            <AnimatedImage src={AS3} className='absolute inset-0 top-72 left-2 w-[545px]' delay={900} />
-        </div>
-      </div>
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
       
-      <div className='flex justify-start gap-20 items-start'>
-        <div className='text-[30px] font-bold text-left w-1/2'>Rigorous Selection Process
-            <p className='text-[20px] font-normal'>If you think being a mentor or a coach at Koach is for anyone, you are 
-                completely wrong. That who is a part of the Koach platform should be trusted and such particular area requires 
-                some precision.</p>
+      {/* Section 1 */}
+      <div className="flex flex-col lg:flex-row items-start gap-10">
+        <div className="lg:w-1/2 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold">Global Reach with Multilingual Support</h2>
+          <p className="text-base sm:text-lg">
+            Koach is a global platform that supports cross-border growth. We offer a wide range of linguistic options to ensure 
+            that language does not stand in the way of your success.
+          </p>
         </div>
-        
-        <div className='relative w-1/2'>
-            <img src={Shade} className='object-cover w-[1700px] h-[600px] object-[30%_40%] -ml-56 -mt-28' />
-            <img src={Mentee} alt='dashboard' className='absolute object-cover inset-0 h-[350px] w-[560px]'/>
-            <AnimatedImage src={AS4} className='absolute inset-0 w-[420px] left-44 top-44' delay={300} />
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
+          <img src={Shade} className="object-cover w-full max-h-[400px] rounded-xl" />
+          <img src={Mentee} alt='dashboard' className="absolute inset-0 w-4/5 h-auto mx-auto mt-10" />
+          <AnimatedImage src={AS1} className="absolute w-40 sm:w-60 top-28 left-1/2 -translate-x-1/2" delay={300} />
+          <AnimatedImage src={AS2} className="absolute w-52 -top-10 left-12" delay={600} />
+        </div>
+      </div>
+
+      {/* Section 2 */}
+      <div className="flex flex-col-reverse lg:flex-row items-start gap-10">
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
+          <img src={Shade} className="object-cover w-full max-h-[400px] rounded-xl" />
+          <img src={Mentee} alt='dashboard' className="absolute inset-0 w-4/5 h-auto mx-auto mt-10" />
+          <AnimatedImage src={Calender} className="absolute w-40 top-2 -left-10" delay={300} />
+          <AnimatedImage src={Message} className="absolute w-60 top-20 right-0" delay={600} />
+          <AnimatedImage src={AS3} className="absolute w-full max-w-[500px] top-72 left-0" delay={900} />
+        </div>
+        <div className="lg:w-1/2 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold">Expert Coaches & Mentors</h2>
+          <p className="text-base sm:text-lg">
+            Koach has a unique principle that all the professionals working on its site are highly qualified professionals. Each of our coaches and mentors is a practicing coach with many years of experience in this particular industry.
+          </p>
+        </div>
+      </div>
+
+      {/* Section 3 */}
+      <div className="flex flex-col lg:flex-row items-start gap-10">
+        <div className="lg:w-1/2 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-bold">Rigorous Selection Process</h2>
+          <p className="text-base sm:text-lg">
+            If you think being a mentor or a coach at Koach is for anyone, you are completely wrong. Those who are part of the Koach platform should be trusted and such a particular area requires precision.
+          </p>
+        </div>
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
+          <img src={Shade} className="object-cover w-full max-h-[400px] rounded-xl" />
+          <img src={Mentee} alt='dashboard' className="absolute inset-0 w-4/5 h-auto mx-auto mt-10" />
+          <AnimatedImage src={AS4} className="absolute w-[300px] sm:w-[420px] left-1/2 -translate-x-1/2 top-40" delay={300} />
         </div>
       </div>
     </div>

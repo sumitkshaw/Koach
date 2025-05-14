@@ -94,79 +94,80 @@ export default function JoinSection() {
 
   };
   const MentorCard = ({ mentor, idx }) => (
-    <motion.div
-      key={mentor.id}
-      className={`relative shadow-lg h-[360px] w-[270px] ${idx === 1 ? "mt-40" : ""}`}
-      custom={idx}
-      variants={cardVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-       
-    >
-      <img
-        src={mentor.image}
-        alt={mentor.name}
-        className="h-full w-full object-cover"
-      />
-      
-      
-      <div className="absolute bottom-4 left-3/4 ml-12 transform -translate-x-1/2 bg-white border border-black p-2 shadow-lg w-[73%] text-left">
-        <h3 className="font-bold text-lg">{mentor.name}</h3>
-        <p className="text-gray-700">{mentor.role}</p>
-        <p className="text-gray-600">{mentor.company}</p>
-      </div>
-    </motion.div>
-  );
+  <motion.div
+    key={mentor.id}
+    className={`relative shadow-lg w-[70vw] max-w-xs h-[360px] ${idx === 1 ? "mt-10 md:mt-40" : ""}`}
+    custom={idx}
+    variants={cardVariants}
+    initial="enter"
+    animate="center"
+    exit="exit"
+  >
+    <img
+      src={mentor.image}
+      alt={mentor.name}
+      className="h-full w-full object-cover rounded-xl"
+    />
+    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black p-3 shadow-lg w-[85%] text-left rounded-md">
+      <h3 className="font-bold text-base md:text-lg">{mentor.name}</h3>
+      <p className="text-gray-700 text-sm md:text-base">{mentor.role}</p>
+      <p className="text-gray-600 text-sm md:text-base">{mentor.company}</p>
+    </div>
+  </motion.div>
+);
+
   return (
-    <div className='max-w-[1200px] py-12 mx-auto text-center'>
-    <h2 className='text-[36px] font-bold mb-12'>Find your Mentor: Infinite Possibilities</h2>
-    
-    
-    <div className='relative flex justify-center items-center space-x-24 min-h-[480px] '>
-      <AnimatePresence mode="wait"  >
-      <motion.div 
+    <div className='max-w-[1200px] px-4 py-12 mx-auto text-center'>
+  <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-12'>
+    Find your Mentor: Infinite Possibilities
+  </h2>
+
+  <div className='relative flex flex-wrap justify-center items-center gap-6 min-h-[480px]'>
+    <AnimatePresence mode="wait">
+      <motion.div
         key={key}
-        className="flex space-x-24"
+        className="flex flex-wrap justify-center items-center gap-6"
         variants={containerVariants}
         initial="enter"
         animate="center"
         exit="exit"
       >
-            {MENTORS.slice(index, index + 3).map((mentor, idx) => (
-              <MentorCard key={mentor.id} mentor={mentor} idx={idx} />
-            ))}
-          </motion.div>
-      </AnimatePresence>
+        {MENTORS.slice(index, index + 3).map((mentor, idx) => (
+          <MentorCard key={mentor.id} mentor={mentor} idx={idx} />
+        ))}
+      </motion.div>
+    </AnimatePresence>
+  </div>
+
+  <button className="text-white mt-12 font-bold bg-[#2D488F] px-6 py-3 hover:bg-[#263f7e] transition-colors text-lg md:text-xl shadow-md rounded-md">
+    Search for Koach
+  </button>
+
+  <div className='bg-[#050A30] flex flex-col-reverse md:flex-row p-6 sm:p-10 mt-20 rounded-3xl items-center gap-8'>
+    <div className='w-full md:w-3/5 px-4'>
+      <h2 className='text-white text-2xl sm:text-3xl md:text-4xl font-bold text-center md:text-left'>
+        Join as <span className='text-[#F5E649]'>Coach</span>
+      </h2>
+      <p className='text-white mt-4 text-left text-base sm:text-lg leading-relaxed'>
+        Are you passionate about guiding the next generation of leaders and innovators? 
+        At Koach, you'll have the opportunity to coach talented individuals from startups, 
+        VCs, and universities, helping them achieve their full potential.
+      </p>
+      <button className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">
+        Join now
+      </button>
     </div>
-      
-      <button className="text-white mt-16 font-bold  bg-[#2D488F] px-5 py-3 hover:bg-[#263f7e] transition-colors text-[20px] shadow-md rounded-md">
-        Search for Koach
-     </button>
-      
-      <div className='bg-[#050A30] flex p-8 mt-20 rounded-3xl items-center'>
-        <div className='w-3/5  pl-10'>
-          <h2 className='text-white text-center text-[36px] font-bold'>
-            Join as <span className='text-[#F5E649]'>Coach</span>
-          </h2>
-          <p className='text-white text-left mt-4 text-[18px] leading-relaxed'>
-            Are you passionate about guiding the next generation of leaders and innovators? 
-            At Koach, you'll have the opportunity to coach talented individuals from startups, 
-            VCs, and universities, helping them achieve their full potential.
-          </p>
-          <button className="text-[#2D488F] mt-8 font-bold bg-[#F5E649] px-10 py-3 hover:bg-[#f3e338] transition-colors text-[20px] rounded-md shadow-md">
-            Join now
-          </button>
-        </div>
-        <div className='relative h-[300px] w-[300px] ml-12 flex-shrink-0 flex items-center justify-center'>
-          <img src={Triangle} alt="Background shape" className='absolute inset-0 w-full h-full object-contain' />
-          <img 
-            src={Female} 
-            alt='Coach portrait' 
-            className='absolute rounded-full h-[170px] w-[170px] mb-8 mr-8 object-cover z-10'
-          />
-        </div>
-      </div>
+
+    <div className='relative h-[250px] w-[250px] sm:h-[280px] sm:w-[280px] md:h-[300px] md:w-[300px] flex-shrink-0 flex items-center justify-center'>
+      <img src={Triangle} alt="Background shape" className='absolute inset-0 w-full h-full object-contain' />
+      <img 
+        src={Female} 
+        alt='Coach portrait' 
+        className='absolute rounded-full h-[140px] w-[140px] sm:h-[160px] sm:w-[160px] md:h-[170px] md:w-[170px] object-cover z-10'
+      />
     </div>
+  </div>
+</div>
+
   )
 }

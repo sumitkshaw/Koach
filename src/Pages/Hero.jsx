@@ -30,16 +30,16 @@ function Hero() {
           </div>
 
           {/* Right Images */}
-          <div className="relative">
+          <div className="relative mt-12 lg:mt-0">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#2D488F]/30 to-[#F5E649]/30 rounded-3xl filter blur-3xl z-0" />
             <div className="relative grid grid-cols-3 gap-2 sm:gap-4 justify-center sm:ml-0 ml-10 z-10">
-              <div className="h-60 sm:h-[473px] rounded-[60px] overflow-hidden w-[90px] sm:w-[135px]">
+              <div className="h-40 sm:h-[473px] rounded-[60px] overflow-hidden w-[90px] sm:w-[160px]">
                 <img src={heropic1} alt="Professional 1" className="h-full w-full object-cover" />
               </div>
-              <div className="h-60 sm:h-[473px] mt-8 sm:mt-32 rounded-[60px] overflow-hidden w-[90px] sm:w-[135px]">
+              <div className="h-40 sm:h-[473px] mt-8 sm:mt-32 rounded-[60px] overflow-hidden w-[90px] sm:w-[160px]">
                 <img src={heropic2} alt="Professional 2" className="h-full w-full object-cover" />
               </div>
-              <div className="h-60 sm:h-[473px] rounded-[60px] overflow-hidden w-[90px] sm:w-[135px]">
+              <div className="h-40 sm:h-[473px] rounded-[60px] overflow-hidden w-[90px] sm:w-[160px]">
                 <img src={heropic3} alt="Professional 3" className="h-full w-full object-cover" />
               </div>
             </div>
