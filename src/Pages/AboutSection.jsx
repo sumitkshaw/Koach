@@ -4,7 +4,6 @@ import Shade from '../assets/Shade.png';
 import AS1 from '../assets/AS1.png';
 import AS2 from '../assets/AS2.png';
 import AS3 from '../assets/AS3.png';
-import AS4 from '../assets/AS4.png';
 import Calender from '../assets/Calender.png';
 import Message from '../assets/Message.png';
 
@@ -86,7 +85,6 @@ export default function AboutSection() {
         <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
           <img src={Shade} className="object-cover w-full max-h-[400px] rounded-xl" />
           <img src={Mentee} alt='dashboard' className="absolute inset-0 w-4/5 h-auto mx-auto mt-10" />
-          <AnimatedImage src={AS4} className="absolute w-[300px] sm:w-[420px] left-1/2 -translate-x-1/2 top-40" delay={300} />
         </div>
       </div>
     </div>
