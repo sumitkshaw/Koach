@@ -60,7 +60,7 @@ export default function AboutSection() {
             does not stand in the way of your success.
           </p>
         </div>
-        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0 min-h-[500px]">
           <img
             src={Shade}
             className="object-cover w-full max-h-[400px] rounded-xl"
@@ -85,7 +85,7 @@ export default function AboutSection() {
 
       {/* Section 2 */}
       <div className="flex flex-col-reverse lg:flex-row items-start gap-10">
-        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0">
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0 min-h-[500px]">
           <img
             src={Shade}
             className="object-cover w-full max-h-[400px] rounded-xl"
@@ -136,7 +136,7 @@ export default function AboutSection() {
             should be trusted and such a particular area requires precision.
           </p>
         </div>
-        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0 flex justify-center">
+        <div className="relative lg:w-1/2 w-full mt-6 lg:mt-0 flex justify-center min-h-[500px]">
           <img
             src={Shade}
             className="object-cover w-full max-h-[400px] rounded-xl"
