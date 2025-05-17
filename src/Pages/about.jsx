@@ -1,7 +1,5 @@
 import { Linkedin } from 'lucide-react';
 import raj from '../assets/raj.png';
-import riddhi from '../assets/riddhi.png';
-import cara from '../assets/cara.jpg';
 import yukti from '../assets/yukti.jpg';
 import teamcollage from '../assets/teamcollage.jpg';
 import Footer from './Footer';
@@ -49,8 +47,7 @@ function About() {
             {[
               { name: 'Raj', role: 'Founder & CEO', image: raj },
               { name: 'Yukti', role: 'Chief Product Officer', image: yukti },
-              { name: 'Cara', role: 'Marketing Lead', image: cara },
-              { name: 'Riddhi', role: 'UX/UI Designer', image: riddhi },
+              
             ].map((member) => (
               <div 
                 key={member.name} 

@@ -1,4 +1,5 @@
-import Logo from '../assets/logowhite.png';
+
+import image1 from '../assets/image1.png';
 import { FaFacebookF, FaLinkedinIn, FaInstagram, FaXTwitter, FaTiktok, FaSpotify, FaYoutube } from "react-icons/fa6";
 
 export default function Footer() {
@@ -38,7 +39,7 @@ export default function Footer() {
   return (
     <div className="w-full bg-[#050A30] py-14 mt-20">
       <div className="max-w-[1200px] mx-auto mb-20 px-4">
-        <img src={Logo} alt="Logo" className="mx-auto" />
+        <img src={image1} alt="Logo" className="mx-auto" />
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
           <div className="text-[#F5E649] text-left mt-2 text-[26px] font-bold text-center md:text-left">
             Where <span className="text-white">Clarity</span> Meets <span className="text-white">Action</span>

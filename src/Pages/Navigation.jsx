@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import logo from "../assets/logo.png";
+import image3 from '../assets/image3.png'
+import blues from '../assets/blues.svg'
 
 function Navigation() {
   const location = useLocation();
@@ -27,23 +28,23 @@ function Navigation() {
           {/* Left: Logo */}
           <div className="flex-shrink-0">
             <a href="/">
-              <img src={logo} alt="Koach" className="h-9 w-auto" />
+              <img src={image3} alt="Koach" className="h-12 w-auto " />
             </a>
           </div>
 
           {/* Middle: Nav Links - Hidden on mobile */}
           <div className="hidden md:flex space-x-12 text-xl ml-12">
             <a href="/about" className="text-[#2D488F] hover:text-blue-700">
-              About
+              About Us
             </a>
             <a href="#" className="text-[#2D488F] hover:text-blue-700">
-              Connect
+              Circle
             </a>
             <a href="#" className="text-[#2D488F] hover:text-blue-700">
               Resources
             </a>
             <a href="#" className="text-[#2D488F] hover:text-blue-700">
-              Circles
+              Connect
             </a>
           </div>
 
@@ -102,16 +103,16 @@ function Navigation() {
               href="/about"
               className="block text-[#2D488F] hover:text-blue-700"
             >
-              About
+              About Us
             </a>
             <a href="#" className="block text-[#2D488F] hover:text-blue-700">
-              Connect
+              Circle
             </a>
             <a href="#" className="block text-[#2D488F] hover:text-blue-700">
               Resources
             </a>
             <a href="#" className="block text-[#2D488F] hover:text-blue-700">
-              Circles
+              Connect
             </a>
 
             {/* Mobile Login/Register/Search */}
