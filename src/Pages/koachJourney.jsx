@@ -1,9 +1,11 @@
 import KoachJourney3 from '../assets/koachjourney3.jpg';
 import video from '../assets/Copie a designului Koach video campaign.mp4';
+import { useNavigate } from 'react-router-dom';
 
 const KoachJourney = () => {
   const skillTags = ['Sales', 'Design', 'Coding', 'Finance', 'Marketing', 'Management', 'Strategy'];
-
+  const navigate = useNavigate();
+  
   return (
     <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12">
       {/* Top Section */}
@@ -26,7 +28,9 @@ const KoachJourney = () => {
               placeholder="Search by Skills, Company, Role"
               className="flex-1 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
-            <button className="px-4 py-3 bg-[#050A30] text-white font-semibold text-sm sm:text-base">
+            <button 
+            onClick={() => navigate("/signup")}
+            className="px-4 py-3 bg-[#050A30] text-white font-semibold text-sm sm:text-base">
               Search for Koach
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from "framer-motion";
 import J1 from '../assets/J1.png'
 import J2 from '../assets/J2.png'
@@ -8,6 +8,8 @@ import J5 from '../assets/J5.png'
 import J6 from '../assets/J6.png'
 import Female from '../assets/Female.png'
 import Triangle from '../assets/Triangle.png'
+import { useNavigate } from "react-router-dom";
+
 
 const MENTORS = [
   { id: 1, image: J1, name:"Patrice Long", role:"Senior Data Engineer", company: "Google" },
@@ -21,6 +23,8 @@ const MENTORS = [
 export default function JoinSection() {
   const [index, setIndex] = useState(0);
   const [key, setKey] = useState(0);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,7 +91,9 @@ export default function JoinSection() {
         </AnimatePresence>
       </div>
 
-      <button className="text-white mt-12 font-bold bg-[#2D488F] px-6 py-3 hover:bg-[#263f7e] transition-colors text-lg md:text-xl shadow-md rounded-md">
+      <button 
+      onClick={() => navigate("/signup")}
+      className="text-white mt-12 font-bold bg-[#2D488F] px-6 py-3 hover:bg-[#263f7e] transition-colors text-lg md:text-xl shadow-md rounded-md">
         Search for Koach
       </button>
 
@@ -98,7 +104,7 @@ export default function JoinSection() {
           </h2>
           <p className='text-white mt-4 text-left text-base sm:text-lg leading-relaxed'>
             Are you passionate about guiding the next generation of leaders and innovators? 
-            At Koach, you'll have the opportunity to coach talented individuals from startups, 
+            At Koach, you&apos;ll have the opportunity to coach talented individuals from startups, 
             VCs, and universities, helping them achieve their full potential.
           </p>
           <button className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">

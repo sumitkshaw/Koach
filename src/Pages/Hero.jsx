@@ -1,8 +1,12 @@
 import heropic1 from '../assets/heropic1.jpg';
 import heropic2 from '../assets/heropic2.jpg';
 import heropic3 from '../assets/heropic3.jpg';
+import { useNavigate } from "react-router-dom";
+
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,7 +23,9 @@ function Hero() {
             </p>
 
             <div className="mt-10 text-left">
-              <button className="text-[#2D488F] font-bold bg-[#F5E649] px-4 py-2 hover:bg-[#f3e338] transition-colors text-lg rounded-md">
+              <button 
+              onClick={() => navigate("/signup")}
+              className="text-[#2D488F] font-bold bg-[#F5E649] px-4 py-2 hover:bg-[#f3e338] transition-colors text-lg rounded-md">
                 Search for Koach
               </button>
             </div>
