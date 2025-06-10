@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Mentee from "../assets/Mentee 7.png";
 import Shade from "../assets/Shade.png";
 import AS1 from "../assets/AS1.png";

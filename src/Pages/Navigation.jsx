@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import image3 from '../assets/image3.png'
-import blues from '../assets/blues.svg'
 
 function Navigation() {
   const location = useLocation();
@@ -67,13 +66,13 @@ function Navigation() {
                   />
                 </div>
                 <a
-                  href="#"
+                  href="/login"
                   className="text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full transition duration-300"
                 >
                   Log in
                 </a>
                 <a
-                  href="#"
+                  href="/signup"
                   className="text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full transition duration-300"
                 >
                   Register
@@ -134,13 +133,13 @@ function Navigation() {
                   )}
                 </div>
                 <a
-                  href="#"
+                  href="/login"
                   className="block text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full text-center"
                 >
                   Log in
                 </a>
                 <a
-                  href="#"
+                  href="signup"
                   className="block text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full text-center"
                 >
                   Register

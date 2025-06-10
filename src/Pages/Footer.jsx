@@ -1,6 +1,6 @@
 
 import image1 from '../assets/image1.png';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaXTwitter, FaTiktok, FaSpotify, FaYoutube } from "react-icons/fa6";
+import { FaLinkedinIn, FaInstagram, FaXTwitter, FaTiktok, FaSpotify, FaYoutube } from "react-icons/fa6";
 
 export default function Footer() {
   const socialLinks = [
@@ -41,7 +41,7 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto mb-20 px-4">
         <img src={image1} alt="Logo" className="mx-auto" />
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
-          <div className="text-[#F5E649] text-left mt-2 text-[26px] font-bold text-center md:text-left">
+          <div className="text-[#F5E649] mt-2 text-[26px] font-bold text-center md:text-left">
             Where <span className="text-white">Clarity</span> Meets <span className="text-white">Action</span>
           </div>
           <div className="flex gap-5 mt-5 md:mt-0">

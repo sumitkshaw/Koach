@@ -1,4 +1,3 @@
-import React from 'react';
 import KoachJourney3 from '../assets/koachjourney3.jpg';
 import video from '../assets/Copie a designului Koach video campaign.mp4';
 
@@ -74,7 +73,7 @@ const KoachJourney = () => {
               (Em)Powered by Experience. Leading the Future. Today.
             </p>
             <p className="text-base sm:text-lg font-medium">
-              We connect you with World-Class coaches who've dominated their fields and domains and are ready to accelerate your professional-career goals.
+              We connect you with World-Class coaches who&apos;ve dominated their fields and domains and are ready to accelerate your professional-career goals.
             </p>
           </div>
         </div>
