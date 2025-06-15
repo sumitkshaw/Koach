@@ -3,24 +3,42 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import LoginImage from "../assets/loginimage.png";
+import { auth, provider } from "../firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log("Login with:", { email, password });
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("✅ Email login success:", userCredential.user);
+
+      navigate("/");
+    } catch (error) {
+      console.error("❌ Login error:", error.message);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    console.log("Login with Google");
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("✅ Google login success:", user);
+
+      navigate("/");
+    } catch (error) {
+      console.error("❌ Google login error:", error);
+    }
   };
+
 
   const handleLinkedInLogin = () => {
     console.log("Login with LinkedIn");
   };
 
-  const navigate = useNavigate();
 
   return (
     <div className="flex min-h-screen bg-gray-50">

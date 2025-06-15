@@ -154,7 +154,7 @@ export default function Testimonials() {
       </div>
 
       {/* Animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes slideLeft {
           from {
             transform: translate(-50%, -50%);
