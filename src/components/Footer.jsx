@@ -1,4 +1,4 @@
-import logoWhite from "../assets/logoWhite.png"
+import logoWhite from "../assets/logowhite.png"
 
 import { FaLinkedinIn,FaInstagram,FaXTwitter, FaTiktok, FaSpotify, FaYoutube} from "react-icons/fa6";
 export default function Footer() {
