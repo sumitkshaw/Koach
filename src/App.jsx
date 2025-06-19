@@ -3,7 +3,7 @@ import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import MetricSection from "./components/MetricSection";
 import KoachJourney from "./components/koachJourney";
-import About from "./pages/about"; 
+import About from "./pages/About"; 
 import AboutSection from "./components/AboutSection";
 import JoinSection from "./components/JoinSection";
 import Testimonials from "./components/Testimonials";
