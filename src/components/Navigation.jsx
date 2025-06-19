@@ -36,7 +36,7 @@ function Navigation() {
             <a href="/about" className="text-[#2D488F] hover:text-blue-700">
               About Us
             </a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">
+            <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
               Circle
             </a>
             <a href="#" className="text-[#2D488F] hover:text-blue-700">
@@ -104,7 +104,7 @@ function Navigation() {
             >
               About Us
             </a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700">
+            <a href="/circles" className="block text-[#2D488F] hover:text-blue-700">
               Circle
             </a>
             <a href="#" className="block text-[#2D488F] hover:text-blue-700">

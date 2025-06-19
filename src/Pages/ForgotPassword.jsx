@@ -40,9 +40,8 @@ export default function ForgotPassword() {
           </h1>
 
           <p className="text-gray-600 text-base leading-relaxed max-w-sm mx-auto">
-            Please enter your Email address or
+            Please enter your registered Email address 
             <br />
-            phone number linked with you account.
           </p>
         </div>
 
@@ -50,7 +49,7 @@ export default function ForgotPassword() {
           <div className="relative">
             <input
               type="email"
-              placeholder="Email address or phone number"
+              placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-5 py-4 bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-blue-500 text-base transition-all duration-200 placeholder-gray-400"

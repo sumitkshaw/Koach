@@ -2,7 +2,7 @@ import { Linkedin } from 'lucide-react';
 import raj from '../assets/raj.png';
 import yukti from '../assets/yukti.jpg';
 import teamcollage from '../assets/teamcollage.jpg';
-import Footer from './Footer';
+import Footer from '../components/Footer';
 
 function About() {
   return (

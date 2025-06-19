@@ -1,16 +1,18 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Navigation from "./Pages/Navigation";
-import Hero from "./Pages/Hero";
-import MetricSection from "./Pages/MetricSection";
-import KoachJourney from "./Pages/koachJourney";
-import About from "./Pages/about"; 
-import AboutSection from "./Pages/AboutSection";
-import JoinSection from "./Pages/JoinSection";
-import Testimonials from "./Pages/Testimonials";
-import Footer from "./Pages/Footer";
-import LoginPage from "./Pages/LoginPage";
-import SignUpPage from "./Pages/SignUpPage";
-import ForgotPassword from "./Pages/ForgotPassword";
+import Navigation from "./components/Navigation";
+import Hero from "./components/Hero";
+import MetricSection from "./components/MetricSection";
+import KoachJourney from "./components/koachJourney";
+import About from "./pages/about"; 
+import AboutSection from "./components/AboutSection";
+import JoinSection from "./components/JoinSection";
+import Testimonials from "./components/Testimonials";
+import Footer from "./components/Footer";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import CirclesPage from "./pages/CirclesPage";
+
 
 function AppContent() {
   const location = useLocation();
@@ -39,6 +41,7 @@ function AppContent() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/circles" element={<CirclesPage />} />
         {/* Add more routes as needed */}
       </Routes>
     </div>
