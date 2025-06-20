@@ -12,11 +12,12 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import CirclesPage from "./pages/CirclesPage";
-
+import Welcome from "./Dashboard/Welcome";
+import { AuthProvider } from "./utils/AuthContext";
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup", "/forgot-password"];
+  const hideNavbarRoutes = ["/login", "/signup", "/forgot-password", "/welcome"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -42,6 +43,7 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/circles" element={<CirclesPage />} />
+        <Route path="/welcome" element={<Welcome />} />
         {/* Add more routes as needed */}
       </Routes>
     </div>
@@ -51,7 +53,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>
+        <AppContent /> 
+      </AuthProvider>
     </Router>
   );
 }

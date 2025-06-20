@@ -17,7 +17,7 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("✅ Email login success:", userCredential.user);
 
-      navigate("/");
+      navigate("/welcome");
     } catch (error) {
       console.error("❌ Login error:", error.message);
     }
@@ -29,7 +29,7 @@ export default function LoginPage() {
       const user = result.user;
       console.log("✅ Google login success:", user);
 
-      navigate("/");
+      navigate("/welcome");
     } catch (error) {
       console.error("❌ Google login error:", error);
     }

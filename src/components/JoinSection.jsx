@@ -107,7 +107,9 @@ export default function JoinSection() {
             At Koach, you&apos;ll have the opportunity to coach talented individuals from startups, 
             VCs, and universities, helping them achieve their full potential.
           </p>
-          <button className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">
+          <button
+          onClick={() => navigate("/signup")}
+          className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">
             Join now
           </button>
         </div>
