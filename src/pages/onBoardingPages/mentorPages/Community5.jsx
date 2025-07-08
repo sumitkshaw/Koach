@@ -19,25 +19,25 @@ export default function MentorCommunity5() {
   ];
 
   // Load saved data when component mounts
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5001/api/onboarding/data?step=7");
-        if (response.data && response.data.education) {
-          if (response.data.education.expertise) {
-            setSelectedItems(response.data.education.expertise);
-          }
-          if (response.data.education.othercertificates) {
-            setOtherCertificates(response.data.education.othercertificates);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching education data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:5001/api/onboarding/data?step=7");
+  //       if (response.data && response.data.education) {
+  //         if (response.data.education.expertise) {
+  //           setSelectedItems(response.data.education.expertise);
+  //         }
+  //         if (response.data.education.othercertificates) {
+  //           setOtherCertificates(response.data.education.othercertificates);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching education data:", error);
+  //     }
+  //   };
     
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const toggleItem = (item) => {
     setSelectedItems((prev) =>

@@ -9,19 +9,19 @@ const MentorCommunity6 = () => {
   const [value,setValue]=useState(1);
   const [loading, setLoading] = useState(false);
   
-  // Load saved data when component mounts
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5001/api/onboarding/data?step=8");
+  // // Load saved data when component mounts
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:5001/api/onboarding/data?step=8");
         
-      } catch (error) {
-        console.error("Error fetching client capacity data:", error);
-      }
-    };
+  //     } catch (error) {
+  //       console.error("Error fetching client capacity data:", error);
+  //     }
+  //   };
     
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const handleChange =(e)=>{
     setValue(e.target.value)

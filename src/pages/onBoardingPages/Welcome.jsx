@@ -10,22 +10,7 @@ import { FaCheck } from "react-icons/fa"; // ✅ ICON IMPORT
 const Welcome = () => {
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
-  const [name, setName] = useState("User");
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const response = await axios.get("http://localhost:5001/api/onboarding/getTempData");
-        if (response.data?.name) {
-          setName(response.data.name);
-        }
-
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserName();
-  }, []);
 
   const handleSubmit = async () => {
     if (!userType) {
