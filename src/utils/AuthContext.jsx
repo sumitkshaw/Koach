@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password, navigate, setError) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/bio");
+      navigate("/welcome");
     } catch (error) {
       console.error("Sign-up error", error);
       setError("Sign-up failed");
