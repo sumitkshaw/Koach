@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import welcome from "../../assets/signup/Welcome.png";
+import welcome from "../../assets/signup/welcome.png";
 import LeftPanel from "../../components/onBoardingComp/LeftPanel";
 import RightPanel from "../../components/onBoardingComp/RightPanel";
 import NavigationButtons from "../../components/onBoardingComp/NavigationButtons";
