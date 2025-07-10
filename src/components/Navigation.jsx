@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, Search } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import image3 from "../assets/image3.png";
-import { useAuth } from "../utils/AuthContext"; 
+import { useAuth } from "../utils/AuthContext";
+import { FaCloud } from 'react-icons/fa'; // Using react-icons for the cloud
 
 function Navigation() {
   const location = useLocation();
@@ -10,6 +11,8 @@ function Navigation() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const [showResourcesDropdown, setShowResourcesDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -19,6 +22,17 @@ function Navigation() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowResourcesDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const getInitials = (name) => {
@@ -43,10 +57,39 @@ function Navigation() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-12 text-xl ml-12">
-            <a href="/about" className="text-[#2D488F] hover:text-blue-700">About Us</a>
-            <a href="/circles" className="text-[#2D488F] hover:text-blue-700">Circle</a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">Resources</a>
-            <a href="#" className="text-[#2D488F] hover:text-blue-700">Connect</a>
+            <a href="/about" className="text-[#2D488F] hover:text-blue-700">
+              About Us
+            </a>
+            <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
+              Circle
+            </a>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowResourcesDropdown(!showResourcesDropdown)}
+                className="text-[#2D488F] hover:text-blue-700 focus:outline-none"
+              >
+                Resources
+              </button>
+
+              {/* Cloud Dropdown - Desktop */}
+              {showResourcesDropdown && (
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 z-50">
+                  {/* Cloud Body */}
+                  <div className="bg-white rounded-3xl shadow-lg py-4 px-6 relative border border-gray-200">
+                    <div className="flex items-center justify-center text-gray-600">
+                      <FaCloud className="mr-2 text-gray-400 text-lg" />
+                      <span className="text-sm italic font-medium">Coming Soon!</span>
+                    </div>
+                  </div>
+                  
+                  {/* Cloud Tail */}
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-200"></div>
+                </div>
+              )}
+            </div>
+            <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
+              Contact
+            </a>
           </div>
 
           {/* Auth / Search (Desktop) */}
@@ -117,10 +160,44 @@ function Navigation() {
             ref={menuRef}
             className="md:hidden absolute top-16 right-4 bg-white shadow-lg p-4 rounded-md w-64 z-50 space-y-2"
           >
-            <a href="/about" className="block text-[#2D488F] hover:text-blue-700">About Us</a>
-            <a href="/circles" className="block text-[#2D488F] hover:text-blue-700">Circle</a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700">Resources</a>
-            <a href="#" className="block text-[#2D488F] hover:text-blue-700">Connect</a>
+            <a
+              href="/about"
+              className="block text-[#2D488F] hover:text-blue-700"
+            >
+              About Us
+            </a>
+            <a
+              href="/circles"
+              className="block text-[#2D488F] hover:text-blue-700"
+            >
+              Circle
+            </a>
+            
+            {/* Resources with dropdown for mobile */}
+            <div className="relative">
+              <button
+                onClick={() => setShowResourcesDropdown(!showResourcesDropdown)}
+                className="block w-full text-left text-[#2D488F] hover:text-blue-700 focus:outline-none"
+              >
+                Resources
+              </button>
+              
+              {/* Cloud Dropdown - Mobile */}
+              {showResourcesDropdown && (
+                <div className="mt-2 ml-4 relative">
+                  <div className="bg-gray-50 rounded-2xl py-3 px-4 relative border border-gray-200">
+                    <div className="flex items-center text-gray-600">
+                      <FaCloud className="mr-2 text-gray-400" />
+                      <span className="text-sm italic">Coming Soon!</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <a href="/contact" className="block text-[#2D488F] hover:text-blue-700">
+              Contact
+            </a>
 
             {location.pathname !== "/about" && (
               <>

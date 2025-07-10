@@ -3,7 +3,10 @@ import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import MetricSection from "./components/MetricSection";
 import KoachJourney from "./components/koachJourney";
-import About from "./pages/About"
+import Contact from "./components/Contact";
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import FAQ from "./pages/Faq";
 import AboutSection from "./components/AboutSection";
 import JoinSection from "./components/JoinSection";
 import Testimonials from "./components/Testimonials";
@@ -39,11 +42,16 @@ function AppContent() {
           }
         />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/circles" element={<CirclesPage />} />
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/faq" element={<FAQ />} />
+
+
         {/* Add more routes as needed */}
       </Routes>
     </div>

@@ -30,7 +30,7 @@ export default function SignUpPage() {
       const user = result.user;
       console.log("✅ Google sign-in success:", user);
 
-      navigate("/");
+      navigate("/welcome");
     } catch (error) {
       console.error("❌ Google sign-in error:", error);
     }
