@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Globe, Linkedin, Instagram, Twitter } from 'lucide-react';
 import Footer from '../components/Footer';
+import contactImage from '../assets/image22.png';
 
 function Contact() {
   return (
@@ -24,7 +25,7 @@ function Contact() {
               <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
                 <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
                   <img 
-                    src="/src/assets/image22.png" 
+                    src={contactImage} 
                     alt="Contact illustration showing people collaborating"
                     className="w-full h-auto object-contain"
                   />
