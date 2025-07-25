@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   const loginWithGoogle = async (navigate) => {
     try {
       const result = await signInWithPopup(auth, provider);
-      navigate("/welcome");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Google sign-in error", error);
     }

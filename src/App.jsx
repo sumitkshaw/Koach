@@ -15,12 +15,25 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import CirclesPage from "./pages/CirclesPage";
+import Dashboard from "./components/dashboard/Dashboard";
+import Goals from "./components/dashboard/Goals";
+import Calendar from "./components/dashboard/Calendar";
+import Messages from "./components/dashboard/Messages";
+import Mentors from "./components/dashboard/Mentors";
 import Welcome from "./Dashboard/Welcome";
 import { AuthProvider } from "./utils/AuthContext";
+import Dashmentor from "./components/dashboard-mentor/Dashmentor";
+import Earnings from "./components/dashboard-mentor/Earnings"
+import Mentees from "./components/dashboard-mentor/Mentees"
+import Calen from "./components/dashboard-mentor/Calen"
+import Message from "./components/dashboard-mentor/Message";
+
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup", "/forgot-password", "/welcome"];
+  const hideNavbarRoutes = ["/login", "/signup", "/forgot-password", "/welcome", "/dashboard",
+     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings",
+  "/dashboard/mentors", "/dashboard/mentees"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -50,7 +63,16 @@ function AppContent() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/faq" element={<FAQ />} />
-
+        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/dashboard/goals" element={<Goals />} />
+        <Route path="/dashboard/calendar" element={<Calendar />} />
+        <Route path="/dashboard/messages" element={<Messages />} />
+        <Route path="/dashboard/mentors" element={<Mentors />} />
+        <Route path="/dashboard_mentor" element={<Dashmentor/>} />
+        <Route path="/dashboard_mentor/earnings" element={<Earnings />} />
+        <Route path="/dashboard_mentor/calendar" element={<Calen />} />
+        <Route path="/dashboard_mentor/messages" element={<Message />} />
+        <Route path="/dashboard_mentor/mentees" element={<Mentees />} />
 
         {/* Add more routes as needed */}
       </Routes>
