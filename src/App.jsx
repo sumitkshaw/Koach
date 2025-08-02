@@ -17,7 +17,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CirclesPage from "./pages/CirclesPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import Goals from "./components/dashboard/Goals";
-import Calendar from "./components/dashboard/Calendar";
+import Sessions from "./components/dashboard/Sessions";
 import Messages from "./components/dashboard/Messages";
 import Mentors from "./components/dashboard/Mentors";
 import Welcome from "./Dashboard/Welcome";
@@ -65,7 +65,7 @@ function AppContent() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/dashboard/goals" element={<Goals />} />
-        <Route path="/dashboard/calendar" element={<Calendar />} />
+        <Route path="/dashboard/sessions" element={<Sessions />} />
         <Route path="/dashboard/messages" element={<Messages />} />
         <Route path="/dashboard/mentors" element={<Mentors />} />
         <Route path="/dashboard_mentor" element={<Dashmentor/>} />

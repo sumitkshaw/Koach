@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Star, MapPin, Clock, Calendar, Play, Filter } from 'lucide-react';
+import { Search, Star, MapPin, Clock, Calendar, Play, Filter, Award } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer'
@@ -24,11 +24,11 @@ const Mentors = () => {
         <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="pt-6 mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-                Find Your Perfect Mentor
-              </h1>
-              <p className="text-gray-600 text-sm sm:text-base">Connect with experienced professionals to accelerate your growth</p>
+            <div className="pt-6 mb-8">
+              <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between shadow-lg">
+                <h1 className="text-2xl font-bold tracking-wide">Mentors</h1>
+                <Award className="w-8 h-8" />
+              </div>
             </div>
 
             {/* Search and Filters */}

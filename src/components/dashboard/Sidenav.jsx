@@ -13,7 +13,7 @@ const Sidenav = ({ sidebarOpen, setSidebarOpen, currentRoute = '/dashboard' }) =
     { name: 'Dashboard', icon: TrendingUp, route: '/dashboard' },
     { name: 'My Mentors', icon: Users, route: '/dashboard/mentors' },
     { name: 'Goals', icon: Target, route: '/dashboard/goals' },
-    { name: 'Calendar', icon: Calendar, route: '/dashboard/calendar' },
+    { name: 'Sessions', icon: Calendar, route: '/dashboard/sessions' },
     { name: 'Messages', icon: MessageSquare, route: '/dashboard/messages' },
   ];
 
