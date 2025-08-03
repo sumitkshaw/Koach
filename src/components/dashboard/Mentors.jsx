@@ -15,7 +15,7 @@ const Mentors = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="fixed top-20 left-4 z-30 lg:hidden bg-white/80 backdrop-blur-lg p-2 rounded-xl shadow-lg border border-white/20"
+        className="fixed top-20 left-4 z-30 lg:hidden bg-white/80 backdrop-blur-lg p-2 rounded-xl border border-white/20"
       >
       </button>
 
@@ -25,14 +25,14 @@ const Mentors = () => {
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="pt-6 mb-8">
-              <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between shadow-lg">
+              <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between">
                 <h1 className="text-2xl font-bold tracking-wide">Mentors</h1>
                 <Award className="w-8 h-8" />
               </div>
             </div>
 
             {/* Search and Filters */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-white/20 mb-6 sm:mb-8">
+            <div className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/20 mb-6 sm:mb-8">
               <div className="flex flex-col gap-4">
                 <div className="relative">
                   <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
@@ -96,17 +96,17 @@ const Mentors = () => {
                   bg: "from-pink-500 to-rose-600"
                 }
               ].map((mentor, index) => (
-                <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+                <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/20 transition-all duration-300">
                   <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
                     {/* Profile Section */}
                     <div className="flex items-start gap-3 sm:gap-4 flex-1">
-                      <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${mentor.bg} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+                      <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${mentor.bg} rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0`}>
                         <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white bg-opacity-30 rounded-lg sm:rounded-xl backdrop-blur-sm"></div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">{mentor.name}</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{mentor.name}</h3>
                         <div className="mb-3">
-                          <h4 className="font-semibold text-gray-700 mb-2 text-sm sm:text-base">Mentoring Domains:</h4>
+                          <h4 className="font-semibold text-gray-700 mb-2 text-sm">Mentoring Domains:</h4>
                           <div className="flex flex-wrap gap-1.5 sm:gap-2">
                             {mentor.domains.map((domain, idx) => (
                               <span key={idx} className="px-2 sm:px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-xs sm:text-sm font-medium">
@@ -115,7 +115,7 @@ const Mentors = () => {
                             ))}
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600">
+                        <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-gray-600">
                           <div className="flex items-center gap-1">
                             <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
                             <span>{mentor.experience} Experience</span>
@@ -138,7 +138,7 @@ const Mentors = () => {
                         <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium mb-3 text-center">
                           {mentor.available}
                         </div>
-                        <button className="w-full bg-gradient-to-r from-yellow-400 to-amber-400 hover:from-yellow-500 hover:to-amber-500 text-gray-800 font-bold py-2.5 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base">
+                        <button className="w-full bg-gradient-to-r from-yellow-400 to-amber-400 text-gray-800 font-bold py-2.5 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-300 text-sm">
                           Schedule Session
                         </button>
                       </div>
@@ -150,7 +150,7 @@ const Mentors = () => {
 
             {/* View All Button */}
             <div className="text-center mt-6 sm:mt-8">
-              <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm sm:text-base">
+              <button className="text-blue-600 font-semibold transition-colors text-sm">
                 View All
               </button>
             </div>
@@ -158,8 +158,8 @@ const Mentors = () => {
             {/* Completed Sessions */}
             <div className="mt-8 sm:mt-12">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Completed Sessions</h2>
-                <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-xs sm:text-sm">See full history</button>
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Completed Sessions</h2>
+                <button className="text-blue-600 font-semibold transition-colors text-sm">See full history</button>
               </div>
               
               <div className="space-y-3 sm:space-y-4">
@@ -186,23 +186,23 @@ const Mentors = () => {
                     endTime: "8:00PM"
                   }
                 ].map((session, index) => (
-                  <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+                  <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/20 transition-all duration-300">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0">
                         <Play className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-1">{session.title}</h3>
-                        <p className="text-gray-600 mb-2 text-sm sm:text-base">Name of tutor: <span className="font-semibold">{session.tutor}</span></p>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-gray-600">
+                        <h3 className="text-sm font-semibold text-gray-800 mb-1">{session.title}</h3>
+                        <p className="text-gray-600 mb-2 text-sm">Name of tutor: <span className="font-semibold">{session.tutor}</span></p>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-sm text-gray-600">
                           <span>{session.date}</span>
                           <span>{session.startTime} - {session.endTime}</span>
                         </div>
-                        <button className="text-blue-600 text-xs sm:text-sm font-medium hover:text-blue-700 transition-colors mt-2">
+                        <button className="text-blue-600 text-sm font-medium transition-colors mt-2">
                           View notes and Recording
                         </button>
                       </div>
-                      <button className="w-full sm:w-auto bg-gradient-to-r from-yellow-400 to-amber-400 hover:from-yellow-500 hover:to-amber-500 text-gray-800 font-bold py-2 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base">
+                      <button className="w-full sm:w-auto bg-gradient-to-r from-yellow-400 to-amber-400 text-gray-800 font-bold py-2 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 text-sm">
                         Schedule Session
                       </button>
                     </div>
@@ -214,8 +214,8 @@ const Mentors = () => {
             {/* Featured Mentors */}
             <div className="mt-8 sm:mt-12">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Mentors</h2>
-                <button className="text-blue-600 font-semibold hover:text-blue-700 transition-colors text-xs sm:text-sm">See more</button>
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Featured Mentors</h2>
+                <button className="text-blue-600 font-semibold transition-colors text-sm">See more</button>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -225,20 +225,20 @@ const Mentors = () => {
                   { name: "David Kim", role: "UX Designer", experience: "7+ Years of experience", bg: "from-pink-500 to-rose-600" },
                   { name: "Lisa Chen", role: "UX Designer", experience: "4+ Years of experience", bg: "from-yellow-500 to-orange-600" }
                 ].map((mentor, index) => (
-                  <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                    <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${mentor.bg} rounded-xl sm:rounded-2xl mx-auto mb-3 sm:mb-4 flex items-center justify-center shadow-lg`}>
+                  <div key={index} className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/20 transition-all duration-300">
+                    <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${mentor.bg} rounded-xl sm:rounded-2xl mx-auto mb-3 sm:mb-4 flex items-center justify-center`}>
                       <div className="w-6 h-6 sm:w-10 sm:h-10 bg-white bg-opacity-30 rounded-lg sm:rounded-xl backdrop-blur-sm"></div>
                     </div>
                     <div className="text-center">
-                      <h3 className="font-bold text-gray-800 mb-1 text-sm sm:text-base">{mentor.name}</h3>
-                      <div className="text-xs sm:text-sm text-gray-600 mb-1 font-medium">{mentor.role}</div>
+                      <h3 className="font-semibold text-gray-800 mb-1 text-sm">{mentor.name}</h3>
+                      <div className="text-sm text-gray-600 mb-1 font-medium">{mentor.role}</div>
                       <div className="text-xs text-gray-500 mb-3">{mentor.experience}</div>
                       <div className="flex justify-center space-x-1 mb-3 sm:mb-4">
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2 rounded-lg sm:rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-xs sm:text-sm">
+                      <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-2 rounded-lg sm:rounded-xl transition-all duration-300 text-sm">
                         Connect
                       </button>
                     </div>

@@ -9,41 +9,41 @@ const Goals = () => {
 
   const progressGoals = [
     { 
-      title: "Front-End Development",
+      title: "Front End Development",
       subtitle: "Leadership",
       color: "blue"
     },
     { 
       title: "Leadership",
-      subtitle: "New Development",
-      color: "green"
+      subtitle: "Web Development",
+      color: "blue"
     },
     { 
       title: "Project Management",
       subtitle: "Project Management",
-      color: "purple"
+      color: "blue"
     }
   ];
 
   const weekActivities = [
     {
-      name: "Archive Webinar",
-      description: "Watch Python Tutorial on Auto Layout",
-      category: "Front-End Development",
+      name: "Andrea Watson",
+      description: "Watch Figma Tutorial on Auto Layout",
+      category: "Front End Development",
       due: "Due May 26",
       color: "blue"
     },
     {
-      name: "Archive Webinar",
-      description: "Watch Python Tutorial on Auto Layout",
-      category: "Front-End Development", 
+      name: "Andrea Watson",
+      description: "Watch Figma Tutorial on Auto Layout",
+      category: "Front End Development", 
       due: "Due May 26",
       color: "blue"
     },
     {
-      name: "Archive Webinar",
-      description: "Watch Python Tutorial on Auto Layout",
-      category: "Front-End Development",
+      name: "Andrea Watson",
+      description: "Watch Figma Tutorial on Auto Layout",
+      category: "Front End Development",
       due: "Due May 26", 
       color: "blue"
     }
@@ -52,49 +52,49 @@ const Goals = () => {
   const allActivities = {
     notStarted: [
       {
-        name: "Archive Webinar",
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development",
+        name: "Andrea Watson",
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development",
         due: "Due May 26"
       },
       {
-        name: "Archive Webinar", 
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development",
+        name: "Andrea Watson", 
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development",
         due: "Due May 26"
       },
       {
-        name: "Archive Webinar",
-        description: "Watch Python Tutorial on Auto Layout", 
-        category: "Front-End Development",
+        name: "Andrea Watson",
+        description: "Watch Figma Tutorial on Auto Layout", 
+        category: "Front End Development",
         due: "Due May 26"
       }
     ],
     inProgress: [
       {
-        name: "Archive Webinar",
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development", 
+        name: "Andrea Watson",
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development", 
         due: "Due May 26"
       },
       {
-        name: "Archive Webinar",
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development",
+        name: "Andrea Watson",
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development",
         due: "Due May 26"
       }
     ],
     complete: [
       {
-        name: "Archive Webinar",
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development",
+        name: "Andrea Watson",
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development",
         due: "Due May 26"
       },
       {
-        name: "Archive Webinar", 
-        description: "Watch Python Tutorial on Auto Layout",
-        category: "Front-End Development",
+        name: "Andrea Watson", 
+        description: "Watch Figma Tutorial on Auto Layout",
+        category: "Front End Development",
         due: "Due May 26"
       }
     ]
@@ -135,41 +135,71 @@ const Goals = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               {/* Progress towards Goals */}
-              <div className="bg-white rounded-xl p-8 shadow-sm border">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">📊 Progress towards Goals</h2>
+              <div className="bg-white rounded-xl p-6 shadow-sm border">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-xl">⭐</span>
+                  <h2 className="text-lg font-semibold text-gray-900">Progress towards Goals</h2>
                 </div>
-                <p className="text-base text-gray-600 mb-6">Your Goals for the Next 30 Days</p>
-                <div className="text-right mb-6">
-                  <button className="text-base text-blue-600 hover:text-blue-700 font-medium">Add Goal</button>
+                
+                {/* Progress Bar */}
+                <div className="mb-6">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>0%</span>
+                    <span>34%</span>
+                    <span>100%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-600 h-2 rounded-full" style={{ width: '34%' }}></div>
+                  </div>
                 </div>
-                <div className="space-y-6">
-                  {progressGoals.map((goal, index) => (
-                    <div key={index} className={`border-l-4 pl-6 ${goal.color === 'blue' ? 'border-blue-500' : goal.color === 'green' ? 'border-green-500' : 'border-purple-500'}`}>
-                      <div className={`text-base font-bold mb-2 ${goal.color === 'blue' ? 'text-blue-600' : goal.color === 'green' ? 'text-green-600' : 'text-purple-600'}`}>
-                        {goal.title}
-                      </div>
-                      <div className="text-base text-gray-500">{goal.subtitle}</div>
-                    </div>
-                  ))}
+                
+                <div className="flex justify-between items-center mb-4">
+                  <p className="text-base text-gray-700 font-medium">Your Goals for the <span className="font-semibold text-blue-600">Next 30 Days</span></p>
+                  <button className="text-blue-600 hover:text-blue-700 font-medium text-base">Add Goal</button>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Front End Development
+                  </button>
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Leadership
+                  </button>
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Leadership
+                  </button>
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Web Development
+                  </button>
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Project Management
+                  </button>
+                  <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors">
+                    Project Management
+                  </button>
                 </div>
               </div>
 
               {/* This Week's Activities */}
-              <div className="bg-white rounded-xl p-8 shadow-sm border">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">📅 This Week's Activities</h2>
-                <div className="space-y-6">
+              <div className="bg-white rounded-xl p-6 shadow-sm border">
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="text-xl">📅</span>
+                  <h2 className="text-lg font-semibold text-gray-900">This Week's Activities</h2>
+                </div>
+                <div className="space-y-4">
                   {weekActivities.map((activity, index) => (
-                    <div key={index} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                      <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Calendar className="w-6 h-6 text-white" />
+                    <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs font-semibold">A</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-base font-bold text-gray-900">{activity.name}</div>
-                        <div className="text-base text-gray-600 mb-2">{activity.description}</div>
-                        <div className="text-sm text-blue-600 font-semibold">{activity.category}</div>
+                        <div className="text-sm font-semibold text-gray-900">{activity.name}</div>
+                        <div className="text-sm text-gray-600">{activity.description}</div>
+                        <div className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded mt-1 inline-block">
+                          {activity.category}
+                        </div>
                       </div>
-                      <span className="text-sm text-gray-500 flex-shrink-0 font-medium">{activity.due}</span>
+                      <span className="text-xs text-gray-500 flex-shrink-0">{activity.due}</span>
                     </div>
                   ))}
                 </div>
@@ -177,40 +207,38 @@ const Goals = () => {
             </div>
 
             {/* All Activities Section */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border hover:shadow-2xl transition-all duration-300">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-xl font-bold text-gray-900">All Activities</h2>
-                <button className="flex items-center gap-2 px-4 py-3 text-gray-600 hover:text-gray-800 border rounded-lg font-medium">
-                  <Filter className="w-5 h-5" />
-                  <span className="text-base">Filter</span>
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900">All Activities</h2>
+                <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-800 border rounded-lg text-sm">
+                  Filter
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Not Started */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-                      <h3 className="font-bold text-gray-900 text-lg">Not Started</h3>
-                    </div>
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <h3 className="font-semibold text-gray-900">Not Started</h3>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {allActivities.notStarted.map((activity, index) => (
-                      <div key={index} className="p-5 bg-gray-50 rounded-lg border hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Calendar className="w-5 h-5 text-white" />
+                      <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-xs font-semibold">A</span>
+                            </div>
+                            <span className="text-sm font-semibold text-gray-900">{activity.name}</span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-base font-bold text-gray-900">{activity.name}</div>
-                            <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
-                            <div className="text-sm text-blue-600 font-semibold">{activity.category}</div>
-                          </div>
-                          <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
                         </div>
-                        <div className="text-sm text-gray-500 mt-3 font-medium">{activity.due}</div>
+                        <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
+                        <div className="text-xs text-gray-500 mb-2">{activity.due}</div>
+                        <div className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded inline-block">
+                          {activity.category}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -218,28 +246,27 @@ const Goals = () => {
 
                 {/* In Progress */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
-                      <h3 className="font-bold text-gray-900 text-lg">In Progress</h3>
-                    </div>
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <h3 className="font-semibold text-gray-900">In Progress</h3>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {allActivities.inProgress.map((activity, index) => (
-                      <div key={index} className="p-5 bg-gray-50 rounded-lg border hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Calendar className="w-5 h-5 text-white" />
+                      <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-xs font-semibold">A</span>
+                            </div>
+                            <span className="text-sm font-semibold text-gray-900">{activity.name}</span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-base font-bold text-gray-900">{activity.name}</div>
-                            <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
-                            <div className="text-sm text-blue-600 font-semibold">{activity.category}</div>
-                          </div>
-                          <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
                         </div>
-                        <div className="text-sm text-gray-500 mt-3 font-medium">{activity.due}</div>
+                        <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
+                        <div className="text-xs text-gray-500 mb-2">{activity.due}</div>
+                        <div className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded inline-block">
+                          {activity.category}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -247,28 +274,27 @@ const Goals = () => {
 
                 {/* Complete */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                      <h3 className="font-bold text-gray-900 text-lg">Complete</h3>
-                    </div>
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <h3 className="font-semibold text-gray-900">Complete</h3>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {allActivities.complete.map((activity, index) => (
-                      <div key={index} className="p-5 bg-gray-50 rounded-lg border hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <CheckCircle className="w-5 h-5 text-white" />
+                      <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-xs font-semibold">A</span>
+                            </div>
+                            <span className="text-sm font-semibold text-gray-900">{activity.name}</span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-base font-bold text-gray-900">{activity.name}</div>
-                            <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
-                            <div className="text-sm text-blue-600 font-semibold">{activity.category}</div>
-                          </div>
-                          <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
                         </div>
-                        <div className="text-sm text-gray-500 mt-3 font-medium">{activity.due}</div>
+                        <div className="text-sm text-gray-600 mb-2">{activity.description}</div>
+                        <div className="text-xs text-gray-500 mb-2">{activity.due}</div>
+                        <div className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded inline-block">
+                          {activity.category}
+                        </div>
                       </div>
                     ))}
                   </div>
