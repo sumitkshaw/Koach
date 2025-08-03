@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Search, ChevronDown, Users, Clock, FileText, Target } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, ChevronDown, Users, Calendar, FileText, Target } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
@@ -135,10 +135,19 @@ const Calen = () => {
       >
       </button>
 
+      
       {/* Main Content */}
       <div className={`pt-16 transition-all duration-300`}>
         <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-7xl mx-auto">
+
+            <div className="pt-4 sm:pt-6 mb-6 sm:mb-8">
+              <div className="bg-blue-600 text-white px-4 sm:px-6 md:px-8 py-4 sm:py-6 rounded-xl sm:rounded-2xl flex items-center justify-between shadow-lg">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-wide">Calendar</h1>
+                <Calendar className="w-6 h-6 sm:w-8 sm:h-8" />
+              </div>
+            </div>
+
             
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* Left Side - Calendar */}

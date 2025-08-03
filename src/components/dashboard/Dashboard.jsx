@@ -22,7 +22,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className={`pt-16 transition-all duration-300`}>
         <div className="px-4 sm:px-6 lg:px-8 py-6">
-          <div className="pt-8 max-w-7xl mx-auto">
+          <div className="pt-9 max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-8 flex items-start justify-between">
               <div className="flex items-center">
@@ -49,31 +49,41 @@ const Dashboard = () => {
                   
                   {/* Progress Chart */}
                   <div className="mb-6">
-                    <div className="flex items-end justify-center space-x-8 h-48 bg-gray-50 rounded-lg p-6">
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 bg-blue-600 rounded-t-lg" style={{height: '120px'}}></div>
+                    <div className="flex items-end justify-between space-x-4 h-48 bg-gray-50 rounded-lg p-6">
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-blue-600 rounded-t-lg transition-all duration-300" style={{height: '120px'}}></div>
                         <span className="text-sm font-medium text-gray-700 mt-3">MON</span>
-                        <span className="text-xs text-gray-500">Done</span>
+                        <span className="text-xs text-green-600 font-medium">Done</span>
                       </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 bg-blue-600 rounded-t-lg" style={{height: '100px'}}></div>
-                        <span className="text-sm font-medium text-gray-700 mt-3">TUES</span>
-                        <span className="text-xs text-gray-500">Done</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-blue-600 rounded-t-lg transition-all duration-300" style={{height: '100px'}}></div>
+                        <span className="text-sm font-medium text-gray-700 mt-3">TUE</span>
+                        <span className="text-xs text-green-600 font-medium">Done</span>
                       </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 bg-gray-300 rounded-t-lg" style={{height: '70px'}}></div>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-blue-400 rounded-t-lg transition-all duration-300" style={{height: '80px'}}></div>
                         <span className="text-sm font-medium text-gray-700 mt-3">WED</span>
-                        <span className="text-xs text-blue-600 font-medium">To be Done</span>
+                        <span className="text-xs text-yellow-600 font-medium">In Progress</span>
                       </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 bg-gray-300 rounded-t-lg" style={{height: '90px'}}></div>
-                        <span className="text-sm font-medium text-gray-700 mt-3">THURS</span>
-                        <span className="text-xs text-blue-600 font-medium">To be Done</span>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-gray-300 rounded-t-lg transition-all duration-300" style={{height: '90px'}}></div>
+                        <span className="text-sm font-medium text-gray-700 mt-3">THU</span>
+                        <span className="text-xs text-blue-600 font-medium">Planned</span>
                       </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-12 bg-gray-300 rounded-t-lg" style={{height: '80px'}}></div>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-gray-300 rounded-t-lg transition-all duration-300" style={{height: '110px'}}></div>
                         <span className="text-sm font-medium text-gray-700 mt-3">FRI</span>
-                        <span className="text-xs text-blue-600 font-medium">To be Done</span>
+                        <span className="text-xs text-blue-600 font-medium">Planned</span>
+                      </div>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-gray-300 rounded-t-lg transition-all duration-300" style={{height: '95px'}}></div>
+                        <span className="text-sm font-medium text-gray-700 mt-3">SAT</span>
+                        <span className="text-xs text-blue-600 font-medium">Planned</span>
+                      </div>
+                      <div className="flex flex-col items-center flex-1">
+                        <div className="w-12 bg-gray-300 rounded-t-lg transition-all duration-300" style={{height: '75px'}}></div>
+                        <span className="text-sm font-medium text-gray-700 mt-3">SUN</span>
+                        <span className="text-xs text-blue-600 font-medium">Planned</span>
                       </div>
                     </div>
                   </div>

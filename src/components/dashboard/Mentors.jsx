@@ -24,7 +24,7 @@ const Mentors = () => {
         <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="pt-6 mb-8">
+            <div className="pt-9 mb-8">
               <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between">
                 <h1 className="text-2xl font-bold tracking-wide">Mentors</h1>
                 <Award className="w-8 h-8" />

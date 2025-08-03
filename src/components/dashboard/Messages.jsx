@@ -103,12 +103,10 @@ const Messages = () => {
           <div className="max-w-7xl mx-auto">
             
             {/* Header with Messages title */}
-            <div className="mb-4 sm:mb-6">
-              <div className="bg-blue-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl flex items-center justify-between shadow-lg">
-                <h1 className="text-lg sm:text-xl font-semibold">Messages</h1>
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+            <div className="pt-9 mb-8">
+              <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between">
+                <h1 className="text-2xl font-bold tracking-wide">Messages</h1>
+                <MessageCircle className="w-8 h-8" />
               </div>
             </div>
 

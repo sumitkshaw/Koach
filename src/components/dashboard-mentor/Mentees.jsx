@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Trophy, Users, BookOpen, Target, Award, Star, Clock, ChevronRight, Plus, Search, Filter, Languages, HelpCircle } from 'lucide-react';
+import { Calendar, Trophy, Users, BookOpen, Target, Award, Star, Clock, ChevronRight, Plus, Search, Filter, Languages, HelpCircle, User } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
@@ -89,13 +89,18 @@ const Mentees = () => {
       >
       </button>
 
+      
+
       {/* Main Content */}
       <div className={`pt-16 transition-all duration-300`}>
         <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="pt-8 max-w-7xl mx-auto">
             {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Your mentees</h1>
+            <div className="pt-1 mb-8">
+              <div className="bg-blue-600 text-white px-8 py-6 rounded-2xl flex items-center justify-between">
+                <h1 className="text-2xl font-bold tracking-wide">Meentees</h1>
+                <Users className="w-8 h-8" />
+              </div>
             </div>
 
             {/* Stats Cards */}

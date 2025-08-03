@@ -15,10 +15,9 @@ const Sidenav = ({ sidebarOpen, setSidebarOpen, currentRoute = '/dashboard_mento
 
   const navigationItems = [
     { name: 'Dashboard', icon: LayoutDashboard, route: '/dashboard_mentor' },
-    { name: 'My Mentors', icon: Users, route: '/dashboard_mentor/mentors' },
     { name: 'My Mentees', icon: Users, route: '/dashboard_mentor/mentees' },
-    { name: 'Goals & Activities', icon: TrendingUp, route: '/dashboard_mentor/goals' },
-    { name: 'Sessions', icon: Calendar, route: '/dashboard_mentor/sessions' },
+    { name: 'Earnings', icon: TrendingUp, route: '/dashboard_mentor/earnings' },
+    { name: 'Calendar', icon: Calendar, route: '/dashboard_mentor/calendar' },
     { name: 'Messages', icon: MessageSquare, route: '/dashboard_mentor/messages' },
   ];
 
