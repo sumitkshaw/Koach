@@ -62,12 +62,15 @@ const Sidenav = ({ sidebarOpen, setSidebarOpen, currentRoute = '/dashboard_mento
       )}
 
       {/* Sidebar */}
-      <div className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 text-white transition-transform duration-500 ease-in-out z-40 ${
+      <div className={`fixed inset-y-0 left-0 bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 text-white transition-transform duration-500 ease-in-out z-40 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } w-64 shadow-2xl backdrop-blur-sm flex flex-col`}>
+      } w-64 shadow-2xl backdrop-blur-sm flex flex-col lg:top-16 lg:h-[calc(100vh-4rem)]`}>
+        
+        {/* Mobile Header Spacer - only on mobile */}
+        <div className="h-16 lg:hidden"></div>
         
         {/* Top Navigation */}
-        <div className="p-4 pt-16 flex-1">
+        <div className="p-4 pt-16 flex-1 overflow-y-auto">
           <nav className="space-y-2">
             {navigationItems.map((item) => {
               const IconComponent = item.icon;
@@ -92,7 +95,7 @@ const Sidenav = ({ sidebarOpen, setSidebarOpen, currentRoute = '/dashboard_mento
         </div>
 
         {/* Bottom Section */}
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 flex-shrink-0">
           {/* Bottom Navigation Items */}
           <div className="space-y-2 mb-6">
             {bottomItems.map((item) => (
