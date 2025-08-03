@@ -4,7 +4,7 @@ import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
 
-const Settings = () => {
+const Settings1 = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('Profile');
 
@@ -259,4 +259,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Settings1;

@@ -28,8 +28,8 @@ import Earnings from "./components/dashboard-mentor/Earnings"
 import Mentees from "./components/dashboard-mentor/Mentees"
 import Calen from "./components/dashboard-mentor/Calen"
 import Message from "./components/dashboard-mentor/Message";
-import Setting from "./components/dashboard-mentor/Setting";
-import Settings from "./components/dashboard/Settings";
+import Settings1 from "./components/dashboard-mentor/Settings2";
+import Settings2 from "./components/dashboard/Settings1";
 
 
 
@@ -73,13 +73,14 @@ function AppContent() {
         <Route path="/dashboard/sessions" element={<Sessions />} />
         <Route path="/dashboard/messages" element={<Messages />} />
         <Route path="/dashboard/mentors" element={<Mentors />} />
-        <Route path="/dashboard/settings" element={<Settings/>} />
+        <Route path="/dashboard/settings" element={<Settings1/>} />
+
         <Route path="/dashboard_mentor" element={<Dashmentor/>} />
         <Route path="/dashboard_mentor/earnings" element={<Earnings />} />
         <Route path="/dashboard_mentor/calendar" element={<Calen />} />
         <Route path="/dashboard_mentor/messages" element={<Message />} />
         <Route path="/dashboard_mentor/mentees" element={<Mentees />} />
-        <Route path="/dashboard_mentor/settings" element={<Setting />} />
+        <Route path="/dashboard_mentor/settings" element={<Settings2 />} />
        
 
         {/* Add more routes as needed */}
