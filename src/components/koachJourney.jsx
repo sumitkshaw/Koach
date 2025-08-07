@@ -1,5 +1,5 @@
 import KoachJourney3 from '../assets/koachjourney3.jpg';
-import video from '../assets/Copie a designului Koach video campaign.mp4';
+// import video from '../assets/Copie a designului Koach video campaign.mp4';
 import { useNavigate } from 'react-router-dom';
 
 const KoachJourney = () => {
@@ -49,7 +49,7 @@ const KoachJourney = () => {
       </div>
 
       {/* Video Section */}
-      <div className="w-full flex justify-center mb-20">
+      {/* <div className="w-full flex justify-center mb-20">
         <video
           className="w-full max-w-full rounded-3xl shadow-lg"
           controls
@@ -60,7 +60,7 @@ const KoachJourney = () => {
           <source src={video} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div>
+      </div> */}
 
       {/* Bottom Section */}
       <div className="relative rounded-3xl overflow-hidden">

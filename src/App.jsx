@@ -26,7 +26,8 @@ import { AuthProvider } from "./utils/AuthContext";
 import Dashmentor from "./components/dashboard-mentor/Dashmentor";
 import Earnings from "./components/dashboard-mentor/Earnings"
 import Mentees from "./components/dashboard-mentor/Mentees"
-import Calen from "./components/dashboard-mentor/Calen"
+import Calen from "./components/dashboard-mentor/Calendar"
+
 import Message from "./components/dashboard-mentor/Message";
 import Settings1 from "./components/dashboard-mentor/Settings2";
 import Settings2 from "./components/dashboard/Settings1";

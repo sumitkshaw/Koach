@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Globe, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Linkedin, Instagram,MessageSquareText, Twitter, BookOpen, Video   } from 'lucide-react';
 import Footer from '../components/Footer';
 import contactImage from '../assets/image22.png';
 
@@ -39,13 +39,13 @@ function Contact() {
       {/* Contact Cards Section */}
       <section className="px-6 md:px-20 lg:px-40 py-12 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Call Us Card */}
+          {/* Virtual meeeting  Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
-              <Phone className="w-8 h-8 text-[#2D488F]" />
+              <Video className="w-8 h-8 text-[#2D488F]" />
             </div>
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Call Us</h3>
-            <p className="text-lg text-[#2D488F] font-medium">+91 9035415284</p>
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Schedule a Call</h3>
+            <a href='#' className="text-lg text-[#2D488F] font-medium">Book a 30-min consultation</a>
           </div>
 
           {/* Email Us Card */}
@@ -60,19 +60,19 @@ function Contact() {
           {/* Visit Us Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
-              <MapPin className="w-8 h-8 text-[#2D488F]" />
+              <MessageSquareText className="w-8 h-8 text-[#2D488F]" />
             </div>
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Visit Us</h3>
-            <p className="text-lg text-[#2D488F] font-medium">#05, ABC, Def</p>
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Support Chat</h3>
+            <a href='#' className="text-lg text-[#2D488F] font-medium">Chat Now →</a>
           </div>
 
-          {/* Website Card */}
+          {/* Help Center Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
-              <Globe className="w-8 h-8 text-[#2D488F]" />
+              <BookOpen className="w-8 h-8 text-[#2D488F]" />
             </div>
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Website</h3>
-            <p className="text-lg text-[#2D488F] font-medium">koach.live</p>
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Help Center</h3>
+            <a href="/faq" className="text-lg text-[#2D488F] font-medium">FAQ</a>
           </div>
         </div>
       </section>
