@@ -2,37 +2,49 @@ import { Linkedin, Target, Users, TrendingUp, CheckCircle, Heart } from 'lucide-
 import raj from '../assets/dashhboard.png';
 import yukti from '../assets/compp.png';
 import Footer from '../components/Footer';
-
-
+import contactImage from '../assets/image-332.avif';
 
 function About() {
   return (
     <div className="w-full bg-white">
       {/* Hero Section - About Us */}
-      <section className="relative w-full bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] px-6 md:px-20 lg:px-40 pt-20 pb-16">
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Us</h1>
-            <p className="text-xl md:text-2xl text-white/90 leading-relaxed mb-4">
-              Empowering bold, informed decisions—
-            </p>
-            <p className="text-xl md:text-2xl text-white/90 leading-relaxed mb-8">
-              because your future deserves clarity, not guesswork
-            </p>
-            <div className="bg-yellow-400 text-black px-6 py-3 rounded-lg inline-block font-semibold">
-              Clarity. Confidence. Career guidance that gets Gen Z.
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="w-64 h-64 bg-white/10 rounded-full flex items-center justify-center">
-              <div className="text-white text-6xl">🤝</div>
+      <section className="relative w-full bg-[#efeff3] px-4 md:px-8 lg:px-20 xl:px-40 pt-8 md:pt-16 lg:pt-20 pb-8 md:pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto">
+          {/* White container box */}
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-12 md:p-12 lg:p-16">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-16 items-center min-h-[350px] md:min-h-[400px] lg:min-h-[450px]">
+              {/* Text content - Always first on mobile */}
+              <div className="w-full space-y-3 md:space-y-4 lg:space-y-6 text-center lg:text-left order-1">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2D488F] leading-tight">
+                  About Us
+                </h1>
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl text-[#2D488F]/75 leading-relaxed max-w-md lg:max-w-lg mx-auto lg:mx-0">
+                  Empowering bold, informed decisions—
+                </p>
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl text-[#2D488F]/75 leading-relaxed max-w-md lg:max-w-lg mx-auto lg:mx-0">
+                  because your future deserves clarity, not guesswork
+                </p>
+              </div>
+              
+              {/* Illustration - Always second on mobile */}
+              <div className="w-full flex justify-center lg:justify-end order-2">
+                <div className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-md lg:max-w-lg xl:max-w-xl">
+                  <img 
+                    src={contactImage} 
+                    alt="Contact illustration showing people collaborating"
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="mt-12 text-center">
-          <p className="text-white font-semibold text-lg">
-            No fluff. No gatekeeping. Just better decisions, backed by better guidance.
-          </p>
+      </section>
+
+      {/* Banner section */}
+      <section className="bg-[#001F54] py-4">
+        <div className="text-center text-yellow-400 font-semibold text-lg">
+          <p>Clarity. Confidence. Career guidance that gets Gen Z.</p>
         </div>
       </section>
 
@@ -65,6 +77,12 @@ function About() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      
+      <section className="bg-[#001F54] py-4">
+        <div className="text-center text-yellow-400 font-semibold text-lg">
+          <p>No fluff. No gatekeeping. Just better decisions, backed by better guidance.</p>
         </div>
       </section>
 

@@ -1,26 +1,40 @@
-import heroBG from "../../assets/heroBG.png"
-import HeroSmall from '../../assets/HeroSmall';
+// import contactImage from '/assets/image-332.avif';
+import contactImage from '../../assets/image-311.avif';
 const CircleHero = () => {
   return (
-    <div className='w-5/6 mb-10 mx-auto' >
-    <h1 className='font-bold text-3xl lg:mt-20 my-5 text-[#001F54]' >Circles</h1>
-    <div className="w-full mx-auto h-[130px] md:h-[220px] flex bg-cover bg-center flex justify-between lg:px-20 md:px-10 px-3 items-center " 
-         style={{ backgroundImage: `url(${heroBG})` }}>
-      <div className="">
-        <h1 className="text-xs md:text-3xl font-bold text-[#2D488F] mb-2">
-          Explore and Connect: Discover Your Circles
-        </h1>
-        <p className="text-[0.6rem] md:text-lg font-bold text-[#001F54]">
-          Engage with like-minded people!
-        </p>
-      </div>
-      <div className="relative top-5 ">
-        <HeroSmall />
-      </div> 
-
-    </div>
-    </div>
-
+    <>
+      <section className="relative w-full bg-[#efeff3] px-4 md:px-8 lg:px-20 xl:px-40 pt-8 md:pt-16 lg:pt-20 pb-8 md:pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto">
+          {/* White container box */}
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-12 md:p-10 lg:p-16">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-16 items-center min-h-[350px] md:min-h-[400px] lg:min-h-[450px]">
+              {/* Text content - Always first on mobile */}
+              <div className="w-full space-y-3 md:space-y-4 lg:space-y-6 text-center lg:text-left order-1">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2D488F] leading-tight">
+                  Circles
+                </h1>
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl text-[#2D488F]/75 leading-relaxed max-w-md lg:max-w-lg mx-auto lg:mx-0">
+                  Explore and Connect: Discover Your Circles
+                  <br />Engage with like-minded people!
+                </p>
+                
+              </div>
+              
+              {/* Illustration - Always second on mobile */}
+              <div className="w-full flex justify-center lg:justify-end order-2">
+                <div className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-md lg:max-w-lg xl:max-w-xl">
+                  <img 
+                    src={contactImage} 
+                    alt="Contact illustration showing people collaborating"
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
