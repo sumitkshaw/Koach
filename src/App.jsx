@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import MetricSection from "./components/MetricSection";
 import KoachJourney from "./components/koachJourney";
 import Contact from "./components/Contact";
+import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import FAQ from "./pages/Faq";
@@ -66,6 +67,7 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/circles" element={<CirclesPage />} />
+        <Route path="/resources" element={<Resources />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/faq" element={<FAQ />} />

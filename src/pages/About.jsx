@@ -15,7 +15,7 @@ function About() {
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-16 items-center min-h-[350px] md:min-h-[400px] lg:min-h-[450px]">
               {/* Text content - Always first on mobile */}
               <div className="w-full space-y-3 md:space-y-4 lg:space-y-6 text-center lg:text-left order-1">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2D488F] leading-tight">
+                <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2D488F] leading-tight">
                   About Us
                 </h1>
                 <p className="text-sm md:text-base lg:text-lg xl:text-xl text-[#2D488F]/75 leading-relaxed max-w-md lg:max-w-lg mx-auto lg:mx-0">

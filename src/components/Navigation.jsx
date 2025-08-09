@@ -63,30 +63,9 @@ function Navigation() {
             <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
               Circle
             </a>
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setShowResourcesDropdown(!showResourcesDropdown)}
-                className="text-[#2D488F] hover:text-blue-700 focus:outline-none"
-              >
-                Resources
-              </button>
-
-              {/* Cloud Dropdown - Desktop */}
-              {showResourcesDropdown && (
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-48 z-50">
-                  {/* Cloud Body */}
-                  <div className="bg-white rounded-3xl shadow-lg py-4 px-6 relative border border-gray-200">
-                    <div className="flex items-center justify-center text-gray-600">
-                      <FaCloud className="mr-2 text-gray-400 text-lg" />
-                      <span className="text-sm italic font-medium">Coming Soon!</span>
-                    </div>
-                  </div>
-                  
-                  {/* Cloud Tail */}
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 w-4 h-4 bg-white rotate-45 border-t border-l border-gray-200"></div>
-                </div>
-              )}
-            </div>
+            <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
+              Resources
+            </a>
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
@@ -175,12 +154,12 @@ function Navigation() {
             
             {/* Resources with dropdown for mobile */}
             <div className="relative">
-              <button
-                onClick={() => setShowResourcesDropdown(!showResourcesDropdown)}
+              <a
+                href="/resources"
                 className="block w-full text-left text-[#2D488F] hover:text-blue-700 focus:outline-none py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
               >
                 Resources
-              </button>
+              </a>
               
               {/* Cloud Dropdown - Mobile */}
               {showResourcesDropdown && (
