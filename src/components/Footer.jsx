@@ -20,12 +20,12 @@ export default function Footer() {
         // 
       ];
   return (
-    <div className='w-full bg-[#001F54] py-14 mt-20 '>
-      <div className='max-w-[1200px] mx-auto px-10 lg:px-0 mb-20'>
-        <img src={logoWhite} className='mb-5' />
-        <div className='flex md:flex-row flex-col  justify-between items-center'>
-            <div className='text-[#F5E649] text-left mt-2 md:text-[26px] text-xl mb-2 font-bold'>Where <span className='text-white'>Clarity</span> Meets <span className='text-white'>Action</span></div>
-            <div className='flex gap-5'>
+    <div className='w-full bg-[#001F54] py-8 mt-12'>
+      <div className='max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-0 mb-8'>
+        <img src={logoWhite} className='mb-4 w-auto h-8 sm:h-10' />
+        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0'>
+            <div className='text-[#F5E649] text-left mt-2 text-lg sm:text-xl md:text-[26px] mb-2 font-bold'>Where <span className='text-white'>Clarity</span> Meets <span className='text-white'>Action</span></div>
+            <div className='flex gap-4 sm:gap-5'>
                 {socialLinks.map((link) => (
                     <a
                      key={link.name}
@@ -38,34 +38,34 @@ export default function Footer() {
                 ))}
             </div>
         </div>
-        <hr className='border-[#F5E649] mt-6 border '></hr>
-        <div className='flex text-white text-left lg:gap-x-40 lg:justify-start justify-evenly mt-14 '>
+        <hr className='border-[#F5E649] mt-4 sm:mt-6 border '></hr>
+        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-x-40 text-white text-left mt-8 lg:mt-14'>
             <div>
-                <span className='md:text-[20px] text-sm font-bold'>PLATFORM</span>
+                <span className='text-sm sm:text-base md:text-[20px] font-bold'>PLATFORM</span>
                 <ul>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="#">Browse mentors</a></li>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="#">Become a Mentor</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Browse mentors</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Become a Mentor</a></li>
                 </ul>
             </div>
             <div>
-                <span className='md:text-[20px] text-sm font-bold'>RESOURCES</span>
+                <span className='text-sm sm:text-base md:text-[20px] font-bold'>RESOURCES</span>
                 <ul>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="#">Newsletter</a></li>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="#">Blogs</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Newsletter</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Blogs</a></li>
                 </ul>
             </div>
             <div>
-                <span className='md:text-[20px] text-sm font-bold'> COMPANY</span>
+                <span className='text-sm sm:text-base md:text-[20px] font-bold'> COMPANY</span>
                 <ul>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="/about">About</a></li>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="/privacy">Privacy Policy</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/about">About</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/privacy">Privacy Policy</a></li>
                 </ul>
             </div>
             <div>
-                <span className='md:text-[20px] text-sm font-bold'>SUPPORT</span>
+                <span className='text-sm sm:text-base md:text-[20px] font-bold'>SUPPORT</span>
                 <ul>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="/faq">FAQ</a></li>
-                    <li className= "my-3 hover:underline cursor-pointer"><a href="/contact">Contact</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/faq">FAQ</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/contact">Contact</a></li>
                 </ul>
             </div>
         </div>
