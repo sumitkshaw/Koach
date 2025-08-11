@@ -135,7 +135,7 @@ function Contact() {
         </div>
       </section>
 
-      {/* Social Media Section */}
+      {/* Social Media Section
       <section className="px-6 md:px-20 lg:px-40 py-12 md:py-20">
         <div className="text-center">
           <h2 className="text-2xl md:text-4xl font-bold mb-8">Follow Us</h2>
@@ -154,7 +154,7 @@ function Contact() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </div>
