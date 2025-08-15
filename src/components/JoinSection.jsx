@@ -1,102 +1,166 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from "framer-motion";
-import J1 from '../assets/J1.png'
-import J2 from '../assets/J2.png'
-import J3 from '../assets/J3.png'
-import J4 from '../assets/J4.png'
-import J5 from '../assets/J5.png'
-import J6 from '../assets/J6.png'
+import image1 from '../assets/image2222.png'
+import image2 from '../assets/image1111.png'
+import image3 from '../assets/image3333.png'
 import Female from '../assets/Female.png'
 import Triangle from '../assets/Triangle.png'
 import { useNavigate } from "react-router-dom";
 
-
 const MENTORS = [
-  { id: 1, image: J1, name:"Patrice Long", role:"Senior Data Engineer", company: "Google" },
-  { id: 2, image: J2, name:"Tom", role:"Senior Product Manager", company: "Tesla" },
-  { id: 3, image: J3, name:"Cathy", role:"Developer", company: "Tesla" },
-  { id: 4, image: J4, name:"Patrice Long", role:"Sales Manager", company: "Google" },
-  { id: 5, image: J5, name:"cathy", role:"Marketing Head", company: "Google" },
-  { id: 6, image: J6, name:"Jo", role:"Interior Designer", company: "Google" }
+  { 
+    id: 1, 
+    image: image1, 
+    name: "Christina Diane Warner", 
+    role: "Marketing Manager at", 
+    company: "Cloudfare" 
+  },
+  { 
+    id: 2, 
+    image: image2, 
+    name: "Jaspal Singh", 
+    role: "Principal Software Engineer", 
+    company: "TCS" 
+  },
+  { 
+    id: 3, 
+    image: image3, 
+    name: "Rajiv Agarwal", 
+    role: "Finance and Insurance Professional", 
+    company: "Ex-Willis Group" 
+  }
 ];
 
 export default function JoinSection() {
-  const [index, setIndex] = useState(0);
-  const [key, setKey] = useState(0);
   const navigate = useNavigate();
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 3) % MENTORS.length); 
-      setKey(prev => prev + 1);
-    }, 2000); 
-    return () => clearInterval(interval);
-  }, []);
-
-  const cardVariants = {
-    enter: (idx) => ({ x: idx === 0 || idx === 1 ? -50 : 50, opacity: 0 }),
-    center: { x: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } },
-    exit: (idx) => ({ x: idx === 0 || idx === 1 ? -50 : 50, opacity: 0, transition: { duration: 0.3, ease: "easeIn" } })
+  const nextCard = () => {
+    setCurrentCardIndex((prev) => (prev + 1) % MENTORS.length);
   };
 
-  const containerVariants = {
-    enter: {},
-    center: {
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-    },
-    exit: {}
+  const prevCard = () => {
+    setCurrentCardIndex((prev) => (prev - 1 + MENTORS.length) % MENTORS.length);
   };
 
-  const MentorCard = ({ mentor, idx }) => (
-    <motion.div
-      key={mentor.id}
-      className={`relative shadow-lg w-[70vw] max-w-xs h-[360px] ${idx === 1 ? "mt-10 md:mt-40" : ""}`}
-      custom={idx}
-      variants={cardVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-    >
-      <img src={mentor.image} alt={mentor.name} className="h-full w-full object-cover rounded-xl" />
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black p-3 shadow-lg w-[85%] text-left rounded-md">
-        <h3 className="font-bold text-base md:text-lg">{mentor.name}</h3>
-        <p className="text-gray-700 text-sm md:text-base">{mentor.role}</p>
-        <p className="text-gray-600 text-sm md:text-base">{mentor.company}</p>
+  const MentorCard = ({ mentor, colorClass }) => (
+    <div className="flex-shrink-0 w-80 md:mx-6 mx-4">
+      <div className={`relative ${colorClass} rounded-2xl p-6 h-96 flex flex-col justify-between`}>
+        {/* Decorative circles */}
+        <div className="absolute top-4 left-4 w-16 h-16 bg-white bg-opacity-20 rounded-full"></div>
+        <div className="absolute top-8 right-8 w-12 h-12 bg-white bg-opacity-15 rounded-full"></div>
+        <div className="absolute bottom-20 right-4 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
+        
+        {/* Profile Image */}
+        <div className="flex justify-center mt-8">
+          <img 
+            src={mentor.image} 
+            alt={mentor.name} 
+            className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+          />
+        </div>
+        
+        {/* Mentor Info */}
+        <div className="text-center text-white z-10">
+          <h3 className="text-xl font-bold mb-2">{mentor.name}</h3>
+          <p className="text-sm opacity-90">{mentor.role}</p>
+          <p className="text-sm font-semibold">{mentor.company}</p>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 
   return (
-    <div className='max-w-[1200px] px-4 py-12 mx-auto text-center'>
-      <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-12'>
-        Find your Mentor: Infinite Possibilities
+    <div className='max-w-[1400px] px-4 py-12 mx-auto text-center'>
+      <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-[#2D488F]'>
+        Find your mentor:<br />
+        Infinite Possibilities
       </h2>
+      
+      <p className='text-gray-600 mb-12 max-w-2xl mx-auto text-base sm:text-lg'>
+        Lorem ipsum dolor sit amet consectetur. Habitant gravida blandit mi in sit mi posuere nibh. Turpis lectus quis sed fermentum mi.
+      </p>
 
-      {/* Fixed height & overflow hidden to prevent scrollbar flicker */}
-      <div className='relative flex justify-center items-center min-h-[480px] overflow-hidden'>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={key}
-            className="flex flex-wrap justify-center items-center gap-6"
-            variants={containerVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
+      {/* Blue Banner Section with Scrollable Cards */}
+      <div className='bg-[#2D488F] py-12 -mx-4 mb-12 relative'>
+        {/* Desktop Navigation Buttons */}
+        <button className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
+          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <button className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
+          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Mobile Navigation Buttons */}
+        <button 
+          onClick={prevCard}
+          className="md:hidden absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <button 
+          onClick={nextCard}
+          className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Desktop: Scrollable Cards Container */}
+        <div className="hidden md:block overflow-x-auto scrollbar-hide px-16">
+          <div className="flex justify-center gap-8">
+            <MentorCard mentor={MENTORS[0]} colorClass="bg-gradient-to-br from-green-400 to-green-300" />
+            <MentorCard mentor={MENTORS[1]} colorClass="bg-gradient-to-br from-pink-400 to-pink-300" />
+            <MentorCard mentor={MENTORS[2]} colorClass="bg-gradient-to-br from-yellow-400 to-yellow-300" />
+          </div>
+        </div>
+
+        {/* Mobile: Single Card View */}
+        <div className="md:hidden flex justify-center px-16">
+          {currentCardIndex === 0 && (
+            <MentorCard mentor={MENTORS[0]} colorClass="bg-gradient-to-br from-green-400 to-green-300" />
+          )}
+          {currentCardIndex === 1 && (
+            <MentorCard mentor={MENTORS[1]} colorClass="bg-gradient-to-br from-pink-400 to-pink-300" />
+          )}
+          {currentCardIndex === 2 && (
+            <MentorCard mentor={MENTORS[2]} colorClass="bg-gradient-to-br from-yellow-400 to-yellow-300" />
+          )}
+        </div>
+
+        {/* Mobile: Dots Indicator */}
+        <div className="md:hidden flex justify-center mt-6 space-x-2">
+          {MENTORS.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentCardIndex(index)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                currentCardIndex === index ? 'bg-white' : 'bg-white bg-opacity-40'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* View All Button */}
+        <div className="mt-8">
+          <button 
+            onClick={() => navigate("/mentors")}
+            className="bg-[#F5E649] text-[#2D488F] px-8 py-3 rounded-lg font-bold hover:bg-[#f3e338] transition-colors"
           >
-            {MENTORS.slice(index, index + 3).map((mentor, idx) => (
-              <MentorCard key={mentor.id} mentor={mentor} idx={idx} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            View All
+          </button>
+        </div>
       </div>
 
-      <button 
-      onClick={() => navigate("/signup")}
-      className="text-white mt-12 font-bold bg-[#2D488F] px-6 py-3 hover:bg-[#263f7e] transition-colors text-lg md:text-xl shadow-md rounded-md">
-        Search for Koach
-      </button>
-
+      {/* Join as Coach Section - unchanged */}
       <div className='bg-[#050A30] flex flex-col-reverse md:flex-row p-6 sm:p-10 mt-20 rounded-3xl items-center gap-8'>
         <div className='w-full md:w-3/5 px-4'>
           <h2 className='text-white text-2xl sm:text-3xl md:text-4xl font-bold text-center md:text-left'>
@@ -108,8 +172,8 @@ export default function JoinSection() {
             VCs, and universities, helping them achieve their full potential.
           </p>
           <button
-          onClick={() => navigate("/signup")}
-          className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">
+            onClick={() => navigate("/signup")}
+            className="text-[#2D488F] mt-6 font-bold bg-[#F5E649] px-8 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-md shadow-md">
             Join now
           </button>
         </div>
