@@ -128,7 +128,7 @@ export default function Testimonials() {
                   </div>
                   <div className="text-center">
                     <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white">40+</div>
-                    <div className="text-white/80 text-sm sm:text-base">Countries</div>
+                    <div className="text-white/80 text-sm sm:text-base">Sessions</div>
                   </div>
                 </div>
               </div>

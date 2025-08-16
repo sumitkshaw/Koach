@@ -42,28 +42,50 @@ export default function JoinSection() {
     setCurrentCardIndex((prev) => (prev - 1 + MENTORS.length) % MENTORS.length);
   };
 
-  const MentorCard = ({ mentor, colorClass }) => (
+  const MentorCard = ({ mentor }) => (
     <div className="flex-shrink-0 w-80 md:mx-6 mx-4">
-      <div className={`relative ${colorClass} rounded-2xl p-6 h-96 flex flex-col justify-between`}>
-        {/* Decorative circles */}
-        <div className="absolute top-4 left-4 w-16 h-16 bg-white bg-opacity-20 rounded-full"></div>
-        <div className="absolute top-8 right-8 w-12 h-12 bg-white bg-opacity-15 rounded-full"></div>
-        <div className="absolute bottom-20 right-4 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
+      <div className="relative bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 p-8 h-96 flex flex-col justify-between group">
+        {/* Subtle geometric accent */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#2D488F] to-[#4A63A8] rounded-t-xl"></div>
+        
+        {/* Professional badge */}
+        <div className="absolute top-4 right-4 bg-[#2D488F] bg-opacity-5 rounded-full px-3 py-1">
+          <span className="text-[#2D488F] text-xs font-semibold">MENTOR</span>
+        </div>
         
         {/* Profile Image */}
-        <div className="flex justify-center mt-8">
-          <img 
-            src={mentor.image} 
-            alt={mentor.name} 
-            className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
-          />
+        <div className="flex justify-center mt-4">
+          <div className="relative">
+            <img 
+              src={mentor.image} 
+              alt={mentor.name} 
+              className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md ring-2 ring-gray-100 group-hover:ring-[#2D488F] group-hover:ring-opacity-20 transition-all duration-300"
+            />
+            {/* Professional status indicator */}
+            <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 border-3 border-white rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          </div>
         </div>
         
         {/* Mentor Info */}
-        <div className="text-center text-white z-10">
-          <h3 className="text-xl font-bold mb-2">{mentor.name}</h3>
-          <p className="text-sm opacity-90">{mentor.role}</p>
-          <p className="text-sm font-semibold">{mentor.company}</p>
+        <div className="text-center flex-1 flex flex-col justify-center">
+          <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-[#2D488F] transition-colors duration-300">
+            {mentor.name}
+          </h3>
+          <div className="space-y-1">
+            <p className="text-sm text-gray-600 font-medium">{mentor.role}</p>
+            <p className="text-sm font-bold text-[#2D488F] bg-[#2D488F] bg-opacity-5 rounded-full px-3 py-1 inline-block">
+              {mentor.company}
+            </p>
+          </div>
+        </div>
+        
+        {/* Professional action button */}
+        <div className="mt-4 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+          <button className="w-full bg-[#2D488F] text-white py-2 rounded-lg text-sm font-semibold hover:bg-[#1e3266] transition-colors duration-200">
+            Connect
+          </button>
         </div>
       </div>
     </div>
@@ -80,17 +102,17 @@ export default function JoinSection() {
         Lorem ipsum dolor sit amet consectetur. Habitant gravida blandit mi in sit mi posuere nibh. Turpis lectus quis sed fermentum mi.
       </p>
 
-      {/* Blue Banner Section with Scrollable Cards */}
-      <div className='bg-[#2D488F] py-12 -mx-4 mb-12 relative'>
+      {/* Professional Banner Section with Cards */}
+      <div className='bg-gradient-to-br from-slate-50 to-gray-50 border-t border-gray-100 py-12 -mx-4 mb-12 relative'>
         {/* Desktop Navigation Buttons */}
-        <button className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
-          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-full p-3 shadow-md hover:shadow-lg hover:border-[#2D488F] transition-all duration-200">
+          <svg className="w-5 h-5 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         
-        <button className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
-          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-full p-3 shadow-md hover:shadow-lg hover:border-[#2D488F] transition-all duration-200">
+          <svg className="w-5 h-5 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -98,18 +120,18 @@ export default function JoinSection() {
         {/* Mobile Navigation Buttons */}
         <button 
           onClick={prevCard}
-          className="md:hidden absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+          className="md:hidden absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-full p-3 shadow-md hover:shadow-lg hover:border-[#2D488F] transition-all duration-200"
         >
-          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         
         <button 
           onClick={nextCard}
-          className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+          className="md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-200 rounded-full p-3 shadow-md hover:shadow-lg hover:border-[#2D488F] transition-all duration-200"
         >
-          <svg className="w-6 h-6 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-[#2D488F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -117,23 +139,17 @@ export default function JoinSection() {
         {/* Desktop: Scrollable Cards Container */}
         <div className="hidden md:block overflow-x-auto scrollbar-hide px-16">
           <div className="flex justify-center gap-8">
-            <MentorCard mentor={MENTORS[0]} colorClass="bg-gradient-to-br from-green-400 to-green-300" />
-            <MentorCard mentor={MENTORS[1]} colorClass="bg-gradient-to-br from-pink-400 to-pink-300" />
-            <MentorCard mentor={MENTORS[2]} colorClass="bg-gradient-to-br from-yellow-400 to-yellow-300" />
+            <MentorCard mentor={MENTORS[0]} />
+            <MentorCard mentor={MENTORS[1]} />
+            <MentorCard mentor={MENTORS[2]} />
           </div>
         </div>
 
         {/* Mobile: Single Card View */}
         <div className="md:hidden flex justify-center px-16">
-          {currentCardIndex === 0 && (
-            <MentorCard mentor={MENTORS[0]} colorClass="bg-gradient-to-br from-green-400 to-green-300" />
-          )}
-          {currentCardIndex === 1 && (
-            <MentorCard mentor={MENTORS[1]} colorClass="bg-gradient-to-br from-pink-400 to-pink-300" />
-          )}
-          {currentCardIndex === 2 && (
-            <MentorCard mentor={MENTORS[2]} colorClass="bg-gradient-to-br from-yellow-400 to-yellow-300" />
-          )}
+          {currentCardIndex === 0 && <MentorCard mentor={MENTORS[0]} />}
+          {currentCardIndex === 1 && <MentorCard mentor={MENTORS[1]} />}
+          {currentCardIndex === 2 && <MentorCard mentor={MENTORS[2]} />}
         </div>
 
         {/* Mobile: Dots Indicator */}
@@ -142,8 +158,10 @@ export default function JoinSection() {
             <button
               key={index}
               onClick={() => setCurrentCardIndex(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                currentCardIndex === index ? 'bg-white' : 'bg-white bg-opacity-40'
+              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                currentCardIndex === index 
+                  ? 'bg-[#2D488F] scale-110' 
+                  : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
           ))}
@@ -153,9 +171,9 @@ export default function JoinSection() {
         <div className="mt-8">
           <button 
             onClick={() => navigate("/mentors")}
-            className="bg-[#F5E649] text-[#2D488F] px-8 py-3 rounded-lg font-bold hover:bg-[#f3e338] transition-colors"
+            className="bg-[#2D488F] text-white px-10 py-3 rounded-lg font-bold hover:bg-[#1e3266] transition-all duration-200 shadow-md hover:shadow-lg border border-[#2D488F]"
           >
-            View All
+            View All Mentors
           </button>
         </div>
       </div>

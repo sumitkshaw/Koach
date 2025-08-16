@@ -23,7 +23,7 @@ const sampleCards = [
     title: 'Finance & Banking Professionals',
     category: 'Finance',
     desc:"Share knowledge in Fintech, Finance, Banking and associated industries.",
-    members: '230,560',
+    members: '',
     likes: '2,000',
     image: c1,
     trending: 'Most Active'
@@ -33,7 +33,7 @@ const sampleCards = [
     title: 'Teacher Training & Education',
     category: 'Education',
     desc:"For those dedicated to raising standards of learning and development.",
-    members: '190,560',
+    members: '',
     likes: '2,000',
     image: c2,
     trending: 'Most Active'
@@ -43,7 +43,7 @@ const sampleCards = [
     title: 'Sound Design',
     category: 'Innovation',
     desc:"About sound design tips, theories, technologies and solutions.",
-    members: '190,560',
+    members: '',
     likes: '2,000',
     image: c3,
     trending: 'Recently Added'
@@ -53,7 +53,7 @@ const sampleCards = [
     title: 'Technology Startups',
     category: 'Startup',
     desc:"Dedicated to exchanging knowledge about startups and technology.",
-    members: '75,160',
+    members: '',
     likes: '2,000',
     image: c4,
     trending: 'Recently Added'
@@ -63,7 +63,7 @@ const sampleCards = [
     title: 'UX Design, Product Design',
     category: 'Design & Creative',
     desc:"Looking to jump into ux design or product design? Join us in our journey.",
-    members: '200,320',
+    members: '',
     likes: '2,000',
     image: c5,
     trending: 'Hot Trending'
@@ -73,7 +73,7 @@ const sampleCards = [
     title: 'Digital Marketing',
     category: 'Marketing',
     desc:"We everything from social media, SEO, content marketing, paid advertising and email marketing.",
-    members: '145,000',
+    members: '',
     likes: '2,000',
     image: c6,
     trending: 'Hot Trending'

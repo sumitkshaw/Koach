@@ -3,6 +3,9 @@ import raj from '../assets/dashhboard.png';
 import yukti from '../assets/compp.png';
 import Footer from '../components/Footer';
 import contactImage from '../assets/image-332.avif';
+import image1 from '../assets/image01.jpg';
+import image2 from '../assets/image02.jpg';
+import image3 from '../assets/image03.jpg';
 
 function About() {
   return (
@@ -218,7 +221,7 @@ function About() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {/* Rajneesh Sharma */}
           <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
-            <div className="w-32 h-32 bg-gray-400 rounded-lg mx-auto mb-4"></div>
+            <img src={image1} alt="Rajneesh Sharma" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Rajneesh Sharma</h3>
             <p className="text-blue-100 mb-4">Executive Firefighter</p>
             <Linkedin className="w-6 h-6 mx-auto text-white" />
@@ -226,7 +229,7 @@ function About() {
           
           {/* Jim Alessandro */}
           <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
-            <div className="w-32 h-32 bg-gray-400 rounded-lg mx-auto mb-4"></div>
+            <img src={image2} alt="Jim Alessandro" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Jim Alessandro</h3>
             <p className="text-blue-100 mb-4">Hype Generator</p>
             <Linkedin className="w-6 h-6 mx-auto text-white" />
@@ -234,7 +237,7 @@ function About() {
           
           {/* Yukti Mannikeri */}
           <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
-            <div className="w-32 h-32 bg-gray-400 rounded-lg mx-auto mb-4"></div>
+            <img src={image3} alt="Yukti Mannikeri" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Yukti Mannikeri</h3>
             <p className="text-blue-100 mb-4">Roadmap Ruler</p>
             <Linkedin className="w-6 h-6 mx-auto text-white" />
