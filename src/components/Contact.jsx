@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Globe, Linkedin, Instagram,MessageSquareText, Twitter, BookOpen, Video   } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Linkedin, Instagram, MessageSquareText, Twitter, BookOpen, Video } from 'lucide-react';
 import { useState } from 'react';
 import Footer from '../components/Footer';
 import contactImage from '../assets/contact123.svg';
@@ -12,6 +12,8 @@ function Contact() {
     message: ''
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -20,33 +22,47 @@ function Contact() {
     }));
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    
-    // Create email content
-    const emailSubject = encodeURIComponent(`Contact Form: ${formData.subject}`);
-    const emailBody = encodeURIComponent(
-      `Name: ${formData.firstName} ${formData.lastName}\n` +
-      `Email: ${formData.email}\n` +
-      `Subject: ${formData.subject}\n\n` +
-      `Message:\n${formData.message}`
-    );
-    
-    // Create mailto link with multiple recipients
-    const recipients = 'raj@koach.live,yukti@koach.live,shawsumit6286@gmail.com';
-    const mailtoLink = `mailto:${recipients}?subject=${emailSubject}&body=${emailBody}`;
-    
-    // Open email client
-    window.open(mailtoLink, '_self');
-    
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+    setIsLoading(true);
+
+    try {
+      // Using a third-party service like FormSubmit (no registration required)
+      const formElement = e.target;
+      
+      // Create FormData object
+      const formSubmitData = new FormData();
+      formSubmitData.append('name', `${formData.firstName} ${formData.lastName}`);
+      formSubmitData.append('email', formData.email);
+      formSubmitData.append('subject', formData.subject);
+      // Add additional recipients for FormSubmit
+      formSubmitData.append('_cc', 'yukti@koach.live,raj@koach.live');
+      
+      // Send to FormSubmit with multiple recipients
+      const response = await fetch('https://formsubmit.co/shawsumit6286@gmail.com', {
+        method: 'POST',
+        body: formSubmitData
+      });
+
+      if (response.ok) {
+        alert('Message sent successfully! We\'ll get back to you soon.');
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send message. Please try again or contact us directly at support@koach.live');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSupportEmailClick = () => {
@@ -90,15 +106,6 @@ function Contact() {
       {/* Contact Cards Section */}
       <section className="px-6 md:px-20 lg:px-40 py-12 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Virtual meeeting  Card */}
-          {/* <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-            <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
-              <Video className="w-8 h-8 text-[#2D488F]" />
-            </div>
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Schedule a Call</h3>
-            <a href='#' className="text-lg text-[#2D488F] font-medium">Book a 30-min consultation</a>
-          </div> */}
-
           {/* Email Us Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
@@ -112,15 +119,6 @@ function Contact() {
               support@koach.live
             </p>
           </div>
-
-          {/* Visit Us Card */}
-          {/* <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-            <div className="w-16 h-16 bg-[#2D488F]/10 rounded-full flex items-center justify-center mb-6">
-              <MessageSquareText className="w-8 h-8 text-[#2D488F]" />
-            </div>
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Support Chat</h3>
-            <a href='#' className="text-lg text-[#2D488F] font-medium">Chat Now →</a>
-          </div> */}
 
           {/* Help Center Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
@@ -154,6 +152,7 @@ function Contact() {
                     placeholder="Enter your first name"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none"
                     required
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -166,6 +165,7 @@ function Contact() {
                     placeholder="Enter your last name"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none"
                     required
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -180,6 +180,7 @@ function Contact() {
                   placeholder="Enter your email"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none"
                   required
+                  disabled={isLoading}
                 />
               </div>
               
@@ -193,6 +194,7 @@ function Contact() {
                   placeholder="What's this about?"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none"
                   required
+                  disabled={isLoading}
                 />
               </div>
               
@@ -206,42 +208,27 @@ function Contact() {
                   rows="5"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none resize-vertical"
                   required
+                  disabled={isLoading}
                 ></textarea>
               </div>
               
               <div className="text-center">
                 <button
                   type="submit"
-                  className="bg-[#2D488F] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#1e3260] transition-colors duration-300 shadow-lg hover:shadow-xl"
+                  disabled={isLoading}
+                  className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl ${
+                    isLoading 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-[#2D488F] hover:bg-[#1e3260] text-white'
+                  }`}
                 >
-                  Send Message
+                  {isLoading ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       </section>
-
-      {/* Social Media Section
-      <section className="px-6 md:px-20 lg:px-40 py-12 md:py-20">
-        <div className="text-center">
-          <h2 className="text-2xl md:text-4xl font-bold mb-8">Follow Us</h2>
-          <p className="text-base md:text-xl text-gray-600 mb-8">
-            Stay connected with us on social media for updates and insights.
-          </p>
-          <div className="flex justify-center space-x-6">
-            <a href="#" className="w-12 h-12 bg-[#2D488F]/10 rounded-full flex items-center justify-center hover:bg-[#2D488F] hover:text-white transition-all duration-300">
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a href="#" className="w-12 h-12 bg-[#2D488F]/10 rounded-full flex items-center justify-center hover:bg-[#2D488F] hover:text-white transition-all duration-300">
-              <Instagram className="w-6 h-6" />
-            </a>
-            <a href="#" className="w-12 h-12 bg-[#2D488F]/10 rounded-full flex items-center justify-center hover:bg-[#2D488F] hover:text-white transition-all duration-300">
-              <Twitter className="w-6 h-8" />
-            </a>
-          </div>
-        </div>
-      </section> */}
 
       <Footer />
     </div>
