@@ -218,29 +218,25 @@ function About() {
       <section className="px-6 md:px-20 lg:px-40 py-16 bg-gray-50">
         <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-12 text-center">Meet the Team</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-8 max-w-2xl mx-auto justify-center">
           {/* Rajneesh Sharma */}
-          <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
+          <div className="bg-blue-600 rounded-2xl p-6 text-center text-white flex-1 max-w-sm">
             <img src={image1} alt="Rajneesh Sharma" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Rajneesh Sharma</h3>
             <p className="text-blue-100 mb-4">Executive Firefighter</p>
-            <Linkedin className="w-6 h-6 mx-auto text-white" />
-          </div>
-          
-          {/* Jim Alessandro */}
-          <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
-            <img src={image2} alt="Jim Alessandro" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
-            <h3 className="text-xl font-semibold mb-2">Jim Alessandro</h3>
-            <p className="text-blue-100 mb-4">Hype Generator</p>
-            <Linkedin className="w-6 h-6 mx-auto text-white" />
+            <a href="https://www.linkedin.com/in/therajneeshsharma/" target="_blank" rel="noopener noreferrer" className="inline-block hover:scale-110 transition-transform">
+              <Linkedin className="w-6 h-6 mx-auto text-white" />
+            </a>
           </div>
           
           {/* Yukti Mannikeri */}
-          <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
+          <div className="bg-blue-600 rounded-2xl p-6 text-center text-white flex-1 max-w-sm">
             <img src={image3} alt="Yukti Mannikeri" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
             <h3 className="text-xl font-semibold mb-2">Yukti Mannikeri</h3>
             <p className="text-blue-100 mb-4">Roadmap Ruler</p>
-            <Linkedin className="w-6 h-6 mx-auto text-white" />
+            <a href="https://www.linkedin.com/in/yuktibm/" target="_blank" rel="noopener noreferrer" className="inline-block hover:scale-110 transition-transform">
+              <Linkedin className="w-6 h-6 mx-auto text-white" />
+            </a>
           </div>
         </div>
       </section>
@@ -251,3 +247,11 @@ function About() {
 }
 
 export default About;
+
+ {/* Jim Alessandro */}
+          {/* <div className="bg-blue-600 rounded-2xl p-6 text-center text-white">
+            <img src={image2} alt="Jim Alessandro" className="w-32 h-32 rounded-lg mx-auto mb-4 object-cover" />
+            <h3 className="text-xl font-semibold mb-2">Jim Alessandro</h3>
+            <p className="text-blue-100 mb-4">Hype Generator</p>
+            <Linkedin className="w-6 h-6 mx-auto text-white" />
+          </div> */}
