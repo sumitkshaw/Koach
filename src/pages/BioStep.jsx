@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logowhite.png";
-import BrazucaPlanning from "../assets/Brazuca_Planning.png";
+import BrazucaPlanning from "../assets/brazuca_planning.png";
 
 export default function BioStep() {
   const navigate = useNavigate();
