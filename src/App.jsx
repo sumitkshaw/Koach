@@ -14,6 +14,26 @@ import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import BioStep from "./pages/BioStep";
+import AboutMe from "./pages/AboutMe";
+import WelcomeStep from "./pages/Welcome";
+import MentorExperience from "./pages/MentorOnboarding/MentorExperience";
+import Skills from "./pages/MentorOnboarding/Skills";
+import MentorExpert from "./pages/MentorOnboarding/MentorExpert";
+import Certifications  from "./pages/MentorOnboarding/Certifications";
+import Planning from "./pages/MentorOnboarding/Plans";
+import Clients from "./pages/MentorOnboarding/Clients";
+import GoalsStep from "./pages/MentorOnboarding/Goals";
+import WelcomeAboard from "./pages/WelcomeAboard";
+
+
+//Mentee Onboard
+import PastExp from "./pages/MenteeOnboard/PastExp";
+import Qualities from "./pages/MenteeOnboard/Qualities";
+import Reasons from "./pages/MenteeOnboard/Reasons";
+import MenteeSessions from "./pages/MenteeOnboard/Sessions";
+import Timeline from "./pages/MenteeOnboard/Timeline";
+
 import ForgotPassword from "./pages/ForgotPassword";
 import CirclesPage from "./pages/CirclesPage";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -38,9 +58,10 @@ import Settings2 from "./components/dashboard/Settings1";
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup", "/forgot-password", "/welcome", "/dashboard",
-     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings",
-  "/dashboard/mentors", "/dashboard/mentees"];
+  const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me", 
+    "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/welcome", "/dashboard",
+     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
+     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/planning", "/clients", "/goals"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -65,6 +86,22 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/bio-step" element={<BioStep />} />
+        <Route path="/about-me" element={<AboutMe />} />
+        <Route path="/welcome-step" element={<WelcomeStep />} />
+        <Route path="/mentor-experience" element={<MentorExperience />} />
+        <Route path="/skills" element={<Skills />} />
+        <Route path="/mentor-expert" element={<MentorExpert />} />
+        <Route path="/certifications" element={<Certifications />} />
+        <Route path="/planning" element={<Planning />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/goals" element={<GoalsStep />} />
+        <Route path="/welcome-aboard" element={<WelcomeAboard />} />
+        <Route path="/past-experience" element={<PastExp />} />
+        <Route path="/qualities" element={<Qualities />} />
+        <Route path="/reasons" element={<Reasons />} />
+        <Route path="/sessions" element={<MenteeSessions />} />
+        <Route path="/timeline" element={<Timeline />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/circles" element={<CirclesPage />} />
         <Route path="/resources" element={<Resources />} />

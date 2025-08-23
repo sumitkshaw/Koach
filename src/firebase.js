@@ -15,3 +15,28 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export { auth, provider };
+
+// // firebase.js - TEMPORARY VERSION (No Firebase needed)
+// // This file provides dummy exports so components don't crash
+
+// console.log("🔥 Using temporary Firebase (no real Firebase connection)");
+
+// // Dummy auth object
+// export const auth = {
+//   currentUser: null,
+//   signOut: () => Promise.resolve(),
+//   signInWithEmailAndPassword: () => Promise.resolve(),
+//   createUserWithEmailAndPassword: () => Promise.resolve()
+// };
+
+// // Dummy Google Auth provider
+// export const provider = {
+//   addScope: () => {},
+//   setCustomParameters: () => {}
+// };
+
+// // Default export (in case something imports the whole module)
+// export default {
+//   auth,
+//   provider
+// };
