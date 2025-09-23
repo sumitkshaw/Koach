@@ -3,44 +3,65 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import LoginImage from "../assets/loginimage.png";
-import { auth, provider } from "../firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useAuth } from "../utils/AuthContext";
 import Footer from '../components/Footer';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage } = useAuth();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    clearVerificationMessage();
+
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("✅ Email login success:", userCredential.user);
-
-      navigate("/dashboard");
+      await login(email, password, navigate, setError);
     } catch (error) {
-      console.error("❌ Login error:", error.message);
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("✅ Google login success:", user);
-
-      navigate("/dashboard");
+      await loginWithGoogle(navigate);
     } catch (error) {
-      console.error("❌ Google login error:", error);
+      console.error("Google login error:", error);
+      setError("Google login failed. Please try again.");
     }
   };
 
-  const handleLinkedInLogin = () => {
-    console.log("Login with LinkedIn");
+  const handleLinkedInLogin = async () => {
+    try {
+      await loginWithLinkedIn(navigate);
+    } catch (error) {
+      console.error("LinkedIn login error:", error);
+      setError("LinkedIn login is currently unavailable.");
+    }
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Verification Success Message */}
+      {verificationMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative m-4">
+          <span className="block sm:inline">{verificationMessage}</span>
+          <button 
+            onClick={clearVerificationMessage}
+            className="absolute top-0 bottom-0 right-0 px-4 py-3"
+          >
+            <span className="text-2xl">×</span>
+          </button>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="flex flex-1">
         {/* Left Panel - Form */}
@@ -68,7 +89,7 @@ export default function LoginPage() {
             </div>
 
             {/* Form */}
-            <div className="space-y-5">
+            <form onSubmit={handleLogin} className="space-y-5">
               <div>
                 <input
                   type="email"
@@ -76,6 +97,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  required
                 />
               </div>
 
@@ -86,16 +108,24 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  required
                 />
               </div>
 
+              {error && (
+                <div className="text-red-500 text-sm bg-red-50 p-2 rounded">
+                  {error}
+                </div>
+              )}
+
               <button
-                onClick={handleLogin}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </button>
-            </div>
+            </form>
 
             <div className="text-right mt-4">
               <button
@@ -160,8 +190,6 @@ export default function LoginPage() {
                 </svg>
                 Login with LinkedIn
               </button>
-
-              
             </div>
 
             {/* Terms */}

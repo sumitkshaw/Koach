@@ -3,41 +3,49 @@ import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import SignupImage from "../assets/signupimg.png";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "../firebase";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useAuth } from "../utils/AuthContext";
 import Footer from '../components/Footer';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signup, loginWithGoogle, loginWithLinkedIn } = useAuth();
 
-   const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("✅ Email sign-up success:", userCredential.user);
-
-      // Redirect to login page
-      navigate("/login");
+      await signup(name, email, password, navigate, setError);
+      // Magic link dialog will be shown via AuthContext
     } catch (error) {
-      console.error("❌ Sign-up error:", error.message);
+      console.error("Sign-up error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSignUp = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("✅ Google sign-in success:", user);
-
-      navigate("/dashboard");
+      await loginWithGoogle(navigate);
     } catch (error) {
-      console.error("❌ Google sign-in error:", error);
+      console.error("Google sign-up error:", error);
+      setError("Google sign-up failed. Please try again.");
     }
   };
 
-  const handleLinkedInSignUp = () => {
-    console.log("Sign up with LinkedIn");
+  const handleLinkedInSignUp = async () => {
+    try {
+      await loginWithLinkedIn(navigate);
+    } catch (error) {
+      console.error("LinkedIn sign-up error:", error);
+      setError("LinkedIn sign-up is currently unavailable.");
+    }
   };
 
   return (
@@ -62,7 +70,6 @@ export default function SignUpPage() {
               <img src={Logo} alt="Logo" className="h-13 w-auto" />
             </div>
 
-
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-3xl font-semibold text-blue-600 mb-2">Sign Up</h2>
@@ -72,7 +79,18 @@ export default function SignUpPage() {
             </div>
 
             {/* Form */}
-            <div className="space-y-5">
+            <form onSubmit={handleSignUp} className="space-y-5">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  required
+                />
+              </div>
+
               <div>
                 <input
                   type="email"
@@ -80,6 +98,7 @@ export default function SignUpPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  required
                 />
               </div>
 
@@ -90,16 +109,24 @@ export default function SignUpPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  required
                 />
               </div>
 
+              {error && (
+                <div className="text-red-500 text-sm bg-red-50 p-2 rounded">
+                  {error}
+                </div>
+              )}
+
               <button
-                onClick={handleSignUp}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
               >
-                Sign Up
+                {isLoading ? "Creating Account..." : "Sign Up"}
               </button>
-            </div>
+            </form>
 
             {/* Login Link */}
             <div className="mt-6 text-center text-gray-600">
@@ -155,13 +182,11 @@ export default function SignUpPage() {
                 </svg>
                 Sign Up with LinkedIn
               </button>
-
-             
             </div>
 
             {/* Terms */}
             <p className="mt-6 text-xs text-gray-500 text-center">
-              By signing up to create an account I accept Company&apos;s Terms.
+              By signing up to create an account I accept Company&apos;s{" "}
               <button className="text-blue-600 hover:underline">
                 Terms of Use
               </button>{" "}
@@ -192,7 +217,7 @@ export default function SignUpPage() {
         </div>
       </div>
       
-      {/* Footer - Now properly positioned at the bottom */}
+      {/* Footer */}
       <Footer />
     </div>
   );

@@ -1,178 +1,143 @@
-// AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth, provider } from "../firebase";
-import {
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { 
+  getCurrentUser, 
+  logout as appwriteLogout, 
+  verifyEmail, 
+  checkVerificationInUrl,
+  createAccount as appwriteCreateAccount,
+  login as appwriteLogin,
+  loginWithOAuth
+} from "./auth";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState('');
 
+  // Check authentication state and handle email verification
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+    const initializeAuth = async () => {
+      try {
+        // Check for verification parameters in URL
+        const { userId, secret } = checkVerificationInUrl();
+        
+        if (userId && secret) {
+          try {
+            await verifyEmail(userId, secret);
+            setVerificationMessage('Email verified successfully! You can now login.');
+            
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } catch (error) {
+            setVerificationMessage('Verification failed. Please try again.');
+          }
+        }
 
-  const loginWithGoogle = async (navigate) => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Google sign-in error", error);
-    }
-  };
+        // Get current user
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+        
+        if (currentUser && !currentUser.emailVerification) {
+          setNeedsVerification(true);
+        }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, []);
 
   const signup = async (name, email, password, navigate, setError) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/bio");
+      await appwriteCreateAccount(email, password, name);
+      
+      // Show magic link sent message
+      setVerificationMessage(`Verification email sent to ${email}! Please check your inbox.`);
+      setNeedsVerification(true);
+      
+      navigate("/login");
     } catch (error) {
       console.error("Sign-up error", error);
-      setError("Sign-up failed");
+      setError(error.message || "Sign-up failed");
+    }
+  };
+
+  const login = async (email, password, navigate, setError) => {
+    try {
+      await appwriteLogin(email, password);
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login error", error);
+      setError(error.message || "Login failed");
+      
+      // If error is about verification, set needs verification
+      if (error.message.includes('verify your email')) {
+        setNeedsVerification(true);
+      }
+    }
+  };
+
+  const loginWithGoogle = async (navigate) => {
+    try {
+      await loginWithOAuth('google');
+      // OAuth redirect will handle the navigation
+    } catch (error) {
+      console.error("Google login error", error);
+    }
+  };
+
+  const loginWithLinkedIn = async (navigate) => {
+    try {
+      // Note: LinkedIn OAuth needs to be configured in Appwrite console
+      await loginWithOAuth('linkedin');
+    } catch (error) {
+      console.error("LinkedIn login error", error);
     }
   };
 
   const logout = async (navigate) => {
     try {
-      await signOut(auth);
-      setUser(null); // Clear the user immediately for local state
-      navigate("/"); // Redirect to home page
+      await appwriteLogout();
+      setUser(null);
+      setNeedsVerification(false);
+      navigate("/");
     } catch (error) {
       console.error("Logout error", error);
     }
   };
 
+  const clearVerificationMessage = () => {
+    setVerificationMessage('');
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, loginWithGoogle, signup, logout }}
+      value={{ 
+        user, 
+        isAuthenticated: !!user,
+        needsVerification,
+        verificationMessage,
+        loading,
+        login,
+        signup,
+        loginWithGoogle,
+        loginWithLinkedIn,
+        logout,
+        clearVerificationMessage
+      }}
     >
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
 export default AuthContext;
-
-// // AuthContext.jsx - TEMPORARY VERSION (No Firebase needed)
-// import { createContext, useContext, useState, useEffect } from "react";
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   // Simulate loading time and check for existing "logged in" user
-//   useEffect(() => {
-//     // Simulate Firebase initialization delay
-//     const timer = setTimeout(() => {
-//       // Check if user was "logged in" before (stored in localStorage)
-//       const savedUser = localStorage.getItem('tempUser');
-//       if (savedUser) {
-//         setUser(JSON.parse(savedUser));
-//       }
-//       setLoading(false);
-//     }, 500);
-
-//     return () => clearTimeout(timer);
-//   }, []);
-
-//   const loginWithGoogle = async (navigate) => {
-//     try {
-//       // Simulate Google login with fake user data
-//       const fakeGoogleUser = {
-//         uid: 'fake-google-uid-123',
-//         email: 'testuser@gmail.com',
-//         displayName: 'Test User',
-//         photoURL: 'https://via.placeholder.com/150',
-//         provider: 'google'
-//       };
-      
-//       // Store fake user
-//       setUser(fakeGoogleUser);
-//       localStorage.setItem('tempUser', JSON.stringify(fakeGoogleUser));
-      
-//       // Simulate slight delay like real Firebase
-//       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-//       navigate("/dashboard");
-//       console.log("✅ Fake Google login successful");
-//     } catch (error) {
-//       console.error("Google sign-in error", error);
-//     }
-//   };
-
-//   const signup = async (name, email, password, navigate, setError) => {
-//     try {
-//       // Simulate email/password signup
-//       const fakeEmailUser = {
-//         uid: 'fake-email-uid-456',
-//         email: email,
-//         displayName: name,
-//         photoURL: null,
-//         provider: 'email'
-//       };
-
-//       // Store fake user
-//       setUser(fakeEmailUser);
-//       localStorage.setItem('tempUser', JSON.stringify(fakeEmailUser));
-      
-//       // Simulate slight delay like real Firebase
-//       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-//       navigate("/bio");
-//       console.log("✅ Fake email signup successful");
-//     } catch (error) {
-//       console.error("Sign-up error", error);
-//       setError("Sign-up failed");
-//     }
-//   };
-
-//   const logout = async (navigate) => {
-//     try {
-//       // Clear fake user data
-//       setUser(null);
-//       localStorage.removeItem('tempUser');
-      
-//       // Simulate slight delay like real Firebase
-//       await new Promise(resolve => setTimeout(resolve, 500));
-      
-//       navigate("/");
-//       console.log("✅ Fake logout successful");
-//     } catch (error) {
-//       console.error("Logout error", error);
-//     }
-//   };
-
-//   // Debug info - remove this in production
-//   useEffect(() => {
-//     console.log("🔥 TEMP AUTH: User state changed:", user ? `Logged in as ${user.email}` : 'Not logged in');
-//   }, [user]);
-
-//   return (
-//     <AuthContext.Provider
-//       value={{ 
-//         user, 
-//         isAuthenticated: !!user, 
-//         loginWithGoogle, 
-//         signup, 
-//         logout 
-//       }}
-//     >
-//       {!loading && children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
-// export default AuthContext;

@@ -113,14 +113,14 @@ function AppContent() {
         <Route path="/dashboard/sessions" element={<Sessions />} />
         <Route path="/dashboard/messages" element={<Messages />} />
         <Route path="/dashboard/mentors" element={<Mentors />} />
-        <Route path="/dashboard/settings" element={<Settings1/>} />
+        <Route path="/dashboard/settings" element={<Settings2/>} />
 
         <Route path="/dashboard_mentor" element={<Dashmentor/>} />
         <Route path="/dashboard_mentor/earnings" element={<Earnings />} />
         <Route path="/dashboard_mentor/calendar" element={<Calen />} />
         <Route path="/dashboard_mentor/messages" element={<Message />} />
         <Route path="/dashboard_mentor/mentees" element={<Mentees />} />
-        <Route path="/dashboard_mentor/settings" element={<Settings2 />} />
+        <Route path="/dashboard_mentor/settings" element={<Settings1 />} />
        
 
         {/* Add more routes as needed */}
