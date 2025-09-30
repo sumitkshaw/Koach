@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
@@ -10,18 +10,30 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage } = useAuth();
+  const { login, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage, resendVerificationEmail } = useAuth();
+
+  // Prefill email if saved (e.g., before verification)
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("loginEmail");
+    if (savedEmail && !email) {
+      setEmail(savedEmail);
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setSuccess("");
     clearVerificationMessage();
 
     try {
       await login(email, password, navigate, setError);
+      // Clear stored email on successful login attempt
+      localStorage.removeItem("loginEmail");
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -47,6 +59,30 @@ export default function LoginPage() {
     }
   };
 
+  const handleResendVerification = async () => {
+    if (!email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+    
+    if (!password) {
+      setError("Please enter your password to resend the verification email.");
+      return;
+    }
+    
+    try {
+      // Save email so after verification redirect it is pre-filled
+      localStorage.setItem("loginEmail", email);
+      await resendVerificationEmail(email, password, setError, (message) => {
+        setError("");
+        setSuccess(message);
+      });
+    } catch (error) {
+      console.error("Resend verification error:", error);
+    }
+  };
+
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Verification Success Message */}
@@ -61,7 +97,6 @@ export default function LoginPage() {
           </button>
         </div>
       )}
-
       {/* Main Content */}
       <div className="flex flex-1">
         {/* Left Panel - Form */}
@@ -74,15 +109,12 @@ export default function LoginPage() {
             <ChevronLeft size={24} />
           </button>
           <br />
-
           {/* Content Container */}
           <div className="max-w-md mx-auto w-full">
             {/* Logo */}
             <div className="mb-2">
               <img src={Logo} alt="Logo" className="h-13 w-auto" />
             </div>
-
-            {/* Header */}
             <div className="mb-8">
               <h2 className="text-3xl font-semibold text-blue-600 mb-2">Login</h2>
               <p className="text-gray-600">Login to your account</p>
@@ -95,7 +127,10 @@ export default function LoginPage() {
                   type="email"
                   placeholder="Email address"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    localStorage.setItem("loginEmail", e.target.value);
+                  }}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
                   required
                 />
@@ -113,8 +148,13 @@ export default function LoginPage() {
               </div>
 
               {error && (
-                <div className="text-red-500 text-sm bg-red-50 p-2 rounded">
+                <div className="text-red-600 text-sm bg-red-50 border border-red-200 p-2 rounded">
                   {error}
+                </div>
+              )}
+              {success && (
+                <div className="text-green-700 text-sm bg-green-50 border border-green-200 p-2 rounded">
+                  {success}
                 </div>
               )}
 
@@ -127,7 +167,14 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="text-right mt-4">
+            <div className="flex justify-between mt-4">
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                className="text-green-600 hover:underline font-medium text-sm"
+              >
+                Resend Verification Email
+              </button>
               <button
                 onClick={() => navigate("/forgot-password")}
                 className="text-blue-600 hover:underline font-medium"

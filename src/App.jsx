@@ -35,6 +35,7 @@ import MenteeSessions from "./pages/MenteeOnboard/Sessions";
 import Timeline from "./pages/MenteeOnboard/Timeline";
 
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import CirclesPage from "./pages/CirclesPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import Goals from "./components/dashboard/Goals";
@@ -59,7 +60,7 @@ import Settings2 from "./components/dashboard/Settings1";
 function AppContent() {
   const location = useLocation();
   const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me", 
-    "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/welcome", "/dashboard",
+    "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
      "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
      "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/planning", "/clients", "/goals"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
@@ -103,6 +104,7 @@ function AppContent() {
         <Route path="/sessions" element={<MenteeSessions />} />
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/circles" element={<CirclesPage />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/welcome" element={<Welcome />} />

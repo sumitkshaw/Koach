@@ -13,7 +13,7 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { signup, loginWithGoogle, loginWithLinkedIn } = useAuth();
+  const { signup, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage } = useAuth();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -22,9 +22,9 @@ export default function SignUpPage() {
 
     try {
       await signup(name, email, password, navigate, setError);
-      // Magic link dialog will be shown via AuthContext
     } catch (error) {
       console.error("Sign-up error:", error);
+      setError("❌ Sign-up failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -50,6 +50,19 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Verification Success Message */}
+      {verificationMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative m-4">
+          <span className="block sm:inline">{verificationMessage}</span>
+          <button 
+            onClick={clearVerificationMessage}
+            className="absolute top-0 bottom-0 right-0 px-4 py-3"
+          >
+            <span className="text-2xl">×</span>
+          </button>
+        </div>
+      )}
+      
       {/* Main Content */}
       <div className="flex flex-1 bg-gray-50">
         {/* Left Panel - Form */}
