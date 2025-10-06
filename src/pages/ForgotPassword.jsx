@@ -2,17 +2,33 @@ import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const { resetPassword } = useAuth();
 
-  const handleSubmit = () => {
-    if (email) {
-      setIsSubmitted(true);
-      // Here you would typically send the reset email
-      setTimeout(() => setIsSubmitted(false), 3000);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      setError("Please enter your email address");
+      return;
+    }
+    
+    setIsLoading(true);
+    setError("");
+    setSuccess("");
+    
+    try {
+      await resetPassword(email, setError, setSuccess);
+    } catch (error) {
+      console.error("Password reset error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,7 +61,7 @@ export default function ForgotPassword() {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
             <input
               type="email"
@@ -53,17 +69,30 @@ export default function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-5 py-4 bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-blue-500 text-base transition-all duration-200 placeholder-gray-400"
+              required
             />
           </div>
 
+          {error && (
+            <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="text-green-500 text-sm bg-green-50 p-3 rounded-lg">
+              {success}
+            </div>
+          )}
+
           <button
-            onClick={handleSubmit}
-            disabled={isSubmitted}
+            type="submit"
+            disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            {isSubmitted ? "Code Sent!" : "Send code"}
+            {isLoading ? "Sending..." : "Send Reset Email"}
           </button>
-        </div>
+        </form>
 
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center">
