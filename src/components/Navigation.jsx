@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, Search } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate  } from "react-router-dom";
 import image3 from "../assets/image3.png";
 import { useAuth } from "../utils/AuthContext";
 import { FaCloud } from 'react-icons/fa'; // Using react-icons for the cloud
@@ -8,11 +8,13 @@ import { FaCloud } from 'react-icons/fa'; // Using react-icons for the cloud
 function Navigation() {
   const location = useLocation();
   const { user, logout } = useAuth(); // 👈 Grab user and logout
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const [showResourcesDropdown, setShowResourcesDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -86,7 +88,7 @@ function Navigation() {
                   )}
                   <Search
                     className="h-5 w-5 text-[#2D488F] cursor-pointer z-10"
-                    onClick={() => setIsSearchOpen(!isSearchOpen)}
+                    onClick={() => navigate("/listing")}
                   />
                 </div>
 
@@ -187,7 +189,7 @@ function Navigation() {
                 <div className="flex items-center gap-3 py-2 px-4 rounded-2xl bg-gray-50/50">
                   <Search
                     className="h-5 w-5 text-[#2D488F] cursor-pointer hover:text-blue-700 transition-colors duration-200"
-                    onClick={() => setIsSearchOpen(!isSearchOpen)}
+                    onClick={() => navigate("/listing")}
                   />
                   {isSearchOpen && (
                     <input

@@ -26,6 +26,8 @@ import Clients from "./pages/MentorOnboarding/Clients";
 import GoalsStep from "./pages/MentorOnboarding/Goals";
 import WelcomeAboard from "./pages/WelcomeAboard";
 
+import Listing from "./pages/listing-booking/Listing.jsx";
+import Demo from "./pages/listing-booking/Demo.jsx";
 
 //Mentee Onboard
 import PastExp from "./pages/MenteeOnboard/PastExp";
@@ -123,6 +125,9 @@ function AppContent() {
         <Route path="/dashboard_mentor/messages" element={<Message />} />
         <Route path="/dashboard_mentor/mentees" element={<Mentees />} />
         <Route path="/dashboard_mentor/settings" element={<Settings1 />} />
+
+        <Route path="/listing" element={<Listing/>}/>
+        <Route path="/listing/jessica" element={<Demo/>}/>
        
 
         {/* Add more routes as needed */}
