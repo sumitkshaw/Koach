@@ -81,6 +81,11 @@ function Listing() {
     }
   ];
 
+  const handleCardClick = (mentorName) => {
+    const firstName = mentorName.split(' ')[0].toLowerCase();
+    window.location.href = `/listing/${firstName}`;
+  };
+
   return (
     <div className="w-full bg-[#ECF0F6] min-h-screen">
       {/* Sidenav */}
@@ -141,6 +146,7 @@ function Listing() {
               {mentors.map((mentor) => (
                 <div
                   key={mentor.id}
+                  onClick={() => handleCardClick(mentor.name)}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
                 >
                   <div className="relative h-64 overflow-hidden">

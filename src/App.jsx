@@ -26,6 +26,8 @@ import Clients from "./pages/MentorOnboarding/Clients";
 import GoalsStep from "./pages/MentorOnboarding/Goals";
 import WelcomeAboard from "./pages/WelcomeAboard";
 
+import NotFound from "./pages/NotFound";
+
 import Listing from "./pages/listing-booking/Listing.jsx";
 import Demo from "./pages/listing-booking/Demo.jsx";
 
@@ -118,6 +120,8 @@ function AppContent() {
         <Route path="/dashboard/messages" element={<Messages />} />
         <Route path="/dashboard/mentors" element={<Mentors />} />
         <Route path="/dashboard/settings" element={<Settings2/>} />
+
+        <Route path="*" element={<NotFound/>} />
 
         <Route path="/dashboard_mentor" element={<Dashmentor/>} />
         <Route path="/dashboard_mentor/earnings" element={<Earnings />} />
