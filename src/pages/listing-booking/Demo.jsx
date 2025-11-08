@@ -113,7 +113,7 @@ function Demo() {
   return (
     <div className="w-full bg-[#ECF0F6] min-h-screen">
       {/* Main Content */}
-      <section className="px-6 md:px-20 lg:px-40 py-12">
+      <section className="px-6 md:px-20 lg:px-40 py-20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Profile Info */}

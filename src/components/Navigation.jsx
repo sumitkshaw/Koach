@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, Search } from "lucide-react";
-import { useLocation, useNavigate  } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import image3 from "../assets/image3.png";
 import { useAuth } from "../utils/AuthContext";
-import { FaCloud } from 'react-icons/fa'; // Using react-icons for the cloud
+import { FaCloud } from "react-icons/fa";
 
 function Navigation() {
   const location = useLocation();
-  const { user, logout } = useAuth(); // 👈 Grab user and logout
+  const { user, logout } = useAuth();
   const [isSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const [showResourcesDropdown, setShowResourcesDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -33,8 +32,8 @@ function Navigation() {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const getInitials = (name) => {
@@ -73,21 +72,19 @@ function Navigation() {
             </a>
           </div>
 
-          {/* Auth / Search (Desktop) */}
+          {/* Desktop Auth / Search */}
           <div className="hidden md:flex items-center space-x-4">
             {location.pathname !== "/about" && (
               <>
-                <div className="relative">
-                  {isSearchOpen && (
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-40 px-3 py-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-[#2D488F] text-sm z-20 bg-white"
-                      autoFocus
-                    />
-                  )}
+                <div className="flex items-center gap-2 bg-blue-50/50 hover:bg-blue-50/80 transition-all duration-300 rounded-full px-4 py-2 cursor-pointer border border-blue-100/50">
+                  <span
+                    className="text-[#2D488F] text-sm font-medium hover:text-blue-700 transition-colors"
+                    onClick={() => navigate("/listing")}
+                  >
+                    Search for mentor
+                  </span>
                   <Search
-                    className="h-5 w-5 text-[#2D488F] cursor-pointer z-10"
+                    className="h-4 w-4 text-[#2D488F] cursor-pointer hover:text-blue-700 transition-colors"
                     onClick={() => navigate("/listing")}
                   />
                 </div>
@@ -127,10 +124,21 @@ function Navigation() {
           {/* Mobile Hamburger */}
           <div className="md:hidden flex items-center">
             <button
-              className="text-gray-600 hover:text-gray-900"
+              className="text-gray-600 hover:text-gray-900 transition-transform duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <Menu className="h-6 w-6" />
+              {isMenuOpen ? (
+                <svg className="h-6 w-6" viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    d="M6 6L18 18M6 18L18 6"
+                  />
+                </svg>
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -141,94 +149,93 @@ function Navigation() {
             ref={menuRef}
             className="md:hidden absolute top-16 right-4 bg-white/95 backdrop-blur-md shadow-2xl p-6 rounded-3xl w-72 z-50 space-y-4 border border-gray-100"
           >
+            {/* NEW HOME BUTTON */}
+            <a
+              href="/"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+            >
+              Home
+            </a>
+
             <a
               href="/about"
+              onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               About Us
             </a>
+
             <a
               href="/circles"
+              onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               Circle
             </a>
-            
-            {/* Resources with dropdown for mobile */}
-            <div className="relative">
-              <a
-                href="/resources"
-                className="block w-full text-left text-[#2D488F] hover:text-blue-700 focus:outline-none py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
-              >
-                Resources
-              </a>
-              
-              {/* Cloud Dropdown - Mobile */}
-              {showResourcesDropdown && (
-                <div className="mt-3 ml-4 relative">
-                  <div className="bg-gradient-to-r from-gray-50 to-blue-50/30 rounded-2xl py-4 px-5 relative border border-gray-100/50 shadow-sm">
-                    <div className="flex items-center text-gray-600">
-                      <FaCloud className="mr-3 text-blue-300 text-lg" />
-                      <span className="text-sm italic font-light">Coming Soon!</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <a 
-              href="/contact" 
+
+            <a
+              href="/resources"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+            >
+              Resources
+            </a>
+
+            <a
+              href="/contact"
+              onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               Contact
             </a>
 
-            {location.pathname !== "/about" && (
-              <>
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4" />
-                <div className="flex items-center gap-3 py-2 px-4 rounded-2xl bg-gray-50/50">
-                  <Search
-                    className="h-5 w-5 text-[#2D488F] cursor-pointer hover:text-blue-700 transition-colors duration-200"
-                    onClick={() => navigate("/listing")}
-                  />
-                  {isSearchOpen && (
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="w-full px-4 py-2 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2D488F]/20 text-sm bg-white/80 backdrop-blur-sm shadow-sm"
-                      autoFocus
-                    />
-                  )}
+            {/* Search For Mentor */}
+            <div
+              className="flex items-center justify-between gap-3 py-3 px-4 rounded-2xl bg-blue-50/50 hover:bg-blue-50/80 transition-all duration-300 cursor-pointer border border-blue-100/50"
+              onClick={() => {
+                navigate("/listing");
+                setIsMenuOpen(false);
+              }}
+            >
+              <span className="text-[#2D488F] text-sm font-medium">
+                Search for mentor
+              </span>
+              <Search className="h-4 w-4 text-[#2D488F]" />
+            </div>
+
+            {user ? (
+              <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-lg">
+                  {getInitials(user.displayName || user.email)}
                 </div>
-                {user ? (
-                  <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-lg">
-                      {getInitials(user.displayName || user.email)}
-                    </div>
-                    <button
-                      onClick={logout}
-                      className="text-sm text-[#2D488F] bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-5 py-2 rounded-full hover:bg-[#2D488F] hover:text-white transition-all duration-300 font-medium shadow-sm"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <a
-                      href="/login"
-                      className="block text-[#2D488F] hover:text-white text-sm bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-6 py-3 rounded-full text-center hover:bg-[#2D488F] transition-all duration-300 font-medium shadow-sm"
-                    >
-                      Log in
-                    </a>
-                    <a
-                      href="/signup"
-                      className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-600 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-300 font-medium shadow-lg"
-                    >
-                      Register
-                    </a>
-                  </div>
-                )}
-              </>
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-sm text-[#2D488F] bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-5 py-2 rounded-full hover:bg-[#2D488F] hover:text-white transition-all duration-300 font-medium shadow-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <a
+                  href="/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-[#2D488F] hover:text-white text-sm bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-6 py-3 rounded-full text-center hover:bg-[#2D488F] transition-all duration-300 font-medium shadow-sm"
+                >
+                  Log in
+                </a>
+                <a
+                  href="/signup"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-600 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-300 font-medium shadow-lg"
+                >
+                  Register
+                </a>
+              </div>
             )}
           </div>
         )}
