@@ -101,10 +101,6 @@ function Hero() {
                 Search for Koach
               </button>
             </div>
-
-            <p className="mt-4 text-gray-800 text-left underline text-base">
-              Not ready? Join our community and move your goals forward together.
-            </p>
           </div>
 
           {/* Right Images */}

@@ -1,13 +1,17 @@
 import { Star, Heart, Linkedin, Twitter, ChevronLeft, ChevronRight, Calendar, Briefcase, GraduationCap, MapPin, Mail, Phone } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from '../../components/Footer';
+import { useNavigate } from "react-router-dom";
 
 function Demo() {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(4); // May 2025 (0-indexed)
-  const [currentYear, setCurrentYear] = useState(2025);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [bookingError, setBookingError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to true if user is logged in
 
   const mentor = {
     name: 'Jessica Barney',
@@ -62,12 +66,12 @@ function Demo() {
   };
 
   const timeSlots = [
-    '1:00 AM',
-    '1:00 AM',
-    '1:00 AM',
-    '1:00 AM',
-    '1:00 AM',
-    '1:00 AM'
+    '8:00 AM',
+    '10:00 AM',
+    '12:00 PM',
+    '2:00 PM',
+    '4:00 PM',
+    '6:00 PM'
   ];
 
   const plans = [
@@ -110,6 +114,101 @@ function Demo() {
 
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  // Get today's date for comparison
+  const today = new Date();
+  const todayDate = today.getDate();
+  const todayMonth = today.getMonth();
+  const todayYear = today.getFullYear();
+
+  // Check if a date is available (green) or unavailable (red)
+  const isDateAvailable = (day) => {
+    if (!day) return false;
+    
+    // If viewing current month and year
+    if (currentMonth === todayMonth && currentYear === todayYear) {
+      // Days 1-10 from today are unavailable (red)
+      // Days after 10 from today are available (green)
+      return day > todayDate + 10;
+    }
+    
+    // If viewing future months, all days are available
+    if (currentYear > todayYear || (currentYear === todayYear && currentMonth > todayMonth)) {
+      return true;
+    }
+    
+    // Past months are unavailable
+    return false;
+  };
+
+  // Check if date is in the past or within 10 days
+  const isDateUnavailable = (day) => {
+    if (!day) return false;
+    
+    if (currentMonth === todayMonth && currentYear === todayYear) {
+      return day <= todayDate + 10;
+    }
+    
+    if (currentYear < todayYear || (currentYear === todayYear && currentMonth < todayMonth)) {
+      return true;
+    }
+    
+    return false;
+  };
+
+  // Handle date selection
+  const handleDateSelect = (day) => {
+    if (!day) return;
+    
+    setSelectedDate(day);
+    setSelectedTime(null); // Reset time selection when date changes
+    setBookingError('');
+  };
+
+  // Handle intro call request
+  const handleIntroCallRequest = () => {
+    if (!selectedDate) {
+      setBookingError('Please select a date from the calendar');
+      return;
+    }
+    
+    if (isDateUnavailable(selectedDate)) {
+      setBookingError('Selected date is not available. Please choose a green date.');
+      return;
+    }
+    
+    if (!selectedTime) {
+      setBookingError('Please select a time slot');
+      return;
+    }
+    
+    setBookingError('');
+    // Proceed with intro call request
+    alert('Intro call requested successfully!');
+  };
+
+  // Handle OPT button click
+  const handleOptClick = () => {
+    if (!isLoggedIn) {
+      navigate('/register');
+      return;
+    }
+    
+    if (!selectedDate || !selectedTime) {
+      setBookingError('Please select both date and time before opting for a plan');
+      return;
+    }
+    
+    if (isDateUnavailable(selectedDate)) {
+      setBookingError('Selected date is not available. Please choose a green date.');
+      return;
+    }
+    
+    navigate('/booking');
+  };
+
+  // Check if OPT button should be disabled
+  const isOptDisabled = !isLoggedIn || !selectedDate || !selectedTime || isDateUnavailable(selectedDate);
+
   return (
     <div className="w-full bg-[#ECF0F6] min-h-screen">
       {/* Main Content */}
@@ -123,8 +222,12 @@ function Demo() {
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Profile Image */}
                   <div className="relative flex-shrink-0">
-                    <div className="w-48 h-48 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center">
-                      <span className="text-5xl font-bold text-gray-400">JB</span>
+                    <div className="w-48 h-48 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center overflow-hidden">
+                      <img 
+                        src="/jessica.png" 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     {mentor.isNewMentor && (
                       <div className="absolute top-2 right-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold">
@@ -271,6 +374,18 @@ function Demo() {
             {/* Right Column - Booking */}
             <div className="lg:col-span-1">
               <div className="sticky top-8 space-y-6">
+                {/* Check Availability Header Style */}
+                <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center">
+                  <h3 className="text-xl font-bold text-[#2D488F] mb-2">
+                    Check Availability
+                  </h3>
+
+                  <p className="text-sm text-gray-700 text-center leading-relaxed">
+                    Select a green date box along with a time slot to request an intro call
+                  </p>
+                </div>
+
+
                 {/* Calendar Card */}
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -314,24 +429,31 @@ function Demo() {
                         {day}
                       </div>
                     ))}
-                    {generateCalendar().map((day, index) => (
-                      <button
-                        key={index}
-                        onClick={() => day && setSelectedDate(day)}
-                        disabled={!day}
-                        className={`aspect-square flex items-center justify-center text-sm rounded-lg transition-colors ${
-                          !day
-                            ? 'invisible'
-                            : day === selectedDate
-                            ? 'bg-[#2D488F] text-white font-bold'
-                            : day === 1
-                            ? 'bg-gray-900 text-white font-bold'
-                            : 'hover:bg-gray-100 text-gray-700'
-                        }`}
-                      >
-                        {day}
-                      </button>
-                    ))}
+                    {generateCalendar().map((day, index) => {
+                      const available = isDateAvailable(day);
+                      const unavailable = isDateUnavailable(day);
+                      
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => handleDateSelect(day)}
+                          disabled={!day}
+                          className={`aspect-square flex items-center justify-center text-sm rounded-lg transition-colors ${
+                            !day
+                              ? 'invisible'
+                              : day === selectedDate
+                              ? 'bg-[#2D488F] text-white font-bold ring-2 ring-[#2D488F] ring-offset-2'
+                              : unavailable
+                              ? 'bg-red-500 text-white font-medium cursor-not-allowed'
+                              : available
+                              ? 'bg-green-500 text-white font-medium hover:bg-green-600'
+                              : 'bg-gray-200 text-gray-500'
+                          }`}
+                        >
+                          {day}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -357,12 +479,22 @@ function Demo() {
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <button className="w-full bg-[#2D488F] text-white py-4 rounded-xl font-semibold hover:bg-[#1e3260] transition-colors shadow-lg">
-                    Check Availability
-                  </button>
-                  <button className="w-full bg-[#2D488F] text-white py-4 rounded-xl font-semibold hover:bg-[#1e3260] transition-colors shadow-lg">
+                  <button 
+                    onClick={handleIntroCallRequest}
+                    disabled={!selectedDate || !selectedTime || isDateUnavailable(selectedDate)}
+                    className={`w-full py-4 rounded-xl font-semibold transition-colors shadow-lg ${
+                      !selectedDate || !selectedTime || isDateUnavailable(selectedDate)
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-[#2D488F] text-white hover:bg-[#1e3260]'
+                    }`}
+                  >
                     Request Intro Call
                   </button>
+                  {bookingError && (
+                    <p className="text-red-600 text-sm text-center border-t-2 border-red-600 pt-2">
+                      {bookingError}
+                    </p>
+                  )}
                 </div>
 
                 {/* Mentorship Plans */}
@@ -397,7 +529,15 @@ function Demo() {
                             <span className="text-gray-600">/ month</span>
                           </div>
                           
-                          <button className="w-full bg-yellow-400 text-gray-900 py-3 rounded-lg font-bold hover:bg-yellow-500 transition-colors">
+                          <button 
+                            onClick={handleOptClick}
+                            disabled={isOptDisabled}
+                            className={`w-full py-3 rounded-lg font-bold transition-colors ${
+                              isOptDisabled
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
+                            }`}
+                          >
                             OPT
                           </button>
                         </div>
