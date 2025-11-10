@@ -1,17 +1,19 @@
-import { Star, Heart, Linkedin, Twitter, ChevronLeft, ChevronRight, Calendar, Briefcase, GraduationCap, MapPin, Mail, Phone } from 'lucide-react';
+import { Star, Heart, Linkedin, Twitter, ChevronLeft, ChevronRight, Calendar, Briefcase, GraduationCap, MapPin, Mail, Phone, CheckCircle, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Footer from '../../components/Footer';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../utils/AuthContext';
 
 function Demo() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [bookingError, setBookingError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to true if user is logged in
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const mentor = {
     name: 'Jessica Barney',
@@ -182,32 +184,20 @@ function Demo() {
     }
     
     setBookingError('');
-    // Proceed with intro call request
-    alert('Intro call requested successfully!');
+    // Show success modal
+    setShowSuccessModal(true);
   };
 
   // Handle OPT button click
   const handleOptClick = () => {
-    if (!isLoggedIn) {
-      navigate('/register');
+    if (!isAuthenticated) {
+      navigate('/login');
       return;
     }
     
-    if (!selectedDate || !selectedTime) {
-      setBookingError('Please select both date and time before opting for a plan');
-      return;
-    }
-    
-    if (isDateUnavailable(selectedDate)) {
-      setBookingError('Selected date is not available. Please choose a green date.');
-      return;
-    }
-    
-    navigate('/booking');
+    // If user is logged in, redirect to dashboard
+    navigate('/dashboard');
   };
-
-  // Check if OPT button should be disabled
-  const isOptDisabled = !isLoggedIn || !selectedDate || !selectedTime || isDateUnavailable(selectedDate);
 
   return (
     <div className="w-full bg-[#ECF0F6] min-h-screen">
@@ -531,12 +521,7 @@ function Demo() {
                           
                           <button 
                             onClick={handleOptClick}
-                            disabled={isOptDisabled}
-                            className={`w-full py-3 rounded-lg font-bold transition-colors ${
-                              isOptDisabled
-                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
-                            }`}
+                            className="w-full py-3 rounded-lg font-bold transition-colors bg-[#2D488F] text-white hover:bg-[#1e3260] shadow-lg"
                           >
                             OPT
                           </button>
@@ -550,6 +535,48 @@ function Demo() {
           </div>
         </div>
       </section>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowSuccessModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative transform transition-all"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            {/* Success Content */}
+            <div className="text-center">
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-[#2D488F] rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Intro Call Requested Successfully!
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Your intro call request has been submitted. The mentor will review your request and get back to you soon.
+              </p>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full py-3 rounded-lg font-semibold bg-[#2D488F] text-white hover:bg-[#1e3260] transition-colors shadow-lg"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
