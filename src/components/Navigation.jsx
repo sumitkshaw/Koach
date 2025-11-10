@@ -75,9 +75,9 @@ function Navigation() {
             <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
               Circle
             </a>
-            <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
+            {/* <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
               Resources
-            </a>
+            </a> */}
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
@@ -185,13 +185,13 @@ function Navigation() {
               Circle
             </a>
 
-            <a
+            {/* <a
               href="/resources"
               onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               Resources
-            </a>
+            </a> */}
 
             <a
               href="/contact"
