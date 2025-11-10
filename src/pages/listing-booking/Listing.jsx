@@ -41,7 +41,7 @@ function Listing() {
       company: 'PWC',
       experience: '6 years',
       rating: 4.0,
-      image: '/api/placeholder/200/200',
+      image: '/jessica.png',
       badge: 'New mentor',
       badgeType: 'secondary'
     },
@@ -150,10 +150,18 @@ function Listing() {
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
                 >
                   <div className="relative h-64 overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                      <span className="text-4xl font-bold text-gray-400">
-                        {mentor.name.split(' ').map(n => n[0]).join('')}
-                      </span>
+                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center overflow-hidden">
+                      {mentor.image && mentor.image !== '/api/placeholder/200/200' ? (
+                        <img 
+                          src={mentor.image} 
+                          alt={mentor.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-4xl font-bold text-gray-400">
+                          {mentor.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      )}
                     </div>
 
                     {mentor.badge && (
