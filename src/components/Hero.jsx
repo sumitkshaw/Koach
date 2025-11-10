@@ -78,6 +78,26 @@ function Hero() {
       .catch(() => console.log('Some hero images failed to preload'));
   }, []);
 
+  // Smooth scroll helper with easing and custom duration
+  const smoothScrollTo = (targetY, duration = 700) => {
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeInOutCubic(progress);
+      window.scrollTo(0, startY + distance * eased);
+      if (elapsed < duration) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  };
+
   return (
     <div className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,7 +115,15 @@ function Hero() {
 
             <div className="mt-10 text-left">
               <button 
-                onClick={() => navigate("/signup")}
+                onClick={() => {
+                  const target = document.getElementById("koach-search");
+                  if (target) {
+                    const rect = target.getBoundingClientRect();
+                    const scrollMarginTop = parseFloat(getComputedStyle(target).scrollMarginTop || "0");
+                    const targetY = window.pageYOffset + rect.top - (isNaN(scrollMarginTop) ? 0 : scrollMarginTop);
+                    smoothScrollTo(targetY, 700);
+                  }
+                }}
                 className="text-[#2D488F] font-bold bg-[#F5E649] px-4 py-2 hover:bg-[#f3e338] transition-colors text-lg rounded-md"
               >
                 Search for Koach

@@ -20,7 +20,7 @@ const KoachJourney = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-full lg:w-[600px]">
+        <div id="koach-search" className="w-full lg:w-[600px] scroll-mt-24">
           <h3 className="text-xl sm:text-2xl font-bold mb-4 text-left">Where are you looking to grow?</h3>
           <div className="flex flex-col sm:flex-row w-full border border-black overflow-hidden mb-5">
             <input
@@ -29,7 +29,7 @@ const KoachJourney = () => {
               className="flex-1 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
             <button 
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/listing")}
             className="px-4 py-3 bg-[#050A30] text-white font-semibold text-sm sm:text-base">
               Search for Koach
             </button>

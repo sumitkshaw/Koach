@@ -51,7 +51,18 @@ function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/">
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                if (user) {
+                  navigate("/dashboard");
+                } else {
+                  navigate("/");
+                }
+              }}
+              className="cursor-pointer"
+            >
               <img src={image3} alt="Koach" className="h-12 w-auto" />
             </a>
           </div>
@@ -95,7 +106,7 @@ function Navigation() {
                       {getInitials(user.displayName || user.email)}
                     </div>
                     <button
-                      onClick={logout}
+                      onClick={() => logout(navigate)}
                       className="text-sm text-[#2D488F] border border-[#2D488F] px-3 py-1 rounded-full"
                     >
                       Logout
@@ -211,7 +222,7 @@ function Navigation() {
                 </div>
                 <button
                   onClick={() => {
-                    logout();
+                    logout(navigate);
                     setIsMenuOpen(false);
                   }}
                   className="text-sm text-[#2D488F] bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-5 py-2 rounded-full hover:bg-[#2D488F] hover:text-white transition-all duration-300 font-medium shadow-sm"
