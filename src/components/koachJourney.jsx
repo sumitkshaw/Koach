@@ -10,8 +10,12 @@ const KoachJourney = () => {
       {/* Top Section */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16 mb-12 lg:mb-16">
         {/* Left Side - Text */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center">
-  <h1 className="text-5xl font-bold leading-[1.15] text-gray-900 tracking-tight mt-0">
+        {/* Left Side - Text */}
+<div className="w-full lg:w-1/2 flex flex-col justify-center">
+  <h1
+    className="text-[30px] lg:text-[48px] font-bold leading-tight text-gray-900 tracking-tight mt-0"
+    style={{ fontFamily: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial' }}
+  >
     Unleash Your Potential.
     <br />
     <span className="text-[#2D488F]">Koach Your Career</span> to the Next Level.
