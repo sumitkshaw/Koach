@@ -2,9 +2,7 @@ import heropic1 from '../assets/heropic1.jpg';
 import heropic2 from '../assets/heropic2.jpg';
 import heropic3 from '../assets/heropic3.jpg';
 import { useNavigate } from "react-router-dom";
-
 import { useState, useEffect } from 'react';
-
 
 const OptimizedImage = ({ src, alt, className, priority = false }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,11 +56,9 @@ const OptimizedImage = ({ src, alt, className, priority = false }) => {
 function Hero() {
   const navigate = useNavigate();
 
-  // Preload images on component mount
+  // Preload hero section images
   useEffect(() => {
     const imageUrls = [heropic1, heropic2, heropic3];
-    
-    // Create a promise for each image preload
     const preloadPromises = imageUrls.map((url) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -72,19 +68,19 @@ function Hero() {
       });
     });
 
-    // Optional: Log when all images are preloaded
     Promise.all(preloadPromises)
-      .then(() => console.log('All hero images preloaded'))
-      .catch(() => console.log('Some hero images failed to preload'));
+      .then(() => console.log('✅ All hero images preloaded'))
+      .catch(() => console.log('⚠️ Some hero images failed to preload'));
   }, []);
 
-  // Smooth scroll helper with easing and custom duration
+  // Smooth scroll helper
   const smoothScrollTo = (targetY, duration = 700) => {
     const startY = window.pageYOffset;
     const distance = targetY - startY;
     let startTime = null;
 
-    const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     const step = (timestamp) => {
       if (!startTime) startTime = timestamp;
@@ -102,6 +98,7 @@ function Hero() {
     <div className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+          
           {/* Left Content */}
           <div className="mb-12 lg:mb-0">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2D488F] text-left max-w-full sm:max-w-xl">
@@ -113,16 +110,37 @@ function Hero() {
               Aspiring to lead in your industry? Start with Koach. Harness the power of expert coaching and engaged peer networks to fast-track your journey to where you want to be.
             </p>
 
+            {/* Search Button - Scroll to Skill&Location image */}
             <div className="mt-10 text-left">
-              <button 
+              <button
                 onClick={() => {
                   const target = document.getElementById("koach-search");
-                  if (target) {
-                    const rect = target.getBoundingClientRect();
-                    const scrollMarginTop = parseFloat(getComputedStyle(target).scrollMarginTop || "0");
-                    const targetY = window.pageYOffset + rect.top - (isNaN(scrollMarginTop) ? 0 : scrollMarginTop);
-                    smoothScrollTo(targetY, 700);
-                  }
+                  if (!target) return;
+
+                  // Find the image inside #koach-search (Skill&Location.png)
+                  const img = target.querySelector('img') || target;
+                  const imgRect = img.getBoundingClientRect();
+
+                  // Scroll so the image is centered in the viewport
+                  const imgCenter =
+                    window.pageYOffset + imgRect.top + imgRect.height / 2;
+                  const viewportCenter = window.innerHeight / 2;
+                  let targetY = Math.round(imgCenter - viewportCenter);
+
+                  // OPTIONAL: scroll slightly above center
+                  // const offset = window.innerWidth < 768 ? 120 : 200;
+                  // targetY = Math.round(window.pageYOffset + imgRect.top - offset);
+
+                  // Clamp within scrollable area
+                  targetY = Math.max(
+                    0,
+                    Math.min(
+                      targetY,
+                      document.documentElement.scrollHeight - window.innerHeight
+                    )
+                  );
+
+                  smoothScrollTo(targetY, 700);
                 }}
                 className="text-[#2D488F] font-bold bg-[#F5E649] px-4 py-2 hover:bg-[#f3e338] transition-colors text-lg rounded-md"
               >

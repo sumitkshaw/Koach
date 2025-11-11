@@ -41,7 +41,9 @@ function MetricSection() {
   ];
 
   return (
-    <div className="bg-white py-8">
+    <div className="bg-white py-0">
+
+
       {/* Custom CSS for marquee animation */}
       <style>{`
         @keyframes marquee {
@@ -153,7 +155,7 @@ function MetricSection() {
         </div>
 
         {/* Mobile: Additional spacing for image overflow */}
-        <div className="block lg:hidden h-8"></div>
+        <div className="block lg:hidden h-0"></div>
       </div>
       </div>
     </div>

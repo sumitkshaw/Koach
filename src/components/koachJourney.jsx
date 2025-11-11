@@ -1,66 +1,36 @@
 import KoachJourney3 from '../assets/koachjourney3.jpg';
-// import video from '../assets/Copie a designului Koach video campaign.mp4';
+import SkillLocation from '../assets/Skill&Location.png';
 import { useNavigate } from 'react-router-dom';
 
 const KoachJourney = () => {
-  const skillTags = ['Sales', 'Design', 'Coding', 'Finance', 'Marketing', 'Management', 'Strategy'];
   const navigate = useNavigate();
-  
+
   return (
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       {/* Top Section */}
-      <div className="flex flex-col lg:flex-row justify-between gap-10 mb-20">
-        {/* Left Side */}
-        <div className="w-full lg:max-w-[500px]">
-          <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-6 text-left">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16 mb-12 lg:mb-16">
+        {/* Left Side - Text */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.08] text-gray-900 tracking-tight mt-0">
             Unleash Your Potential.
             <br />
-            Koach Your Career to the Next Level.
+            <span className="text-[#2D488F]">Koach Your Career</span> to the Next Level.
           </h1>
         </div>
 
-        {/* Right Side */}
-        <div id="koach-search" className="w-full lg:w-[600px] scroll-mt-24">
-          <h3 className="text-xl sm:text-2xl font-bold mb-4 text-left">Where are you looking to grow?</h3>
-          <div className="flex flex-col sm:flex-row w-full border border-black overflow-hidden mb-5">
-            <input
-              type="text"
-              placeholder="Search by Skills, Company, Role"
-              className="flex-1 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-            />
-            <button 
-            onClick={() => navigate("/listing")}
-            className="px-4 py-3 bg-[#050A30] text-white font-semibold text-sm sm:text-base">
-              Search for Koach
-            </button>
-          </div>
-
-          <div className="flex flex-wrap gap-3 justify-start">
-            {skillTags.map((tag, index) => (
-              <span
-                key={index}
-                className="px-4 py-1 border border-[#595959] text-[#595959] text-sm sm:text-base rounded-lg cursor-pointer"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* Right Side - Skill & Location Image */}
+        <div
+          id="koach-search"
+          className="w-full lg:w-1/2 flex justify-center items-center"
+        >
+          <img
+            src={SkillLocation}
+            alt="Skill and Location"
+            className="w-full max-w-lg h-auto object-contain rounded-xl shadow-md"
+            loading="lazy"
+          />
         </div>
       </div>
-
-      {/* Video Section */}
-      {/* <div className="w-full flex justify-center mb-20">
-        <video
-          className="w-full max-w-full rounded-3xl shadow-lg"
-          controls
-          autoPlay
-          loop
-          muted
-        >
-          <source src={video} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div> */}
 
       {/* Bottom Section */}
       <div className="relative rounded-3xl overflow-hidden">
@@ -77,7 +47,9 @@ const KoachJourney = () => {
               (Em)Powered by Experience. Leading the Future. Today.
             </p>
             <p className="text-base sm:text-lg font-medium">
-              We connect you with World-Class coaches who&apos;ve dominated their fields and domains and are ready to accelerate your professional-career goals.
+              We connect you with World-Class coaches who&apos;ve dominated their
+              fields and domains and are ready to accelerate your
+              professional-career goals.
             </p>
           </div>
         </div>
