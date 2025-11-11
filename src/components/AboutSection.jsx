@@ -56,7 +56,7 @@ export default function AboutSection() {
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 lg:py-16 xl:py-20">
       {/* Section 1 */}
-      <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12 lg:gap-16 xl:gap-20 mb-16 sm:mb-20 lg:mb-24 xl:mb-32">
+      <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-12 lg:gap-16 xl:gap-20 mb-16 sm:mb-20 lg:mb-2 xl:mb-4">
         <div className="lg:w-1/2 space-y-4 sm:space-y-6 lg:pr-8 xl:pr-12">
           <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight">
             Global Reach with Multilingual Support
@@ -92,7 +92,7 @@ export default function AboutSection() {
       </div>
 
       {/* Section 2 */}
-      <div className="flex flex-col-reverse lg:flex-row items-start gap-8 sm:gap-12 lg:gap-16 xl:gap-20 mb-16 sm:mb-20 lg:mb-24 xl:mb-32">
+      <div className="flex flex-col-reverse lg:flex-row items-start gap-8 sm:gap-12 lg:gap-16 xl:gap-20 mb-16 sm:mb-20 lg:mb-2 xl:mb-4">
         <div className="relative lg:w-1/2 w-full mt-4 lg:mt-0 min-h-[300px] sm:min-h-[400px] lg:min-h-[450px] xl:min-h-[500px]">
           <img
             src={Shade}

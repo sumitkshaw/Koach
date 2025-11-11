@@ -107,11 +107,11 @@ function Listing() {
       {/* Main Content */}
       <div className={`transition-all duration-500 ${sidebarOpen ? 'lg:ml-80' : 'lg:ml-0'}`}>
         {/* Header Section - Reduced Spacing */}
-        <section className="bg-white px-4 sm:px-6 md:px-12 lg:px-16 py-6 md:py-8 pt-24 sm:pt-28 md:pt-10">
+        <section className="bg-white px-4 sm:px-6 md:px-12 lg:px-16 py-6 md:py-8 pt-32 sm:pt-28 md:pt-20">
 
           <div className="max-w-7xl mx-auto">
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2D488F] mb-1 md:mb-2">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-[#2D488F] mb-1 md:mb-2">
               Mentors
             </h1>
 

@@ -144,7 +144,7 @@ export default function Testimonials() {
         {/* Testimonials Section */}
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">What our Customers say</h2>
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#4F46E5]">about us</h3>
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#2D488F]">about us</h3>
         </div>
 
         <div className="relative px-4 sm:px-8 lg:px-12">
@@ -180,7 +180,7 @@ export default function Testimonials() {
                         <h4 className="font-semibold text-gray-800 text-base">{testimonial.name}</h4>
                         <p className="text-gray-500 text-sm">{testimonial.role}</p>
                       </div>
-                      <div className="text-[#4F46E5] text-xs font-medium bg-[#EEF2FF] px-2 py-1 rounded">
+                      <div className="text-[#2D488F] text-xs font-medium bg-[#EEF2FF] px-2 py-1 rounded">
                         Mentor
                       </div>
                     </div>
