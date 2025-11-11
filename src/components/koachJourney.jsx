@@ -11,12 +11,13 @@ const KoachJourney = () => {
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16 mb-12 lg:mb-16">
         {/* Left Side - Text */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.08] text-gray-900 tracking-tight mt-0">
-            Unleash Your Potential.
-            <br />
-            <span className="text-[#2D488F]">Koach Your Career</span> to the Next Level.
-          </h1>
-        </div>
+  <h1 className="text-5xl font-bold leading-[1.15] text-gray-900 tracking-tight mt-0">
+    Unleash Your Potential.
+    <br />
+    <span className="text-[#2D488F]">Koach Your Career</span> to the Next Level.
+  </h1>
+</div>
+
 
         {/* Right Side - Skill & Location Image */}
         <div
