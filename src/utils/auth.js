@@ -70,12 +70,15 @@ export const login = async (email, password) => {
 // OAuth login
 export const loginWithOAuth = async (provider, successUrl, failureUrl) => {
   try {
+    // Set success URL to /past-experience
+    const successUrl = `${window.location.origin}/past-experience`;
     await account.createOAuth2Session(
       provider,
-      successUrl || `${window.location.origin}/dashboard`,
+      successUrl,  // Redirect to /past-experience after successful OAuth
       failureUrl || `${window.location.origin}/login`
     );
   } catch (error) {
+    console.error('OAuth login error:', error);
     throw new Error(`OAuth login failed: ${error.message}`);
   }
 };
