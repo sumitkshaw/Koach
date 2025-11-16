@@ -24,7 +24,8 @@ import Certifications  from "./pages/MentorOnboarding/Certifications";
 import Planning from "./pages/MentorOnboarding/Plans";
 import Clients from "./pages/MentorOnboarding/Clients";
 import GoalsStep from "./pages/MentorOnboarding/Goals";
-import WelcomeAboard from "./pages/WelcomeAboard";
+import WelcomeAboard from "./pages/MentorOnboarding/WelcomeAboard.jsx";
+import WelcomeUser from "./pages/MenteeOnboard/WelcomeUser.jsx";
 
 import NotFound from "./pages/NotFound";
 
@@ -102,6 +103,7 @@ function AppContent() {
         <Route path="/clients" element={<Clients />} />
         <Route path="/goals" element={<GoalsStep />} />
         <Route path="/welcome-aboard" element={<WelcomeAboard />} />
+        <Route path="/welcome-user" element={<WelcomeUser />} />
         <Route path="/past-experience" element={<PastExp />} />
         <Route path="/qualities" element={<Qualities />} />
         <Route path="/reasons" element={<Reasons />} />

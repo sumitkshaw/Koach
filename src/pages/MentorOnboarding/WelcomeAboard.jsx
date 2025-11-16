@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logowhite.png";
-import WelcomeAboardImage from "../assets/welcomeAboard.png";
+import Logo from "./../../assets/logowhite.png";
+import WelcomeAboardImage from "./../../assets/welcomeAboard.png";
 
 export default function WelcomeAboard() {
   const navigate = useNavigate();
 
   const handleConfirm = () => {
     console.log("User confirmed welcome aboard");
-    navigate("/dashboard");
+    navigate("/dashboard_mentor");
   };
 
   const handleBack = () => {
