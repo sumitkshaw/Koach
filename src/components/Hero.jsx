@@ -3,6 +3,7 @@ import heropic2 from '../assets/heropic2.jpg';
 import heropic3 from '../assets/heropic3.jpg';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import SearchPopup from './SearchPopup';
 
 const OptimizedImage = ({ src, alt, className, priority = false }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -55,6 +56,7 @@ const OptimizedImage = ({ src, alt, className, priority = false }) => {
 
 function Hero() {
   const navigate = useNavigate();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Preload hero section images
   useEffect(() => {
@@ -140,12 +142,17 @@ function Hero() {
                     )
                   );
 
-                  smoothScrollTo(targetY, 700);
+                    smoothScrollTo(targetY, 700);
                 }}
-                className="text-[#2D488F] font-bold bg-[#F5E649] px-4 py-2 hover:bg-[#f3e338] transition-colors text-lg rounded-md"
+                onClick={() => setIsSearchOpen(true)}
+                className="text-[#2D488F] font-bold bg-[#F5E649] px-6 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-lg shadow-md hover:shadow-lg"
               >
                 Search for Koach
               </button>
+              <SearchPopup 
+                isOpen={isSearchOpen} 
+                onClose={() => setIsSearchOpen(false)} 
+              />
             </div>
           </div>
 
