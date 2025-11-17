@@ -77,30 +77,18 @@ function Navigation() {
             <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
               Circle
             </a>
-            {/* <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
-              Resources
-            </a> */}
+            <a href="/listing" className="text-[#2D488F] hover:text-blue-700">
+              Koach
+            </a>
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
           </div>
 
-          {/* Desktop Auth / Search */}
+          {/* Desktop Auth */}
           <div className="hidden md:flex items-center space-x-4">
             {location.pathname !== "/about" && (
               <>
-                <div className="flex items-center gap-2 bg-blue-50/50 hover:bg-blue-50/80 transition-all duration-300 rounded-full px-4 py-2 cursor-pointer border border-blue-100/50">
-                  <span
-                    className="text-[#2D488F] text-sm font-medium hover:text-blue-700 transition-colors"
-                    onClick={() => navigate("/listing")}
-                  >
-                    Search for mentor
-                  </span>
-                  <Search
-                    className="h-4 w-4 text-[#2D488F] cursor-pointer hover:text-blue-700 transition-colors"
-                    onClick={() => navigate("/listing")}
-                  />
-                </div>
 
                 {!isDashboardRoute && (
                   <div className="flex items-center space-x-4">
@@ -202,19 +190,13 @@ function Navigation() {
               Contact
             </a>
 
-            {/* Search For Mentor */}
-            <div
-              className="flex items-center justify-between gap-3 py-3 px-4 rounded-2xl bg-blue-50/50 hover:bg-blue-50/80 transition-all duration-300 cursor-pointer border border-blue-100/50"
-              onClick={() => {
-                navigate("/listing");
-                setIsMenuOpen(false);
-              }}
+            <a
+              href="/listing"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
-              <span className="text-[#2D488F] text-sm font-medium">
-                Search for mentor
-              </span>
-              <Search className="h-4 w-4 text-[#2D488F]" />
-            </div>
+              Koach
+            </a>
 
             {user ? (
               <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30">
