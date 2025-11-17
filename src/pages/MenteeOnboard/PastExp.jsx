@@ -14,7 +14,7 @@ import Option8Icon from "../../assets/experience/option8.png";
 
 export default function WhoIsAdam() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState([]);
 
   const experiences = [
     { 
@@ -52,11 +52,15 @@ export default function WhoIsAdam() {
   ];
 
   const handleSelect = (experience) => {
-    setSelected(experience.label);
+    setSelected(prev => 
+      prev.includes(experience.label)
+        ? prev.filter(item => item !== experience.label)
+        : [...prev, experience.label]
+    );
   };
 
   const handleNext = () => {
-    console.log("Selected experience:", selected);
+    console.log("Selected experiences:", selected);
     navigate("/timeline");
   };
 
@@ -103,7 +107,7 @@ export default function WhoIsAdam() {
                 key={index}
                 onClick={() => handleSelect(experience)}
                 className={`flex items-center gap-3 p-4 border rounded-full text-left transition ${
-                  selected === experience.label
+                  selected.includes(experience.label)
                     ? "border-[#FFD93B] bg-[#FFFBEA]"
                     : "border-gray-300 bg-white hover:border-gray-400"
                 }`}
@@ -133,9 +137,9 @@ export default function WhoIsAdam() {
               </button>
               <button
                 onClick={handleNext}
-                disabled={!selected}
+                disabled={selected.length === 0}
                 className={`w-32 py-3 rounded transition ${
-                  selected 
+                  selected.length > 0
                     ? "bg-[#FFD93B] text-[#4A90E2] hover:opacity-90" 
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}

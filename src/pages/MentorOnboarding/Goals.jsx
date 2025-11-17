@@ -14,7 +14,7 @@ import Option8Icon from "../../assets/Goals/option8.png";
 
 export default function Goals() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState([]);
   const [otherText, setOtherText] = useState("");
 
   const goals = [
@@ -53,13 +53,31 @@ export default function Goals() {
   ];
 
   const handleSelect = (goal) => {
-    setSelected(goal.label);
-    if (goal.label !== "Other") setOtherText("");
+    if (goal.label === "Other") {
+      setSelected(prev => 
+        prev.includes("Other")
+          ? prev.filter(item => item !== "Other")
+          : [...prev, "Other"]
+      );
+    } else {
+      setSelected(prev => 
+        prev.includes(goal.label)
+          ? prev.filter(item => item !== goal.label)
+          : [...prev, goal.label]
+      );
+      // Only clear otherText if "Other" is not selected
+      if (!selected.includes("Other")) {
+        setOtherText("");
+      }
+    }
   };
 
   const handleNext = () => {
-    const result = selected === "Other" ? otherText : selected;
-    console.log("Selected goal:", result);
+    let result = [...selected];
+    if (selected.includes("Other") && otherText) {
+      result = result.filter(item => item !== "Other").concat(otherText);
+    }
+    console.log("Selected goals:", result);
     navigate("/welcome-aboard");
   };
 
@@ -102,9 +120,9 @@ export default function Goals() {
                 key={goal.label}
                 onClick={() => handleSelect(goal)}
                 className={`flex items-center gap-3 p-4 border rounded-lg text-left transition ${
-                  selected === goal.label
+                  selected.includes(goal.label)
                     ? "border-[#FFD93B] bg-[#FFFBEA]"
-                    : "border-gray-300 bg-white"
+                    : "border-gray-300 bg-white hover:bg-gray-50"
                 }`}
               >
                 <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
@@ -120,7 +138,7 @@ export default function Goals() {
           </div>
 
           {/* Textbox for "Other" */}
-          {selected === "Other" && (
+          {selected.includes("Other") && (
             <input
               type="text"
               value={otherText}

@@ -6,13 +6,10 @@ import GearsImage from "../../assets/Gear.png";
 export default function Sessions() {
   const navigate = useNavigate();
   const [numberOfSessions, setNumberOfSessions] = useState("1");
-  const [frequencyValue, setFrequencyValue] = useState("1");
-  const [frequencyType, setFrequencyType] = useState("Weekly");
 
   const handleNext = () => {
     const sessionData = {
-      numberOfSessions: numberOfSessions,
-      frequency: `${frequencyValue} times ${frequencyType.toLowerCase()}`
+      numberOfSessions: numberOfSessions
     };
     console.log("Selected session configuration:", sessionData);
     navigate("/qualities");
@@ -50,7 +47,7 @@ export default function Sessions() {
               About Sessions
             </h2>
             <p className="text-lg text-[#4A90E2] text-center font-medium">
-              How often would you like session be hosted by your coach?
+              How many sessions would you like to book with your coach?
             </p>
           </div>
 
@@ -81,53 +78,11 @@ export default function Sessions() {
               </div>
             </div>
 
-            {/* Frequency of Sessions */}
-            <div>
-              <label className="block text-[#4A90E2] font-medium mb-2">
-                Frequency of sessions
-              </label>
-              <div className="relative">
-                <select
-                  value={frequencyValue}
-                  onChange={(e) => setFrequencyValue(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg bg-white text-[#4A90E2] font-medium focus:border-[#4A90E2] focus:outline-none appearance-none pr-8"
-                >
-                  {[...Array(10)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Weekly/Monthly Toggle */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setFrequencyType("Weekly")}
-                className={`flex-1 py-3 px-6 rounded-full font-medium transition ${
-                  frequencyType === "Weekly"
-                    ? "bg-[#4A90E2] text-white"
-                    : "bg-white border border-gray-300 text-[#4A90E2] hover:border-[#4A90E2]"
-                }`}
-              >
-                Weekly
-              </button>
-              <button
-                onClick={() => setFrequencyType("Monthly")}
-                className={`flex-1 py-3 px-6 rounded-full font-medium transition ${
-                  frequencyType === "Monthly"
-                    ? "bg-[#4A90E2] text-white"
-                    : "bg-white border border-gray-300 text-[#4A90E2] hover:border-[#4A90E2]"
-                }`}
-              >
-                Monthly
-              </button>
+            {/* Session Duration Info */}
+            <div className="p-4 bg-blue-50 rounded-lg text-center">
+              <p className="text-[#4A90E2] font-medium">
+                Each session will be 60 minutes long
+              </p>
             </div>
           </div>
 

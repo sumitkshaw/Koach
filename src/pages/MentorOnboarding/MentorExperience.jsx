@@ -15,7 +15,7 @@ import SuccessIcon from "../../assets/expert-symbols/success.png";
 
 export default function MentorExperience() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState([]);
 
   const expertiseOptions = [
     { label: "Transitional", icon: TransitionalIcon },
@@ -30,11 +30,16 @@ export default function MentorExperience() {
   ];
 
   const handleSelect = (option) => {
-    setSelected(option);
+    setSelected(prev =>
+      prev.includes(option)
+        ? prev.filter(item => item !== option)
+        : [...prev, option]
+    );
   };
 
   const handleNext = () => {
-    if (selected) {
+    if (selected.length > 0) {
+      console.log("Selected expertise:", selected);
       navigate("/skills");
     }
   };
@@ -77,19 +82,19 @@ export default function MentorExperience() {
                 onClick={() => handleSelect(option.label)}
                 className={`cursor-pointer flex items-center py-5 px-4 border rounded-md transition 
                   ${
-                    selected === option.label
+                    selected.includes(option.label)
                       ? "bg-[#2A4FB0] text-white border-[#001F54]"
-                      : "border-[#001F54] text-[#001F54] bg-white"
+                      : "border-[#001F54] text-[#001F54] bg-white hover:bg-gray-50"
                   }`}
               >
                 <img
                   src={option.icon}
                   alt={option.label + " icon"}
                   className={`h-8 w-8 mr-4 transition-all duration-200 ${
-                    selected === option.label ? "filter invert brightness-0" : "filter"
+                    selected.includes(option.label) ? "filter invert brightness-0" : "filter"
                   }`}
                   style={{
-                    filter: selected === option.label
+                    filter: selected.includes(option.label)
                       ? "invert(100%) brightness(200%)"
                       : "invert(27%) sepia(94%) saturate(749%) hue-rotate(191deg) brightness(92%) contrast(101%)"
                   }}
@@ -110,9 +115,9 @@ export default function MentorExperience() {
               </button>
               <button
                 onClick={handleNext}
-                disabled={!selected}
+                disabled={selected.length === 0}
                 className={`w-40 py-3 rounded transition ${
-                  selected
+                  selected.length > 0
                     ? "bg-[#FFD93B] text-[#1E4AB8] hover:opacity-90"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}

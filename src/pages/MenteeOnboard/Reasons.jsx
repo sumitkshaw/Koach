@@ -13,7 +13,7 @@ import Option7Icon from "../../assets/GoalMentee/option7.png";
 
 export default function GoalsMentee() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState([]);
   const [otherText, setOtherText] = useState("");
 
   const goals = [
@@ -48,13 +48,30 @@ export default function GoalsMentee() {
   ];
 
   const handleSelect = (goal) => {
-    setSelected(goal.label);
-    if (goal.label !== "Other") setOtherText("");
+    if (goal.label === "Other") {
+      setSelected(prev => 
+        prev.includes("Other")
+          ? prev.filter(item => item !== "Other")
+          : [...prev, "Other"]
+      );
+    } else {
+      setSelected(prev => 
+        prev.includes(goal.label)
+          ? prev.filter(item => item !== goal.label)
+          : [...prev, goal.label]
+      );
+      if (!selected.includes("Other")) {
+        setOtherText("");
+      }
+    }
   };
 
   const handleNext = () => {
-    const result = selected === "Other" ? otherText : selected;
-    console.log("Selected goal:", result);
+    let result = [...selected];
+    if (selected.includes("Other") && otherText) {
+      result = result.filter(item => item !== "Other").concat(otherText);
+    }
+    console.log("Selected goals:", result);
     navigate("/welcome-aboard");
   };
 
@@ -101,7 +118,7 @@ export default function GoalsMentee() {
                 key={index}
                 onClick={() => handleSelect(goal)}
                 className={`flex items-center gap-3 p-4 border rounded-full text-left transition ${
-                  selected === goal.label
+                  selected.includes(goal.label)
                     ? "border-[#FFD93B] bg-[#FFFBEA]"
                     : "border-gray-300 bg-white hover:border-gray-400"
                 }`}
@@ -121,7 +138,7 @@ export default function GoalsMentee() {
           </div>
 
           {/* Textbox for "Other" */}
-          {selected === "Other" && (
+          {selected.includes("Other") && (
             <input
               type="text"
               value={otherText}
@@ -142,9 +159,9 @@ export default function GoalsMentee() {
               </button>
               <button
                 onClick={handleNext}
-                disabled={!selected}
+                disabled={selected.length === 0}
                 className={`w-32 py-3 rounded transition ${
-                  selected 
+                  selected.length > 0
                     ? "bg-[#FFD93B] text-[#4A90E2] hover:opacity-90" 
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}

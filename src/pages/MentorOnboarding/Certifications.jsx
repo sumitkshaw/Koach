@@ -15,7 +15,7 @@ import OthersIcon from "../../assets/Certifications/GLOBE.png";
 
 export default function Certifications() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState([]);
   const [otherText, setOtherText] = useState("");
 
   // Certification options with icons
@@ -31,13 +31,31 @@ export default function Certifications() {
   ];
 
   const handleSelect = (cert) => {
-    setSelected(cert.label);
-    if (cert.label !== "Others") setOtherText("");
+    if (cert.label === "Others") {
+      setSelected(prev => 
+        prev.includes("Others") 
+          ? prev.filter(item => item !== "Others") 
+          : [...prev, "Others"]
+      );
+    } else {
+      setSelected(prev => 
+        prev.includes(cert.label)
+          ? prev.filter(item => item !== cert.label)
+          : [...prev, cert.label]
+      );
+      // Only clear otherText if "Others" is not selected
+      if (!selected.includes("Others")) {
+        setOtherText("");
+      }
+    }
   };
 
   const handleNext = () => {
-    const result = selected === "Others" ? otherText : selected;
-    console.log("Selected certification:", result);
+    let result = [...selected];
+    if (selected.includes("Others") && otherText) {
+      result = result.filter(item => item !== "Others").concat(otherText);
+    }
+    console.log("Selected certifications:", result);
     navigate("/planning");
   };
 
@@ -83,9 +101,9 @@ export default function Certifications() {
                 key={cert.label}
                 onClick={() => handleSelect(cert)}
                 className={`flex items-center gap-3 p-4 border rounded-lg text-left transition ${
-                  selected === cert.label
+                  selected.includes(cert.label)
                     ? "border-[#FFD93B] bg-[#FFFBEA]"
-                    : "border-gray-300 bg-white"
+                    : "border-gray-300 bg-white hover:bg-gray-50"
                 }`}
               >
                 <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
@@ -101,7 +119,7 @@ export default function Certifications() {
           </div>
 
           {/* Textbox for "Others" */}
-          {selected === "Others" && (
+          {selected.includes("Others") && (
             <input
               type="text"
               value={otherText}
