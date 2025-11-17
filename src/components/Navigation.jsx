@@ -45,6 +45,8 @@ function Navigation() {
       .toUpperCase();
   };
 
+  const isDashboardRoute = location.pathname.startsWith('/dashboard');
+
   return (
     <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -100,33 +102,32 @@ function Navigation() {
                   />
                 </div>
 
-                {user ? (
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#2D488F] text-white font-semibold">
-                      {getInitials(user.displayName || user.email)}
-                    </div>
-                    <button
-                      onClick={() => logout(navigate)}
-                      className="text-sm text-[#2D488F] border border-[#2D488F] px-3 py-1 rounded-full"
-                    >
-                      Logout
-                    </button>
+                {!isDashboardRoute && (
+                  <div className="flex items-center space-x-4">
+                    {user ? (
+                      <button
+                        onClick={() => logout(navigate)}
+                        className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <>
+                        <a
+                          href="/login"
+                          className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                        >
+                          Log in
+                        </a>
+                        <a
+                          href="/signup"
+                          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                        >
+                          Get started
+                        </a>
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <>
-                    <a
-                      href="/login"
-                      className="text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full transition duration-300"
-                    >
-                      Log in
-                    </a>
-                    <a
-                      href="/signup"
-                      className="text-[#2D488F] hover:text-blue-700 text-sm border border-[#2D488F] px-4 py-2 rounded-full transition duration-300"
-                    >
-                      Register
-                    </a>
-                  </>
                 )}
               </>
             )}
