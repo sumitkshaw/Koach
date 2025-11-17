@@ -167,6 +167,14 @@ function Navigation() {
             </a>
 
             <a
+              href="/listing"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+            >
+              Koach
+            </a>
+            
+            <a
               href="/circles"
               onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
@@ -174,28 +182,12 @@ function Navigation() {
               Circle
             </a>
 
-            {/* <a
-              href="/resources"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
-            >
-              Resources
-            </a> */}
-
             <a
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               Contact
-            </a>
-
-            <a
-              href="/listing"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
-            >
-              Koach
             </a>
 
             {user ? (
