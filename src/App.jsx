@@ -67,7 +67,7 @@ function AppContent() {
   const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me", 
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
      "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
-     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/planning", "/clients", "/goals"];
+     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/planning", "/clients", "/goals", "/welcome-user"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (

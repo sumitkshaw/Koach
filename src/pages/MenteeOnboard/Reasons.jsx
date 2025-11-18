@@ -72,7 +72,7 @@ export default function GoalsMentee() {
       result = result.filter(item => item !== "Other").concat(otherText);
     }
     console.log("Selected goals:", result);
-    navigate("/welcome-aboard");
+    navigate("/welcome-user");
   };
 
   const handleBack = () => {

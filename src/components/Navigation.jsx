@@ -58,7 +58,15 @@ function Navigation() {
               onClick={(e) => {
                 e.preventDefault();
                 if (user) {
-                  navigate("/dashboard");
+                  // Check which dashboard the user is currently on
+                  if (location.pathname.startsWith('/dashboard_mentor')) {
+                    navigate("/dashboard_mentor");
+                  } else if (location.pathname.startsWith('/dashboard')) {
+                    navigate("/dashboard");
+                  } else {
+                    // If not on any dashboard, redirect to regular dashboard
+                    navigate("/dashboard");
+                  }
                 } else {
                   navigate("/");
                 }
@@ -80,43 +88,52 @@ function Navigation() {
             <a href="/listing" className="text-[#2D488F] hover:text-blue-700">
               Koach
             </a>
+            {/* <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
+              Resources
+            </a> */}
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
           </div>
 
-          {/* Desktop Auth */}
+          {/* Desktop Auth - Now shows for ALL pages */}
           <div className="hidden md:flex items-center space-x-4">
             {location.pathname !== "/about" && (
               <>
-
-                {!isDashboardRoute && (
-                  <div className="flex items-center space-x-4">
-                    {user ? (
+                {/* Show profile and logout for ALL pages when user is logged in */}
+                <div className="flex items-center space-x-4">
+                  {user ? (
+                    <>
+                      {/* Profile Picture with Initials */}
+                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-md">
+                        {getInitials(user.displayName || user.email)}
+                      </div>
+                      
+                      {/* Logout Button */}
                       <button
                         onClick={() => logout(navigate)}
-                        className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                        className="text-gray-600 hover:text-white hover:bg-[#2D488F] border border-gray-300 hover:border-[#2D488F] px-4 py-2 rounded-md text-sm font-medium transition-all duration-300"
                       >
                         Logout
                       </button>
-                    ) : (
-                      <>
-                        <a
-                          href="/login"
-                          className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-                        >
-                          Log in
-                        </a>
-                        <a
-                          href="/signup"
-                          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
-                        >
-                          Get started
-                        </a>
-                      </>
-                    )}
-                  </div>
-                )}
+                    </>
+                  ) : (
+                    <>
+                      <a
+                        href="/login"
+                        className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                      >
+                        Log in
+                      </a>
+                      <a
+                        href="/signup"
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                      >
+                        Get started
+                      </a>
+                    </>
+                  )}
+                </div>
               </>
             )}
           </div>

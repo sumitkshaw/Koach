@@ -112,7 +112,6 @@ export default function Sessions() {
               <p className="text-[#1E4AB8] font-medium">
                 <span className="block text-lg font-semibold mb-1">Session Details</span>
                 <span className="block">• {numberOfSessions} {numberOfSessions === '1' ? 'session' : 'sessions'}</span>
-                <span className="block">• 60 minutes each</span>
                 <span className="block">• {frequency === 'weekly' ? 'Weekly schedule' : 'Monthly schedule'}</span>
               </p>
             </div>
