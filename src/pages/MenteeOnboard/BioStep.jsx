@@ -146,7 +146,7 @@ export default function BioStep() {
           <div className="flex justify-center mt-10 w-full">
             <div className="flex gap-8 w-full justify-center">
               <button
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/welcome-step")}
                 className="w-40 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
               >
                 Back

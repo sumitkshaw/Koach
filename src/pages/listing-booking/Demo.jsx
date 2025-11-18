@@ -1111,7 +1111,7 @@ function Demo() {
                 type="submit"
                 className="w-full py-3.5 rounded-xl font-semibold bg-gradient-to-r from-[#2D488F] to-[#1e3260] text-white hover:opacity-90 transition-all transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl active:scale-95"
               >
-                Pay $${(selectedPlan.price * 1.02).toFixed(2)}
+                Pay ${(selectedPlan.price * 1.02).toFixed(2)}
               </button>
 
               <div className="mt-3 flex items-center justify-center">

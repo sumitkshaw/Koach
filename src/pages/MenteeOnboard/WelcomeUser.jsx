@@ -11,7 +11,7 @@ export default function WelcomeUser() {
   };
 
   const handleBack = () => {
-    navigate("/goals");
+    navigate("/reasons");
   }; 
 
   return (

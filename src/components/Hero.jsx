@@ -75,26 +75,7 @@ function Hero() {
       .catch(() => console.log('⚠️ Some hero images failed to preload'));
   }, []);
 
-  // Smooth scroll helper
-  const smoothScrollTo = (targetY, duration = 700) => {
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    const easeInOutCubic = (t) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeInOutCubic(progress);
-      window.scrollTo(0, startY + distance * eased);
-      if (elapsed < duration) requestAnimationFrame(step);
-    };
-
-    requestAnimationFrame(step);
-  };
+  
 
   return (
     <div className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
@@ -115,35 +96,6 @@ function Hero() {
             {/* Search Button - Scroll to Skill&Location image */}
             <div className="mt-10 text-left">
               <button
-                onClick={() => {
-                  const target = document.getElementById("koach-search");
-                  if (!target) return;
-
-                  // Find the image inside #koach-search (Skill&Location.png)
-                  const img = target.querySelector('img') || target;
-                  const imgRect = img.getBoundingClientRect();
-
-                  // Scroll so the image is centered in the viewport
-                  const imgCenter =
-                    window.pageYOffset + imgRect.top + imgRect.height / 2;
-                  const viewportCenter = window.innerHeight / 2;
-                  let targetY = Math.round(imgCenter - viewportCenter);
-
-                  // OPTIONAL: scroll slightly above center
-                  // const offset = window.innerWidth < 768 ? 120 : 200;
-                  // targetY = Math.round(window.pageYOffset + imgRect.top - offset);
-
-                  // Clamp within scrollable area
-                  targetY = Math.max(
-                    0,
-                    Math.min(
-                      targetY,
-                      document.documentElement.scrollHeight - window.innerHeight
-                    )
-                  );
-
-                    smoothScrollTo(targetY, 700);
-                }}
                 onClick={() => setIsSearchOpen(true)}
                 className="text-[#2D488F] font-bold bg-[#F5E649] px-6 py-3 hover:bg-[#f3e338] transition-colors text-lg rounded-lg shadow-md hover:shadow-lg"
               >
