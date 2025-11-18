@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logowhite.png";
-import BrazucaPlanning from "../assets/brazuca_planning.png";
+import Logo from "../../assets/logowhite.png";
+import BrazucaPlanning from "../../assets/brazuca_planning.png";
 
 export default function BioStep() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function BioStep() {
 
   const handleNext = () => {
     //store formData in context or backend here
-    navigate("/about-me");
+    navigate("/mentor-experience");
   };
 
   return (
@@ -146,7 +146,7 @@ export default function BioStep() {
           <div className="flex justify-center mt-10 w-full">
             <div className="flex gap-8 w-full justify-center">
               <button
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/welcome-step#")}
                 className="w-40 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
               >
                 Back

@@ -10,7 +10,7 @@ export default function AboutMe() {
   const handleNext = () => {
     console.log("Bio submitted:", bio);
     // Save bio to backend / firestore here
-    navigate("/welcome-step"); //next onboarding step
+    navigate("/welcome-step#"); //next onboarding step
   };
 
   return (

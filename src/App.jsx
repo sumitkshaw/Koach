@@ -14,7 +14,10 @@ import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import BioStep from "./pages/BioStep";
+
+import BioStep from "./pages/MenteeOnboard/BioStep";
+import BioStep1 from "./pages/MentorOnboarding/Bio-Step1.jsx"
+
 import AboutMe from "./pages/AboutMe";
 import WelcomeStep from "./pages/Welcome";
 import MentorExperience from "./pages/MentorOnboarding/MentorExperience";
@@ -67,7 +70,8 @@ function AppContent() {
   const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me", 
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
      "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
-     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/planning", "/clients", "/goals", "/welcome-user"];
+     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", 
+     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -93,6 +97,7 @@ function AppContent() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/bio-step" element={<BioStep />} />
+        <Route path="/bio-step1" element={<BioStep1 />} />
         <Route path="/about-me" element={<AboutMe />} />
         <Route path="/welcome-step" element={<WelcomeStep />} />
         <Route path="/mentor-experience" element={<MentorExperience />} />

@@ -65,7 +65,7 @@ export default function WhoIsAdam() {
   };
 
   const handleBack = () => {
-    navigate("/welcome-step");
+    navigate("/bio-step");
   };
 
   return (

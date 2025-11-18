@@ -11,9 +11,9 @@ export default function Welcome() {
 
   const handleNext = () => {
     if (selected === "mentee") {
-      navigate("/past-experience");
+      navigate("/bio-step");
     } else if (selected === "mentor") {
-      navigate("/mentor-experience");
+      navigate("/bio-step1");
     }
   };
 
@@ -78,12 +78,12 @@ export default function Welcome() {
           {/* Buttons */}
           <div className="flex justify-center mt-4 w-full">
             <div className="flex gap-4 w-full justify-center">
-              <button
+              {/* <button
                 onClick={() => navigate("/about-me")}
                 className="w-32 py-3 border border-[#FFD93B] text-[#4A90E2] rounded hover:bg-[#FFD93B] transition"
               >
                 Back
-              </button>
+              </button> */}
               <button
                 onClick={handleNext}
                 disabled={!selected}

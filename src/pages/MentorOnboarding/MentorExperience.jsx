@@ -108,7 +108,7 @@ export default function MentorExperience() {
           <div className="flex justify-center mt-12 w-full">
             <div className="flex gap-8 w-full justify-center">
               <button
-                onClick={() => navigate("/welcome-step")}
+                onClick={() => navigate("/bio-step1")}
                 className="w-40 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
               >
                 Back

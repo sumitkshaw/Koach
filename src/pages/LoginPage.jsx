@@ -114,18 +114,20 @@ export default function LoginPage() {
         </div>
       )}
 
-      <div className="flex flex-1">
+      {/* Main Content */}
+      <div className="flex flex-1 bg-gray-50">
         {/* Left Panel - Form */}
-        <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center px-8 py-12 lg:px-16 relative">
+        <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center px-8 py-12 lg:px-16">
           {/* Back Button */}
           <button
             onClick={() => navigate("/")}
             className="absolute top-8 left-8 p-2 text-gray-500 hover:text-gray-700 transition-colors"
-            aria-label="Back to home"
           >
             <ChevronLeft size={24} />
           </button>
+          <br />
 
+          {/* Content Container */}
           <div className="max-w-md mx-auto w-full">
             {/* Logo */}
             <div className="mb-2">
