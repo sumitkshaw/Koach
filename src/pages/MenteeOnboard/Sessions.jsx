@@ -6,10 +6,12 @@ import GearsImage from "../../assets/Gear.png";
 export default function Sessions() {
   const navigate = useNavigate();
   const [numberOfSessions, setNumberOfSessions] = useState("1");
+  const [frequency, setFrequency] = useState("weekly");
 
   const handleNext = () => {
     const sessionData = {
-      numberOfSessions: numberOfSessions
+      numberOfSessions: numberOfSessions,
+      frequency: frequency
     };
     console.log("Selected session configuration:", sessionData);
     navigate("/qualities");
@@ -78,10 +80,40 @@ export default function Sessions() {
               </div>
             </div>
 
+            {/* Frequency Selection */}
+            <div className="mt-2">
+              <div className="flex justify-center">
+                <div className="inline-flex items-center bg-gray-100 rounded-full p-1">
+                  <button
+                    type="button"
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${frequency === 'weekly' ? 'bg-white text-[#1E4AB8] shadow-sm' : 'text-gray-500'}`}
+                    onClick={() => setFrequency('weekly')}
+                  >
+                    Weekly
+                  </button>
+                  <button
+                    type="button"
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${frequency === 'monthly' ? 'bg-white text-[#1E4AB8] shadow-sm' : 'text-gray-500'}`}
+                    onClick={() => setFrequency('monthly')}
+                  >
+                    Monthly
+                  </button>
+                </div>
+              </div>
+              <p className="mt-3 text-center text-sm text-gray-500">
+                {frequency === 'weekly' 
+                  ? 'Sessions will be scheduled weekly' 
+                  : 'Sessions will be scheduled monthly'}
+              </p>
+            </div>
+
             {/* Session Duration Info */}
-            <div className="p-4 bg-blue-50 rounded-lg text-center">
-              <p className="text-[#4A90E2] font-medium">
-                Each session will be 60 minutes long
+            <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl text-center border border-blue-100">
+              <p className="text-[#1E4AB8] font-medium">
+                <span className="block text-lg font-semibold mb-1">Session Details</span>
+                <span className="block">• {numberOfSessions} {numberOfSessions === '1' ? 'session' : 'sessions'}</span>
+                <span className="block">• 60 minutes each</span>
+                <span className="block">• {frequency === 'weekly' ? 'Weekly schedule' : 'Monthly schedule'}</span>
               </p>
             </div>
           </div>
