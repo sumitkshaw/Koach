@@ -88,18 +88,18 @@ export default function Welcome() {
             </div>
           </div>
 
-          {/* Buttons - Enhanced for mobile */}
-          <div className="flex justify-center mt-6 w-full px-4 sm:px-0">
+          {/* Buttons */}
+          <div className="flex justify-center mt-10 w-full">
             <button
               onClick={handleNext}
               disabled={!selected}
-              className={`w-full max-w-xs py-3.5 rounded-lg font-medium text-base transition-all duration-200 transform active:scale-95 ${
+              className={`w-40 py-3 rounded transition ${
                 selected
-                  ? "bg-gradient(95deg, #FFD93B 0%, #FFB800 100%) text-[#4A90E8] shadow-md hover:shadow-lg"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  ? "bg-[#FFD93B] text-[#4A90E2] hover:opacity-90"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-              {selected ? 'Continue' : 'Select an option'}
+              {selected ? 'Next' : 'Select an option'}
             </button>
           </div>
         </div>
