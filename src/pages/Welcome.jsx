@@ -18,7 +18,8 @@ export default function Welcome() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row">
+    <div className="flex min-h-screen flex-col lg:flex-row bg-gradient-to-b from-blue-50 to-white lg:bg-none">
+
       {/* Left Panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#1E4AB8] flex-col justify-between items-center p-8">
         {/* Logo */}
@@ -37,65 +38,69 @@ export default function Welcome() {
       </div>
 
       {/* Right Panel */}
-      <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center items-center px-4 py-8 sm:px-8 sm:py-12 lg:px-16">
+      <div className="w-full lg:w-1/2 bg-white/90 lg:bg-white backdrop-blur-sm lg:backdrop-blur-none flex flex-col justify-center items-center px-4 py-6 sm:px-8 sm:py-12 lg:px-16">
         <div className="max-w-2xl w-full flex flex-col items-center justify-center">
           {/* Header */}
-          <div className="flex flex-col items-center justify-center mb-10">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#4A90E2] mb-3 text-center">
+          <div className="flex flex-col items-center justify-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#4A90E2] mb-2 sm:mb-3 text-center">
               Welcome to Koach
             </h2>
-            <p className="text-lg text-[#4A90E2] text-center font-medium">
-              Your accelerated professional growth starts here and now. Answer a few quick questions
-              (it'll take 3 mins to complete) and get to finding your ideal coach!
+            <p className="text-base sm:text-lg text-[#4A90E2]/90 text-center font-medium px-2">
+              Your accelerated professional growth starts here. Answer a few quick questions
+              (takes ~3 mins) to find your ideal coach!
             </p>
           </div>
 
-          {/* Options - Centered and Larger */}
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 lg:gap-12 justify-center mb-8 w-full">
+          {/* Options - Enhanced for mobile */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 lg:gap-12 justify-center mb-6 sm:mb-8 w-full px-2 sm:px-0">
             {/* Mentee Option */}
             <div
               onClick={() => setSelected("mentee")}
-              className={`cursor-pointer border rounded-xl p-6 sm:p-8 w-full sm:w-64 lg:w-72 h-64 sm:h-72 lg:h-80 flex flex-col items-center justify-center transition ${
-                selected === "mentee" ? "border-[#FFD93B] shadow-lg" : "border-gray-300"
+              className={`cursor-pointer border-2 rounded-xl p-4 sm:p-8 w-full sm:w-64 lg:w-72 h-48 sm:h-72 lg:h-80 flex flex-col items-center justify-center transition-all duration-200 active:scale-95 ${
+                selected === "mentee" 
+                  ? "border-[#FFD93B] shadow-lg bg-blue-50/50" 
+                  : "border-gray-200 hover:border-blue-100"
               }`}
             >
-              <img src={MenteeImage} alt="Mentee" className="h-32 sm:h-36 lg:h-40 mb-4 sm:mb-6" />
-              <p className="text-[#4A90E2] font-semibold text-xl">Mentee</p>
+              <img 
+                src={MenteeImage} 
+                alt="Mentee" 
+                className="h-24 sm:h-36 lg:h-40 mb-3 sm:mb-6 transition-transform duration-200 group-hover:scale-105" 
+              />
+              <p className="text-[#4A90E2] font-semibold text-lg sm:text-xl">Mentee</p>
             </div>
 
             {/* Mentor Option */}
             <div
               onClick={() => setSelected("mentor")}
-              className={`cursor-pointer border rounded-xl p-6 sm:p-8 w-full sm:w-64 lg:w-72 h-64 sm:h-72 lg:h-80 flex flex-col items-center justify-center transition ${
-                selected === "mentor" ? "border-[#FFD93B] shadow-lg" : "border-gray-300"
+              className={`cursor-pointer border-2 rounded-xl p-4 sm:p-8 w-full sm:w-64 lg:w-72 h-48 sm:h-72 lg:h-80 flex flex-col items-center justify-center transition-all duration-200 active:scale-95 ${
+                selected === "mentor" 
+                  ? "border-[#FFD93B] shadow-lg bg-blue-50/50" 
+                  : "border-gray-200 hover:border-blue-100"
               }`}
             >
-              <img src={MentorImage} alt="Mentor" className="h-32 sm:h-36 lg:h-40 mb-4 sm:mb-6" />
-              <p className="text-[#4A90E2] font-semibold text-xl">Mentor</p>
+              <img 
+                src={MentorImage} 
+                alt="Mentor" 
+                className="h-24 sm:h-36 lg:h-40 mb-3 sm:mb-6 transition-transform duration-200 group-hover:scale-105" 
+              />
+              <p className="text-[#4A90E2] font-semibold text-lg sm:text-xl">Mentor</p>
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-center mt-4 w-full">
-            <div className="flex gap-4 w-full justify-center">
-              {/* <button
-                onClick={() => navigate("/about-me")}
-                className="w-32 py-3 border border-[#FFD93B] text-[#4A90E2] rounded hover:bg-[#FFD93B] transition"
-              >
-                Back
-              </button> */}
-              <button
-                onClick={handleNext}
-                disabled={!selected}
-                className={`w-32 py-3 rounded transition ${
-                  selected
-                    ? "bg-[#FFD93B] text-[#4A90E2] hover:opacity-90"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-              >
-                Next
-              </button>
-            </div>
+          <div className="flex justify-center mt-10 w-full">
+            <button
+              onClick={handleNext}
+              disabled={!selected}
+              className={`w-40 py-3 rounded transition ${
+                selected
+                  ? "bg-[#FFD93B] text-[#4A90E2] hover:opacity-90"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {selected ? 'Next' : 'Select an option'}
+            </button>
           </div>
         </div>
       </div>
