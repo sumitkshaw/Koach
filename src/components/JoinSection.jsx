@@ -170,7 +170,7 @@ export default function JoinSection() {
         {/* View All Button */}
         <div className="mt-8">
           <button 
-            onClick={() => navigate("/mentors")}
+            onClick={() => navigate("/listing")}
             className="bg-[#2D488F] text-white px-10 py-3 rounded-lg font-bold hover:bg-[#1e3266] transition-all duration-200 shadow-md hover:shadow-lg border border-[#2D488F]"
           >
             View All Mentors
