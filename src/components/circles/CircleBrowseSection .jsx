@@ -167,7 +167,7 @@ const CircleBrowseSection = () => {
           </button>
         </div>
 
-        {/* Interest Icons Grid - Improved Mobile */}
+        {/* Interest Icons Grid - No Scale Animation */}
         <div className="relative">
           <div className="flex gap-3 md:gap-4 overflow-x-auto pb-4 scrollbar-hide px-1">
             {interestCategories.map((interest, index) => {
@@ -178,10 +178,10 @@ const CircleBrowseSection = () => {
                 <button
                   key={index}
                   onClick={() => handleInterestClick(index)}
-                  className={`flex-shrink-0 flex flex-col items-center gap-3 p-4 md:p-4 border-2 rounded-xl transition-all duration-300 hover:scale-105 min-w-[85px] md:min-w-[90px] shadow-sm hover:shadow-md ${
+                  className={`flex-shrink-0 flex flex-col items-center gap-3 p-4 md:p-4 border-2 rounded-xl transition-all duration-300 min-w-[85px] md:min-w-[90px] shadow-sm ${
                     isSelected 
-                      ? 'bg-yellow-100 border-yellow-400 shadow-md scale-105' 
-                      : 'bg-white border-gray-200 hover:border-[#2D488F]/30'
+                      ? 'bg-yellow-100 border-yellow-400 shadow-md z-20' 
+                      : 'bg-white border-gray-200 hover:border-[#2D488F]/30 hover:shadow-md'
                   }`}
                 >
                   <div className={`p-2 rounded-lg ${

@@ -47,6 +47,18 @@ function Navigation() {
 
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
 
+  const handleDashboardNavigation = () => {
+    // Check user role and navigate to appropriate dashboard
+    if (user?.role === 'mentor') {
+      navigate("/dashboard_mentor");
+    } else if (user?.role === 'mentee') {
+      navigate("/dashboard");
+    } else {
+      // Fallback - you might want to handle this case differently
+      navigate("/dashboard");
+    }
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -57,19 +69,7 @@ function Navigation() {
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                if (user) {
-                  // Check which dashboard the user is currently on
-                  if (location.pathname.startsWith('/dashboard_mentor')) {
-                    navigate("/dashboard_mentor");
-                  } else if (location.pathname.startsWith('/dashboard')) {
-                    navigate("/dashboard");
-                  } else {
-                    // If not on any dashboard, redirect to regular dashboard
-                    navigate("/dashboard");
-                  }
-                } else {
-                  navigate("/");
-                }
+                navigate("/"); // Always redirect to home, no dashboard logic
               }}
               className="cursor-pointer"
             >
@@ -94,48 +94,58 @@ function Navigation() {
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
+            
+            {/* Dashboard link - only show when user is logged in */}
+            {user && (
+              <a 
+                href={user?.role === 'mentor' ? "/dashboard_mentor" : "/dashboard"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDashboardNavigation();
+                }}
+                className="text-[#2D488F] hover:text-blue-700"
+              >
+                Dashboard
+              </a>
+            )}
           </div>
 
-          {/* Desktop Auth - Now shows for ALL pages */}
+          {/* Desktop Auth - Now shows for ALL pages including About Us */}
           <div className="hidden md:flex items-center space-x-4">
-            {location.pathname !== "/about" && (
-              <>
-                {/* Show profile and logout for ALL pages when user is logged in */}
-                <div className="flex items-center space-x-4">
-                  {user ? (
-                    <>
-                      {/* Profile Picture with Initials */}
-                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-md">
-                        {getInitials(user.displayName || user.email)}
-                      </div>
-                      
-                      {/* Logout Button */}
-                      <button
-                        onClick={() => logout(navigate)}
-                        className="text-gray-600 hover:text-white hover:bg-[#2D488F] border border-gray-300 hover:border-[#2D488F] px-4 py-2 rounded-md text-sm font-medium transition-all duration-300"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <a
-                        href="/login"
-                        className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
-                      >
-                        Log in
-                      </a>
-                      <a
-                        href="/signup"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
-                      >
-                        Get started
-                      </a>
-                    </>
-                  )}
-                </div>
-              </>
-            )}
+            {/* Show profile and logout for ALL pages when user is logged in */}
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <>
+                  {/* Profile Picture with Initials */}
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-md">
+                    {getInitials(user.displayName || user.email)}
+                  </div>
+                  
+                  {/* Logout Button */}
+                  <button
+                    onClick={() => logout(navigate)}
+                    className="text-gray-600 hover:text-white hover:bg-[#2D488F] border border-gray-300 hover:border-[#2D488F] px-4 py-2 rounded-md text-sm font-medium transition-all duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="/login"
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                  >
+                    Log in
+                  </a>
+                  <a
+                    href="/signup"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                  >
+                    Get started
+                  </a>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Hamburger */}
@@ -166,7 +176,7 @@ function Navigation() {
             ref={menuRef}
             className="md:hidden absolute top-16 right-4 bg-white/95 backdrop-blur-md shadow-2xl p-6 rounded-3xl w-72 z-50 space-y-4 border border-gray-100"
           >
-            {/* NEW HOME BUTTON */}
+            {/* HOME BUTTON - Keep as requested */}
             <a
               href="/"
               onClick={() => setIsMenuOpen(false)}
@@ -184,19 +194,19 @@ function Navigation() {
             </a>
 
             <a
-              href="/listing"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
-            >
-              Koach
-            </a>
-            
-            <a
               href="/circles"
               onClick={() => setIsMenuOpen(false)}
               className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
             >
               Circle
+            </a>
+
+            <a
+              href="/listing"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+            >
+              Koach
             </a>
 
             <a
@@ -206,6 +216,21 @@ function Navigation() {
             >
               Contact
             </a>
+
+            {/* Dashboard link for mobile - only show when user is logged in */}
+            {user && (
+              <a
+                href={user?.role === 'mentor' ? "/dashboard_mentor" : "/dashboard"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDashboardNavigation();
+                  setIsMenuOpen(false);
+                }}
+                className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              >
+                Dashboard
+              </a>
+            )}
 
             {user ? (
               <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30">
@@ -236,7 +261,7 @@ function Navigation() {
                   onClick={() => setIsMenuOpen(false)}
                   className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-600 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-300 font-medium shadow-lg"
                 >
-                  Register
+                  Get started
                 </a>
               </div>
             )}
