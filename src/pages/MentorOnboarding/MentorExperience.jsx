@@ -64,33 +64,35 @@ export default function MentorExperience() {
       </div>
 
       {/* Right Panel */}
-      <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center items-center px-8 py-12 lg:px-16">
-        <div className="max-w-2xl w-full text-center">
+      <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-white to-indigo-50 lg:bg-white flex flex-col justify-center items-center px-4 sm:px-8 py-8 sm:py-12 lg:px-16 relative overflow-hidden">
+        <div className="lg:hidden absolute top-0 right-0 w-32 h-32 bg-[#FFD93B] rounded-full opacity-5 blur-3xl"></div>
+        <div className="lg:hidden absolute bottom-0 left-0 w-40 h-40 bg-[#1E4AB8] rounded-full opacity-5 blur-3xl"></div>
+        <div className="max-w-2xl w-full text-center relative z-10">
           {/* Header */}
-          <h2 className="text-[40px] font-bold text-[#001F54] mb-6 font-['Proxima Nova']">
+          <h2 className="text-3xl sm:text-3xl lg:text-[40px] font-bold bg-gradient-to-r from-[#001F54] to-[#2A4FB0] bg-clip-text text-transparent mb-4 sm:mb-6 font-['Proxima Nova']">
             Your Expertise
           </h2>
-          <p className="text-gray-600 mb-10 font-['Proxima Nova']">
+          <p className="text-sm sm:text-base text-gray-600 lg:text-gray-600 mb-6 sm:mb-10 font-['Proxima Nova']">
             Select your primary coaching niches
           </p>
 
           {/* Expertise Grid */}
-          <div className="grid grid-cols-2 gap-6 justify-center">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6 justify-center">
             {expertiseOptions.map((option, index) => (
               <div
                 key={option.label}
                 onClick={() => handleSelect(option.label)}
-                className={`cursor-pointer flex items-center py-5 px-4 border rounded-md transition 
+                className={`cursor-pointer flex items-center py-4 sm:py-4 lg:py-5 px-3 sm:px-4 border-2 rounded-xl lg:rounded-md transition-all duration-200 text-xs sm:text-sm lg:text-base transform hover:scale-105 active:scale-95
                   ${
                     selected.includes(option.label)
-                      ? "bg-[#2A4FB0] text-white border-[#001F54]"
-                      : "border-[#001F54] text-[#001F54] bg-white hover:bg-gray-50"
+                      ? "bg-gradient-to-r from-[#2A4FB0] to-[#1E4AB8] text-white border-[#001F54] shadow-lg lg:shadow-none"
+                      : "border-gray-200 lg:border-[#001F54] text-gray-700 lg:text-[#001F54] bg-white hover:bg-blue-50 hover:border-[#2A4FB0] shadow-md lg:shadow-none"
                   }`}
               >
                 <img
                   src={option.icon}
                   alt={option.label + " icon"}
-                  className={`h-8 w-8 mr-4 transition-all duration-200 ${
+                  className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 mr-2 sm:mr-3 lg:mr-4 transition-all duration-200 ${
                     selected.includes(option.label) ? "filter invert brightness-0" : "filter"
                   }`}
                   style={{
@@ -105,18 +107,18 @@ export default function MentorExperience() {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-center mt-12 w-full">
-            <div className="flex gap-8 w-full justify-center">
+          <div className="flex justify-center mt-8 sm:mt-12 w-full">
+            <div className="flex gap-4 sm:gap-8 w-full justify-center">
               <button
                 onClick={() => navigate("/bio-step1")}
-                className="w-40 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
+                className="w-28 sm:w-40 py-2.5 sm:py-3 text-sm sm:text-base border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
               >
                 Back
               </button>
               <button
                 onClick={handleNext}
                 disabled={selected.length === 0}
-                className={`w-40 py-3 rounded transition ${
+                className={`w-28 sm:w-40 py-2.5 sm:py-3 text-sm sm:text-base rounded transition ${
                   selected.length > 0
                     ? "bg-[#FFD93B] text-[#1E4AB8] hover:opacity-90"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"

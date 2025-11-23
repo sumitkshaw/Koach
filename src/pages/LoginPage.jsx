@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import LoginImage from "../assets/loginimage.png";
 import { useAuth } from "../utils/AuthContext";
+import { getCurrentUser } from "../utils/auth";
 import Footer from '../components/Footer';
 
 export default function LoginPage() {
@@ -12,9 +13,10 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const location = useLocation();
   const navigate = useNavigate();
   const {
+    user,
     login,
     loginWithGoogle,
     loginWithLinkedIn,
@@ -22,6 +24,63 @@ export default function LoginPage() {
     clearVerificationMessage,
     resendVerificationEmail
   } = useAuth();
+
+  // Handle OAuth callback - check for errors but also verify if user is actually logged in
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const errorParam = urlParams.get('error');
+    
+    // First, always check if user is logged in (OAuth might have succeeded despite error param)
+    getCurrentUser().then((currentUser) => {
+      if (currentUser) {
+        // User is logged in, redirect regardless of error param
+        window.history.replaceState({}, document.title, window.location.pathname);
+        navigate("/dashboard");
+        return;
+      }
+      
+      // Only show error if user is NOT logged in AND there's an error
+      if (errorParam) {
+        try {
+          const errorData = JSON.parse(decodeURIComponent(errorParam));
+          // If user already exists from OAuth during login attempt
+          if (errorData.type === 'user_already_exists' || errorData.code === 409) {
+            // User exists but not logged in - show helpful message
+            setError("This account already exists. Please use email/password to log in, or if you signed up with Google, use Google login.");
+          } else {
+            // Other OAuth errors
+            setError("OAuth login failed. Please try again.");
+          }
+          // Clean URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {
+          // If error param is not JSON, ignore it
+          console.error("Error parsing OAuth error:", e);
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    }).catch(() => {
+      // If getCurrentUser fails and there's an error param, show error
+      if (errorParam) {
+        try {
+          const errorData = JSON.parse(decodeURIComponent(errorParam));
+          if (errorData.type === 'user_already_exists' || errorData.code === 409) {
+            setError("This account already exists. Please log in with your email/password or use the same OAuth provider you used to sign up.");
+          }
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    });
+  }, [location.search, navigate]);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   // Prefill email if saved (e.g., for resend verification convenience)
   useEffect(() => {

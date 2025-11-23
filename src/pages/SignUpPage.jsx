@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 import Logo from "../assets/image3.png";
 import SignupImage from "../assets/signupimg.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
+import { getCurrentUser } from "../utils/auth";
 import Footer from '../components/Footer';
 
 export default function SignUpPage() {
@@ -13,10 +14,75 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { signup, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage } = useAuth();
+  const location = useLocation();
+  const { user, signup, loginWithGoogle, loginWithLinkedIn, verificationMessage, clearVerificationMessage } = useAuth();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (user) {
+      setError("You are already logged in. Your account is already created. Please log out if you want to create a new account.");
+    }
+  }, [user]);
+
+  // Handle OAuth callback - check for errors but also verify if user is actually logged in
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const errorParam = urlParams.get('error');
+    
+    // First, always check if user is logged in (OAuth might have succeeded despite error param)
+    getCurrentUser().then((currentUser) => {
+      if (currentUser) {
+        // User is logged in, redirect regardless of error param
+        window.history.replaceState({}, document.title, window.location.pathname);
+        navigate("/dashboard");
+        return;
+      }
+      
+      // Only show error if user is NOT logged in AND there's an error
+      if (errorParam) {
+        try {
+          const errorData = JSON.parse(decodeURIComponent(errorParam));
+          // If user already exists from OAuth signup attempt
+          if (errorData.type === 'user_already_exists' || errorData.code === 409) {
+            // User exists but not logged in - show helpful message
+            setError("An account with this email already exists. Please log in instead or use 'Forgot Password' if you forgot your password.");
+          } else {
+            // Other OAuth errors
+            setError("OAuth signup failed. Please try again.");
+          }
+          // Clean URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {
+          // If error param is not JSON, ignore it
+          console.error("Error parsing OAuth error:", e);
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    }).catch(() => {
+      // If getCurrentUser fails and there's an error param, show error
+      if (errorParam) {
+        try {
+          const errorData = JSON.parse(decodeURIComponent(errorParam));
+          if (errorData.type === 'user_already_exists' || errorData.code === 409) {
+            setError("An account with this email already exists. Please log in instead.");
+          }
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    });
+  }, [location.search, navigate]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    
+    // Check if user is already logged in
+    if (user) {
+      setError("You are already logged in. Your account is already created. Please log out if you want to create a new account.");
+      return;
+    }
+    
     setIsLoading(true);
     setError("");
 

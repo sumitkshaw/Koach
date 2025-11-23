@@ -28,23 +28,25 @@ export default function AboutMe() {
               </div>
             </div>
       {/* Right Panel */}
-      <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center items-center px-8 py-12 lg:px-16">
-        <div className="max-w-2xl w-full flex flex-col items-center justify-center">
+      <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-white to-indigo-50 lg:bg-white flex flex-col justify-center items-center px-4 sm:px-8 py-8 sm:py-12 lg:px-16 relative overflow-hidden">
+        <div className="lg:hidden absolute top-0 right-0 w-32 h-32 bg-[#FFD93B] rounded-full opacity-5 blur-3xl"></div>
+        <div className="lg:hidden absolute bottom-0 left-0 w-40 h-40 bg-[#1E4AB8] rounded-full opacity-5 blur-3xl"></div>
+        <div className="max-w-2xl w-full flex flex-col items-center justify-center relative z-10">
           {/* Header */}
-          <div className="flex flex-col items-center justify-center mb-10">
-            <h2 className="text-4xl font-bold text-[#1E4AB8] mb-3 text-center">Skills and Expertise</h2>
-            <p className="text-lg text-[#1E4AB8] text-center font-medium">
+          <div className="flex flex-col items-center justify-center mb-6 sm:mb-10">
+            <h2 className="text-3xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#1E4AB8] to-[#4A90E2] bg-clip-text text-transparent mb-2 sm:mb-3 text-center">Skills and Expertise</h2>
+            <p className="text-sm sm:text-lg text-gray-600 lg:text-[#1E4AB8] text-center font-medium">
               Briefly list your key skills and areas of expertise
             </p>
           </div>
 
           {/* Textarea with label and word count inside */}
-                    <div className="mb-8 relative w-full flex justify-center">
+                    <div className="mb-6 sm:mb-8 relative w-full flex justify-center">
             <div className="w-full relative">
               <textarea
                 value={skill_bio}
                 onChange={(e) => setSkillBio(e.target.value)}
-                className="w-full h-96 px-4 pt-4 pb-8 border border-gray-300 rounded-lg resize-none focus:border-[#1E4AB8] focus:outline-none text-base"
+                className="w-full h-64 sm:h-80 lg:h-96 px-4 sm:px-4 pt-4 sm:pt-4 pb-8 border-2 border-gray-200 lg:border-gray-300 rounded-2xl lg:rounded-lg resize-none focus:border-[#1E4AB8] focus:outline-none focus:ring-2 focus:ring-[#FFD93B] text-sm sm:text-base bg-white shadow-lg lg:shadow-none transition-all duration-200"
                 maxLength={750}
               />
               {/* Custom colored placeholder */}
@@ -66,17 +68,17 @@ export default function AboutMe() {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-center mt-10 w-full">
-            <div className="flex gap-8 w-full justify-center">
+          <div className="flex justify-center mt-6 sm:mt-10 w-full">
+            <div className="flex gap-3 sm:gap-8 w-full justify-center">
               <button
                 onClick={() => navigate("/mentor-experience")}
-                className="w-44 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
+                className="lg:w-44 w-full sm:w-32 py-3 sm:py-3 text-sm sm:text-base border-2 border-[#FFD93B] text-[#1E4AB8] rounded-xl lg:rounded hover:bg-[#FFD93B] transition-all duration-200 font-semibold shadow-md lg:shadow-none hover:shadow-lg active:scale-95"
               >
                 Back
               </button>
               <button
                 onClick={handleNext}
-                className="w-44 py-3 bg-[#FFD93B] text-[#1E4AB8] rounded hover:opacity-90 transition"
+                className="lg:w-44 w-full sm:w-32 py-3 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-[#FFD93B] to-[#FFE066] text-[#1E4AB8] rounded-xl lg:rounded hover:opacity-90 transition-all duration-200 font-semibold shadow-md lg:shadow-none hover:shadow-lg active:scale-95"
               >
                 Next
               </button>
