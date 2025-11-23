@@ -101,38 +101,40 @@ export default function Goals() {
       </div>
 
       {/* Right Panel */}
-      <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center items-center px-8 py-12 lg:px-16">
-        <div className="max-w-2xl w-full flex flex-col items-center justify-center">
+      <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-50 via-white to-indigo-50 lg:bg-white flex flex-col justify-center items-center px-4 sm:px-8 py-8 sm:py-12 lg:px-16 relative overflow-hidden">
+        <div className="lg:hidden absolute top-0 right-0 w-32 h-32 bg-[#FFD93B] rounded-full opacity-5 blur-3xl"></div>
+        <div className="lg:hidden absolute bottom-0 left-0 w-40 h-40 bg-[#1E4AB8] rounded-full opacity-5 blur-3xl"></div>
+        <div className="max-w-2xl w-full flex flex-col items-center justify-center relative z-10">
           {/* Header */}
-          <div className="flex flex-col items-center justify-center mb-10">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#1E4AB8] mb-3 text-center">
+          <div className="flex flex-col items-center justify-center mb-6 sm:mb-10">
+            <h2 className="text-3xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#1E4AB8] to-[#4A90E2] bg-clip-text text-transparent mb-2 sm:mb-3 text-center">
               Your Goal
             </h2>
-            <p className="text-lg text-[#1E4AB8] text-center font-medium">
+            <p className="text-sm sm:text-lg text-gray-600 lg:text-[#1E4AB8] text-center font-medium">
               What are your main reasons for joining Koach?
             </p>
           </div>
 
           {/* Goals Grid */}
-          <div className="flex flex-col gap-4 w-full mb-6">
+          <div className="flex flex-col gap-3 sm:gap-4 w-full mb-4 sm:mb-6">
             {goals.map((goal) => (
               <button
                 key={goal.label}
                 onClick={() => handleSelect(goal)}
-                className={`flex items-center gap-3 p-4 border rounded-lg text-left transition ${
+                className={`flex items-center gap-3 sm:gap-3 p-4 sm:p-4 border-2 rounded-2xl lg:rounded-lg text-left transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] ${
                   selected.includes(goal.label)
-                    ? "border-[#FFD93B] bg-[#FFFBEA]"
-                    : "border-gray-300 bg-white hover:bg-gray-50"
+                    ? "border-[#FFD93B] bg-gradient-to-r from-[#FFFBEA] to-[#FFF8DC] shadow-lg lg:shadow-none"
+                    : "border-gray-200 lg:border-gray-300 bg-white hover:border-[#1E4AB8] hover:bg-blue-50/50 shadow-md lg:shadow-none"
                 }`}
               >
-                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                <div className={`flex-shrink-0 w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg ${selected.includes(goal.label) ? 'bg-[#FFD93B]/20' : 'bg-gray-100'}`}>
                   <img 
                     src={goal.icon} 
                     alt={goal.label} 
                     className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <span className="text-[#1E4AB8] font-medium flex-1">{goal.label}</span>
+                <span className="text-xs sm:text-sm lg:text-base font-semibold lg:font-medium text-gray-700 lg:text-[#1E4AB8] flex-1">{goal.label}</span>
               </button>
             ))}
           </div>
@@ -144,22 +146,22 @@ export default function Goals() {
               value={otherText}
               onChange={(e) => setOtherText(e.target.value)}
               placeholder="Please specify"
-              className="w-full border border-gray-300 rounded-lg p-3 mb-6 focus:border-[#1E4AB8] focus:outline-none"
+              className="w-full border-2 border-gray-200 lg:border-gray-300 rounded-xl lg:rounded-lg p-3 sm:p-3 mb-4 sm:mb-6 text-sm sm:text-base focus:border-[#1E4AB8] focus:outline-none focus:ring-2 focus:ring-[#FFD93B] bg-white shadow-md lg:shadow-none"
             />
           )}
 
           {/* Buttons */}
-          <div className="flex justify-center mt-8 w-full">
-            <div className="flex gap-8 w-full justify-center">
+          <div className="flex justify-center mt-6 sm:mt-8 w-full">
+            <div className="flex gap-3 sm:gap-8 w-full justify-center">
               <button
                 onClick={() => navigate("/clients")}
-                className="w-44 py-3 border border-[#FFD93B] text-[#1E4AB8] rounded hover:bg-[#FFD93B] transition"
+                className="lg:w-44 w-full sm:w-32 py-3 sm:py-3 text-sm sm:text-base border-2 border-[#FFD93B] text-[#1E4AB8] rounded-xl lg:rounded hover:bg-[#FFD93B] transition-all duration-200 font-semibold shadow-md lg:shadow-none hover:shadow-lg active:scale-95"
               >
                 Back
               </button>
               <button
                 onClick={handleNext}
-                className="w-44 py-3 bg-[#FFD93B] text-[#1E4AB8] rounded hover:opacity-90 transition"
+                className="lg:w-44 w-full sm:w-32 py-3 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-[#FFD93B] to-[#FFE066] text-[#1E4AB8] rounded-xl lg:rounded hover:opacity-90 transition-all duration-200 font-semibold shadow-md lg:shadow-none hover:shadow-lg active:scale-95"
               >
                 Next
               </button>
