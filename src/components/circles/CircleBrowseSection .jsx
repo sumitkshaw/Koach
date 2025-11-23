@@ -1,4 +1,5 @@
 import { TrendingUp, DollarSign, Palette, Briefcase, Code, Users, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import research from '../../assets/circle/research.png';
 import promotion from '../../assets/circle/promotion.png';
 import finance from '../../assets/circle/finance.png';
@@ -9,6 +10,7 @@ import { useState } from 'react';
 
 const CircleBrowseSection = () => {
   const [selectedInterest, setSelectedInterest] = useState(0);
+  const navigate = useNavigate();
 
   const interestCategories = [
     { icon: TrendingUp, label: 'Trending', color: 'bg-yellow-50 border-yellow-200' },
@@ -27,6 +29,7 @@ const CircleBrowseSection = () => {
       circles: [
         {
           name: 'Research',
+          slug: 'research',
           members: '21k',
           illustration: research,
           illustrationSize: 'w-28 h-28 md:w-32 md:h-48',
@@ -34,6 +37,7 @@ const CircleBrowseSection = () => {
         },
         {
           name: 'Promotion',
+          slug: 'promotion',
           members: '18k',
           illustration: promotion,
           illustrationSize: 'w-28 h-28 md:w-32 md:h-39',
@@ -41,6 +45,7 @@ const CircleBrowseSection = () => {
         },
         {
           name: 'Finance & Budgeting',
+          slug: 'finance-budgeting',
           members: '15k',
           illustration: finance,
           illustrationSize: 'w-32 h-32 md:w-36 md:h-45',
@@ -53,6 +58,7 @@ const CircleBrowseSection = () => {
       circles: [
         {
           name: 'Design Thinking',
+          slug: 'design-thinking',
           members: '23k',
           illustration: art,
           illustrationSize: 'w-26 h-26 md:w-25 md:h-24',
@@ -60,6 +66,7 @@ const CircleBrowseSection = () => {
         },
         {
           name: 'Innovation',
+          slug: 'innovation',
           members: '19k',
           illustration: innovation,
           illustrationSize: 'w-24 h-24 md:w-28 md:h-28',
@@ -67,6 +74,7 @@ const CircleBrowseSection = () => {
         },
         {
           name: 'Animation',
+          slug: 'animation',
           members: '17k',
           illustration: animation,
           illustrationSize: 'w-28 h-28 md:w-32 md:h-32',
@@ -80,6 +88,19 @@ const CircleBrowseSection = () => {
     setSelectedInterest(index);
   };
 
+  const handleJoinClick = (circleSlug) => {
+    navigate(`/circles/${circleSlug}`);
+  };
+
+  const handleViewAllClick = (categoryTitle) => {
+    const slug = categoryTitle.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/${slug}`);
+  };
+
+  const handleViewAllInterests = () => {
+    navigate('/interests');
+  };
+
   const CircleCard = ({ circle }) => (
     <div className={`${circle.bgColor} rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100`}>
       {/* Card Content */}
@@ -91,7 +112,10 @@ const CircleBrowseSection = () => {
           </h4>
           
           {/* Join Button */}
-          <button className="px-5 py-2 bg-[#2D488F] text-white text-xs font-semibold rounded-full hover:bg-[#1e3260] transition-all duration-300 shadow-md hover:shadow-lg active:scale-95">
+          <button 
+            onClick={() => handleJoinClick(circle.slug)}
+            className="px-5 py-2 bg-[#2D488F] text-white text-xs font-semibold rounded-full hover:bg-[#1e3260] transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
+          >
             <span>Join Now</span>
           </button>
 
@@ -134,7 +158,10 @@ const CircleBrowseSection = () => {
               Discover communities tailored to your professional interests and passions
             </p>
           </div>
-          <button className="self-start sm:self-auto text-sm md:text-base text-[#2D488F] hover:text-[#1e3260] font-medium transition-colors flex items-center space-x-1 bg-white px-4 py-2 rounded-lg border border-gray-200 hover:border-[#2D488F]/30 shadow-sm">
+          <button 
+            onClick={handleViewAllInterests}
+            className="self-start sm:self-auto text-sm md:text-base text-[#2D488F] hover:text-[#1e3260] font-medium transition-colors flex items-center space-x-1 bg-white px-4 py-2 rounded-lg border border-gray-200 hover:border-[#2D488F]/30 shadow-sm"
+          >
             <span>View all interests</span>
             <ArrowRight className="w-4 h-4" />
           </button>
@@ -191,7 +218,10 @@ const CircleBrowseSection = () => {
                   Popular communities in {category.title.toLowerCase()}
                 </p>
               </div>
-              <button className="self-start sm:self-auto text-sm md:text-base text-[#2D488F] hover:text-[#1e3260] font-medium transition-colors flex items-center space-x-1 bg-white px-4 py-2 rounded-lg border border-gray-200 hover:border-[#2D488F]/30 shadow-sm">
+              <button 
+                onClick={() => handleViewAllClick(category.title)}
+                className="self-start sm:self-auto text-sm md:text-base text-[#2D488F] hover:text-[#1e3260] font-medium transition-colors flex items-center space-x-1 bg-white px-4 py-2 rounded-lg border border-gray-200 hover:border-[#2D488F]/30 shadow-sm"
+              >
                 <span>View all</span>
                 <ArrowRight className="w-4 h-4" />
               </button>

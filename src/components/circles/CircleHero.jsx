@@ -1,4 +1,3 @@
-// import contactImage from '/assets/image-332.avif';
 import contactImage from '../../assets/image-311.avif';
 const CircleHero = () => {
   return (

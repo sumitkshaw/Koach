@@ -15,6 +15,8 @@ import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
+import DemoCircle from "./components/circles/DemoCircle.jsx";
+
 import BioStep from "./pages/MenteeOnboard/BioStep";
 import BioStep1 from "./pages/MentorOnboarding/Bio-Step1.jsx"
 
@@ -96,6 +98,9 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+
+        <Route path="/circles/research" element={<DemoCircle/>} /> 
+
         <Route path="/bio-step" element={<BioStep />} />
         <Route path="/bio-step1" element={<BioStep1 />} />
         <Route path="/about-me" element={<AboutMe />} />
