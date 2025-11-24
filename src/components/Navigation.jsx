@@ -15,6 +15,35 @@ function Navigation() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  // Get dashboard type from localStorage or determine from current path
+  const getStoredDashboardType = () => {
+    // Check if we're currently on a dashboard route
+    if (location.pathname.startsWith('/dashboard_mentor')) {
+      localStorage.setItem('dashboardType', 'mentor');
+      return 'mentor';
+    } else if (location.pathname.startsWith('/dashboard')) {
+      localStorage.setItem('dashboardType', 'mentee');
+      return 'mentee';
+    }
+    
+    // Fallback to stored value or default
+    const stored = localStorage.getItem('dashboardType');
+    return stored || 'mentee'; // default to mentee if nothing stored
+  };
+
+  const [dashboardType, setDashboardType] = useState(getStoredDashboardType);
+
+  useEffect(() => {
+    // Update dashboard type when location changes
+    if (location.pathname.startsWith('/dashboard_mentor')) {
+      setDashboardType('mentor');
+      localStorage.setItem('dashboardType', 'mentor');
+    } else if (location.pathname.startsWith('/dashboard')) {
+      setDashboardType('mentee');
+      localStorage.setItem('dashboardType', 'mentee');
+    }
+  }, [location.pathname]);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -45,18 +74,13 @@ function Navigation() {
       .toUpperCase();
   };
 
-  const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const getDashboardPath = () => {
+    return dashboardType === 'mentor' ? "/dashboard_mentor" : "/dashboard";
+  };
 
   const handleDashboardNavigation = () => {
-    // Check user role and navigate to appropriate dashboard
-    if (user?.role === 'mentor') {
-      navigate("/dashboard_mentor");
-    } else if (user?.role === 'mentee') {
-      navigate("/dashboard");
-    } else {
-      // Fallback - you might want to handle this case differently
-      navigate("/dashboard");
-    }
+    const dashboardPath = getDashboardPath();
+    navigate(dashboardPath);
   };
 
   return (
@@ -69,7 +93,7 @@ function Navigation() {
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/"); // Always redirect to home, no dashboard logic
+                navigate("/");
               }}
               className="cursor-pointer"
             >
@@ -88,9 +112,6 @@ function Navigation() {
             <a href="/listing" className="text-[#2D488F] hover:text-blue-700">
               Koach
             </a>
-            {/* <a href="/resources" className="text-[#2D488F] hover:text-blue-700">
-              Resources
-            </a> */}
             <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
               Contact
             </a>
@@ -98,7 +119,7 @@ function Navigation() {
             {/* Dashboard link - only show when user is logged in */}
             {user && (
               <a 
-                href={user?.role === 'mentor' ? "/dashboard_mentor" : "/dashboard"}
+                href={getDashboardPath()}
                 onClick={(e) => {
                   e.preventDefault();
                   handleDashboardNavigation();
@@ -110,9 +131,8 @@ function Navigation() {
             )}
           </div>
 
-          {/* Desktop Auth - Now shows for ALL pages including About Us */}
+          {/* Desktop Auth */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Show profile and logout for ALL pages when user is logged in */}
             <div className="flex items-center space-x-4">
               {user ? (
                 <>
@@ -123,7 +143,11 @@ function Navigation() {
                   
                   {/* Logout Button */}
                   <button
-                    onClick={() => logout(navigate)}
+                    onClick={() => {
+                      // Clear dashboard type on logout
+                      localStorage.removeItem('dashboardType');
+                      logout(navigate);
+                    }}
                     className="text-gray-600 hover:text-white hover:bg-[#2D488F] border border-gray-300 hover:border-[#2D488F] px-4 py-2 rounded-md text-sm font-medium transition-all duration-300"
                   >
                     Logout
@@ -176,7 +200,6 @@ function Navigation() {
             ref={menuRef}
             className="md:hidden absolute top-16 right-4 bg-white/95 backdrop-blur-md shadow-2xl p-6 rounded-3xl w-72 z-50 space-y-4 border border-gray-100"
           >
-            {/* HOME BUTTON - Keep as requested */}
             <a
               href="/"
               onClick={() => setIsMenuOpen(false)}
@@ -220,7 +243,7 @@ function Navigation() {
             {/* Dashboard link for mobile - only show when user is logged in */}
             {user && (
               <a
-                href={user?.role === 'mentor' ? "/dashboard_mentor" : "/dashboard"}
+                href={getDashboardPath()}
                 onClick={(e) => {
                   e.preventDefault();
                   handleDashboardNavigation();
@@ -239,6 +262,7 @@ function Navigation() {
                 </div>
                 <button
                   onClick={() => {
+                    localStorage.removeItem('dashboardType');
                     logout(navigate);
                     setIsMenuOpen(false);
                   }}
