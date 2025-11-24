@@ -1,10 +1,27 @@
 import { Share2, Flag, Bookmark, ThumbsUp, MessageCircle, Users, Calendar, MapPin, ArrowLeft, TrendingUp, Clock } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import uxDesignImage from '../../assets/circle/r1.png';
 import Footer from '../../components/Footer';
 
 function DemoCircle() {
   const [isFollowing, setIsFollowing] = useState(false);
+
+  // Add this useEffect to reset scroll position
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Optional: Also reset scroll position when navigating back/forward
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
 
   const circleInfo = {
     name: "User Experience Design",

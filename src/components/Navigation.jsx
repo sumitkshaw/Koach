@@ -165,7 +165,7 @@ function Navigation() {
                     href="/signup"
                     className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
                   >
-                    Get started
+                    Join as Koach
                   </a>
                 </>
               )}
@@ -285,7 +285,7 @@ function Navigation() {
                   onClick={() => setIsMenuOpen(false)}
                   className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-600 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-300 font-medium shadow-lg"
                 >
-                  Get started
+                  Join as Koach
                 </a>
               </div>
             )}

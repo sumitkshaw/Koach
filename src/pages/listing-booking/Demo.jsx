@@ -29,6 +29,23 @@ function Demo() {
     nameOnCard: ''
   });
 
+  // Add this useEffect to reset scroll position
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Optional: Also reset scroll position when navigating back/forward
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
+
   const mentor = {
     name: 'Jessica Barney',
     role: 'Marketing Head',
@@ -942,7 +959,7 @@ function Demo() {
                   </div>
                   <span className="ml-2 text-blue-100">4.9 (128 reviews)</span>
                 </div>
-              </div>
+            </div>
             </div>
             
             {/* Profile Details */}

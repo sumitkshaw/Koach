@@ -43,8 +43,8 @@ export default function Footer() {
             <div>
                 <span className='text-sm sm:text-base md:text-[20px] font-bold'>PLATFORM</span>
                 <ul>
-                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Browse mentors</a></li>
-                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="#">Become a Mentor</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/listing">Browse mentors</a></li>
+                    <li className= "my-2 sm:my-3 hover:underline cursor-pointer text-xs sm:text-sm md:text-base"><a href="/signup">Become a Mentor</a></li>
                 </ul>
             </div>
             <div>

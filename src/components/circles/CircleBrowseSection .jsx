@@ -88,8 +88,8 @@ const CircleBrowseSection = () => {
     setSelectedInterest(index);
   };
 
-  const handleJoinClick = (circleSlug) => {
-    navigate(`/circles/${circleSlug}`);
+  const handleJoinClick = () => {
+    navigate('/circles/research');
   };
 
   const handleViewAllClick = (categoryTitle) => {
@@ -113,7 +113,7 @@ const CircleBrowseSection = () => {
           
           {/* Join Button */}
           <button 
-            onClick={() => handleJoinClick(circle.slug)}
+            onClick={handleJoinClick}
             className="px-5 py-2 bg-[#2D488F] text-white text-xs font-semibold rounded-full hover:bg-[#1e3260] transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
           >
             <span>Join Now</span>

@@ -1,5 +1,6 @@
 import { Search, Star, Filter } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Sidenav1 from './Sidenav1';
 import AlexBricks from '../../assets/AlexBricks.jpg';
@@ -11,6 +12,7 @@ import BobbyRoy from '../../assets/BobbyRoy.jpg';
 function Listing() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const mentors = [
     {
@@ -86,9 +88,8 @@ function Listing() {
     }
   ];
 
-  const handleCardClick = (mentorName) => {
-    const firstName = mentorName.split(' ')[0].toLowerCase();
-    window.location.href = `/listing/${firstName}`;
+  const handleCardClick = () => {
+    navigate('/listing/jessica');
   };
 
   return (
