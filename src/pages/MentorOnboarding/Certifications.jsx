@@ -97,7 +97,7 @@ export default function Certifications() {
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#FFD93B] to-[#FFE066] rounded-full lg:hidden"></div>
             </div>
             <p className="text-sm sm:text-base lg:text-lg text-gray-600 lg:text-[#1E4AB8] text-center font-medium mt-4 lg:mt-0 px-4 leading-relaxed">
-              You've worked hard to elevate your career to where it is now.
+              You&apos;ve worked hard to elevate your career to where it is now.
               Share your credentials and increase interest from new prospective
               clients
             </p>

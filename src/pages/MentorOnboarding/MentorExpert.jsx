@@ -66,7 +66,7 @@ export default function MentorExpert() {
                 <div>
                   <h3 className="text-lg font-bold text-[#1E4AB8] mb-2">Real-time Expert Matching</h3>
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    When a mentee is stuck on a problem or has a nagging question that demands an expert's touch, ExpertFinder connects the mentee to you, in <span className="font-bold text-[#1E4AB8]">real-time</span>.
+                    When a mentee is stuck on a problem or has a nagging question that demands an expert&apos;s touch, ExpertFinder connects the mentee to you, in <span className="font-bold text-[#1E4AB8]">real-time</span>.
                   </p>
                 </div>
               </div>
@@ -83,7 +83,7 @@ export default function MentorExpert() {
                 <div>
                   <h3 className="text-lg font-bold text-[#1E4AB8] mb-2">Instant Connection</h3>
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    ExpertFinder instantly identifies qualified experts like yourself to answer a mentee's time sensitive questions and provide immediate guidance.
+                    ExpertFinder instantly identifies qualified experts like yourself to answer a mentee&apos;s time sensitive questions and provide immediate guidance.
                   </p>
                 </div>
               </div>

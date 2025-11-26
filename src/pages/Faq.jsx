@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, MessageCircle, Users, Calendar, Shield, Star, HelpCircle } from 'lucide-react';
 import Footer from '../components/Footer';
+import FaqImg from '../assets/FaqImg.png';
 
 function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -143,24 +144,41 @@ function FAQ() {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-      {/* Header Section */}
-      <section className="px-6 md:px-20 lg:px-40 pt-20 pb-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-blue-100">
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="bg-gradient-to-r from-[#2D488F] to-[#122350] p-3 rounded-full">
-                <HelpCircle className="w-8 h-8 text-white" />
+    <div className="w-full bg-[#ECF0F6]">
+      {/* Hero Section */}
+      <section className="relative w-full bg-[#efeff3] px-4 md:px-8 lg:px-20 xl:px-40 pt-8 md:pt-16 lg:pt-20 pb-6 md:pb-12 lg:pb-16">
+        <div className="max-w-7xl mx-auto">
+          {/* White container box */}
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg p-12 md:p-12 lg:p-16">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-16 items-center min-h-[350px] md:min-h-[400px] lg:min-h-[450px]">
+              {/* Text content - Always first on mobile */}
+              <div className="w-full space-y-3 md:space-y-4 lg:space-y-6 text-center lg:text-left order-1">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="bg-gradient-to-r from-[#2D488F] to-[#122350] p-3 rounded-full">
+                    <HelpCircle className="w-8 h-8 text-white" />
+                  </div>
+                  <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2D488F] leading-tight">
+                    Frequently Asked Questions
+                  </h1>
+                </div>
+                <div className="w-24 h-1.5 bg-gradient-to-r from-[#2D488F] to-[#122350] mb-2 rounded-full transform transition-all duration-500 hover:w-32 mx-auto lg:mx-0"></div>
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl text-[#2D488F]/75 leading-relaxed max-w-md lg:max-w-lg mx-auto lg:mx-0">
+                  Find answers to common questions about becoming a mentor on Koach. Can't find what you're looking for? 
+                  <span className="font-semibold"> Contact our support team!</span>
+                </p>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-[#122350] leading-tight">
-                Frequently Asked Questions
-              </h1>
+              
+              {/* Illustration - Always second on mobile */}
+              <div className="w-full flex justify-center lg:justify-end order-2">
+                <div className="w-full max-w-[280px] sm:max-w-[320px] md:max-w-md lg:max-w-lg xl:max-w-xl">
+                  <img 
+                    src={FaqImg} 
+                    alt="Contact illustration showing people collaborating"
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#2D488F] to-[#122350] mb-6"></div>
-            <p className="text-lg text-[#2D488F] leading-7 max-w-3xl">
-              Find answers to common questions about becoming a mentor on Koach. Can&apos;t find what you&apos;re looking for? 
-              <span className="font-semibold"> Contact our support team!</span>
-            </p>
           </div>
         </div>
       </section>
