@@ -115,8 +115,8 @@ export default function LoginPage() {
   // Social logins - they either redirect (OAuth) or throw
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle(navigate);
-      // OAuth flow usually redirects away; AuthContext handles post-login redirect if needed
+      // Pass false for isSignupFlow (or omit, default is false)
+      await loginWithGoogle(navigate, false);
     } catch (err) {
       console.error("Google login error:", err);
       setError("Google login failed. Please try again.");
@@ -125,7 +125,8 @@ export default function LoginPage() {
 
   const handleLinkedInLogin = async () => {
     try {
-      await loginWithLinkedIn(navigate);
+      // Pass false for isSignupFlow (or omit, default is false)
+      await loginWithLinkedIn(navigate, false);
     } catch (err) {
       console.error("LinkedIn login error:", err);
       setError("LinkedIn login is currently unavailable.");

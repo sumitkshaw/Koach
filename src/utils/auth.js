@@ -1,5 +1,9 @@
-import { account, oauthProviders } from './appwrite';
+// src/utils/auth.js
+import { account as appwriteAccount, oauthProviders } from './appwrite'; // Rename the import
 import { ID } from 'appwrite';
+
+// Re-export the account object for use in other files
+export const account = appwriteAccount;
 
 // Add delay to prevent rate limiting
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -10,12 +14,12 @@ export const createAccount = async (email, password, name) => {
     await delay(1000);
 
     // Create user account
-    const user = await account.create(ID.unique(), email, password, name);
+    const user = await appwriteAccount.create(ID.unique(), email, password, name); // Use appwriteAccount
 
     // Try to send verification email (do not block signup on failure)
     try {
       // Appwrite will append userId & secret automatically to this redirect URL
-      await account.createVerification(`${window.location.origin}/login`);
+      await appwriteAccount.createVerification(`${window.location.origin}/login`); // Use appwriteAccount
       return { user, message: 'Account created! Verification email sent. Please check your inbox (and spam).' };
     } catch (verr) {
       console.warn('[Signup] Verification send failed:', { message: verr?.message, code: verr?.code, type: verr?.type });
@@ -46,11 +50,11 @@ export const login = async (email, password) => {
     await delay(1000);
     const normalizedEmail = String(email || '').trim().toLowerCase();
     // Do not trim password; users may have intentional leading/trailing spaces
-    const session = await account.createEmailPasswordSession(normalizedEmail, String(password ?? ''));
-    const user = await account.get();
+    const session = await appwriteAccount.createEmailPasswordSession(normalizedEmail, String(password ?? '')); // Use appwriteAccount
+    const user = await appwriteAccount.get(); // Use appwriteAccount
 
     if (!user.emailVerification) {
-      await account.deleteSession('current');
+      await appwriteAccount.deleteSession('current'); // Use appwriteAccount
       throw new Error('Please verify your email before logging in. Check your inbox for verification link.');
     }
 
@@ -67,16 +71,23 @@ export const login = async (email, password) => {
   }
 };
 
-// OAuth login
-export const loginWithOAuth = async (provider, successUrl, failureUrl) => {
+// OAuth login - UPDATED to accept successUrl and failureUrl parameters
+export const loginWithOAuth = async (provider, successUrl, failureUrl = null) => {
   try {
-    // Redirect to welcome-step after successful OAuth login
-    const successUrl = `${window.location.origin}/welcome-step`;
-    await account.createOAuth2Session(
+    // Use provided failure URL or default to login with error
+    const defaultFailureUrl = `${window.location.origin}/login?error=${encodeURIComponent(
+      JSON.stringify({ 
+        message: `${provider} authentication failed`, 
+        type: 'oauth_error' 
+      })
+    )}`;
+    
+    await appwriteAccount.createOAuth2Session( // Use appwriteAccount
       provider,
-      successUrl,  // Redirect to /welcome-step after successful OAuth
-      failureUrl || `${window.location.origin}/login`
+      successUrl,
+      failureUrl || defaultFailureUrl
     );
+    // Note: createOAuth2Session will redirect the browser, so code after this won't run
   } catch (error) {
     console.error('OAuth login error:', error);
     throw new Error(`OAuth login failed: ${error.message}`);
@@ -87,7 +98,7 @@ export const loginWithOAuth = async (provider, successUrl, failureUrl) => {
 export const verifyEmail = async (userId, secret) => {
   try {
     await delay(500);
-    const result = await account.updateVerification(userId, secret);
+    const result = await appwriteAccount.updateVerification(userId, secret); // Use appwriteAccount
     return result;
   } catch (error) {
     throw new Error('Invalid or expired verification link.');
@@ -101,7 +112,7 @@ export const resendVerification = async (email, password) => {
     // Try to use an existing session first (if any)
     let existingUser = null;
     try {
-      existingUser = await account.get();
+      existingUser = await appwriteAccount.get(); // Use appwriteAccount
     } catch (_) {
       existingUser = null;
     }
@@ -112,16 +123,16 @@ export const resendVerification = async (email, password) => {
     if (!existingUser) {
       const normalizedEmail = String(email || '').trim().toLowerCase();
       // Do not trim password
-      await account.createEmailPasswordSession(normalizedEmail, String(password ?? ''));
+      await appwriteAccount.createEmailPasswordSession(normalizedEmail, String(password ?? '')); // Use appwriteAccount
       createdTempSession = true;
     }
 
     // Send verification email (Appwrite adds userId & secret)
-    await account.createVerification(`${window.location.origin}/login`);
+    await appwriteAccount.createVerification(`${window.location.origin}/login`); // Use appwriteAccount
 
     // Clean up temporary session if we created one just for sending email
     if (createdTempSession) {
-      await account.deleteSession('current');
+      await appwriteAccount.deleteSession('current'); // Use appwriteAccount
     }
 
     return { success: true };
@@ -142,7 +153,7 @@ export const resendVerification = async (email, password) => {
 // Get current user
 export const getCurrentUser = async () => {
   try {
-    const user = await account.get();
+    const user = await appwriteAccount.get(); // Use appwriteAccount
     return user;
   } catch (error) {
     return null;
@@ -152,7 +163,7 @@ export const getCurrentUser = async () => {
 // Logout
 export const logout = async () => {
   try {
-    await account.deleteSession('current');
+    await appwriteAccount.deleteSession('current'); // Use appwriteAccount
   } catch (error) {
     throw error;
   }
@@ -172,7 +183,7 @@ export const createPasswordRecovery = async (email, redirectUrl) => {
   try {
     await delay(1000);
     const normalizedEmail = String(email || '').trim().toLowerCase();
-    await account.createRecovery(
+    await appwriteAccount.createRecovery( // Use appwriteAccount
       normalizedEmail,
       redirectUrl || `${window.location.origin}/reset-password`
     );
@@ -192,7 +203,7 @@ export const createPasswordRecovery = async (email, redirectUrl) => {
 export const updatePassword = async (userId, secret, password) => {
   try {
     await delay(1000);
-    await account.updateRecovery(userId, secret, password);
+    await appwriteAccount.updateRecovery(userId, secret, password); // Use appwriteAccount
     return { success: true };
   } catch (error) {
     throw new Error('Invalid or expired reset link. Please request a new one.');
@@ -206,4 +217,31 @@ export const checkPasswordResetInUrl = () => {
   const secret = urlParams.get('secret');
   
   return { userId, secret };
+};
+
+// NEW: Check if OAuth session was just created (useful for callback)
+export const checkOAuthSession = async () => {
+  try {
+    // First try to get the current user
+    const user = await getCurrentUser();
+    if (user) {
+      return { authenticated: true, user };
+    }
+    
+    // If no user, check if we have any sessions
+    try {
+      const sessions = await appwriteAccount.listSessions(); // Use appwriteAccount
+      if (sessions.total > 0) {
+        // Try to get user again with the session
+        const userWithSession = await appwriteAccount.get(); // Use appwriteAccount
+        return { authenticated: true, user: userWithSession };
+      }
+    } catch (sessionError) {
+      // No valid sessions
+    }
+    
+    return { authenticated: false, user: null };
+  } catch (error) {
+    return { authenticated: false, user: null, error };
+  }
 };

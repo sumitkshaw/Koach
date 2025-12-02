@@ -64,6 +64,7 @@ import Message from "./components/dashboard-mentor/Message";
 import Settings1 from "./components/dashboard-mentor/Settings2";
 import Settings2 from "./components/dashboard/Settings1";
 
+import OAuthCallback from './pages/OAuthCallback';
 
 
 
@@ -144,6 +145,9 @@ function AppContent() {
 
         <Route path="/listing" element={<Listing/>}/>
         <Route path="/listing/jessica" element={<Demo/>}/>
+
+        <Route path="/oauth-callback" element={<OAuthCallback />} />
+
        
 
         {/* Add more routes as needed */}

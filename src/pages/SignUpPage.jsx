@@ -98,7 +98,8 @@ export default function SignUpPage() {
 
   const handleGoogleSignUp = async () => {
     try {
-      await loginWithGoogle(navigate);
+      // Pass true for isSignupFlow
+      await loginWithGoogle(navigate, true);
     } catch (error) {
       console.error("Google sign-up error:", error);
       setError("Google sign-up failed. Please try again.");
@@ -107,7 +108,8 @@ export default function SignUpPage() {
 
   const handleLinkedInSignUp = async () => {
     try {
-      await loginWithLinkedIn(navigate);
+      // Pass true for isSignupFlow
+      await loginWithLinkedIn(navigate, true);
     } catch (error) {
       console.error("LinkedIn sign-up error:", error);
       setError("LinkedIn sign-up is currently unavailable.");

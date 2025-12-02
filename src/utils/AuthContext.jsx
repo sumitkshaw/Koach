@@ -1,4 +1,4 @@
-// src/AuthContext.jsx
+// src/AuthContext.jsx - Updated with OAuth improvements
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { 
   getCurrentUser, 
@@ -11,7 +11,8 @@ import {
   createPasswordRecovery,
   updatePassword,
   checkPasswordResetInUrl,
-  resendVerification
+  resendVerification,
+  account  // Add this import
 } from "./auth";
 
 const AuthContext = createContext();
@@ -59,9 +60,30 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
+  // ---- NEW: Helper to check if user exists with OAuth ----
+  const checkUserExistsAfterOAuth = async () => {
+    try {
+      const user = await getCurrentUser();
+      if (user) {
+        setUser(user);
+        return { exists: true, user };
+      }
+      return { exists: false, user: null };
+    } catch (error) {
+      return { exists: false, user: null, error };
+    }
+  };
+
   // ---- UPDATED: signup now redirects to /past-experience ----
   const signup = async (name, email, password, navigate, setError) => {
     try {
+      // Check if user is already logged in
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        navigate("/dashboard");
+        return;
+      }
+
       const result = await appwriteCreateAccount(email, password, name);
 
       // show verification message if any (createAccount returns a message)
@@ -71,12 +93,13 @@ export const AuthProvider = ({ children }) => {
       setNeedsVerification(true);
 
       // Navigate directly to mentee onboarding
-      // If you want to require login first, you can navigate to "/login" instead.
       navigate("/past-experience");
     } catch (error) {
       console.error("Sign-up error", error);
       if (error.message && error.message.toLowerCase().includes('already exists')) {
         setError('❌ Account already exists with this email! Please try logging in or use "Forgot Password".');
+        // Redirect to login after showing error
+        setTimeout(() => navigate("/login"), 2000);
       } else if (error.message && error.message.toLowerCase().includes('verification')) {
         setError('Account created but verification email failed. Please check your inbox or resend verification from login.');
       } else {
@@ -88,6 +111,13 @@ export const AuthProvider = ({ children }) => {
   // ---- UPDATED: login now redirects to /past-experience ----
   const login = async (email, password, navigate, setError) => {
     try {
+      // Check if user is already logged in
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        navigate("/dashboard");
+        return;
+      }
+
       const result = await appwriteLogin(email, password);
       setUser(result.user);
 
@@ -109,21 +139,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginWithGoogle = async () => {
+  // ---- UPDATED: OAuth login with proper user existence check ----
+  const loginWithOAuthAndRedirect = async (provider, navigate, isSignupFlow = false) => {
     try {
-      await loginWithOAuth('google');
-      // OAuth flow will redirect — handled by Appwrite config
+      // Clear any existing session first to get fresh state
+      try {
+        await account.deleteSession('current');
+      } catch (e) {
+        // Ignore errors if no session exists
+      }
+
+      // Use different success URLs based on whether this is signup or login
+      const successUrl = isSignupFlow 
+        ? `${window.location.origin}/welcome-step`  // New users go to onboarding
+        : `${window.location.origin}/oauth-callback`; // Existing users go to callback handler
+
+      const failureUrl = `${window.location.origin}/login?error=${encodeURIComponent(
+        JSON.stringify({ 
+          message: `${provider} authentication failed`, 
+          type: 'oauth_error' 
+        })
+      )}`;
+
+      await loginWithOAuth(provider, successUrl, failureUrl);
+      // The OAuth flow will redirect the user away
     } catch (error) {
-      console.error("Google login error", error);
+      console.error(`${provider} OAuth error:`, error);
+      throw error;
     }
   };
 
-  const loginWithLinkedIn = async () => {
-    try {
-      await loginWithOAuth('linkedin');
-    } catch (error) {
-      console.error("LinkedIn login error", error);
-    }
+  // ---- UPDATED: Separate functions for signup vs login OAuth ----
+  const loginWithGoogle = async (navigate, isSignupFlow = false) => {
+    await loginWithOAuthAndRedirect('google', navigate, isSignupFlow);
+  };
+
+  const loginWithLinkedIn = async (navigate, isSignupFlow = false) => {
+    await loginWithOAuthAndRedirect('linkedin', navigate, isSignupFlow);
   };
 
   const logout = async (navigate) => {
@@ -188,6 +240,7 @@ export const AuthProvider = ({ children }) => {
         resetPassword,
         confirmPasswordReset,
         resendVerificationEmail,
+        checkUserExistsAfterOAuth,  // Export this new function
       }}
     >
       {children}
