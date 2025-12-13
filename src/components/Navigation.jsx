@@ -83,8 +83,21 @@ function Navigation() {
     navigate(dashboardPath);
   };
 
+  const handleBecomeMentor = () => {
+    // Redirect to mentor-signup page
+    navigate("/mentor-signup");
+    setIsMenuOpen(false);
+  };
+
+  // Check if current path matches nav link
+  const isActive = (path) => {
+    return location.pathname === path || 
+           (path === '/' && location.pathname === '/') ||
+           (path !== '/' && location.pathname.startsWith(path));
+  };
+
   return (
-    <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
+    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -97,73 +110,129 @@ function Navigation() {
               }}
               className="cursor-pointer"
             >
-              <img src={image3} alt="Koach" className="h-12 w-auto" />
+              <img src={image3} alt="Koach" className="h-10 w-auto" />
             </a>
           </div>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex space-x-12 text-xl ml-12">
-            <a href="/about" className="text-[#2D488F] hover:text-blue-700">
-              About Us
-            </a>
-            <a href="/circles" className="text-[#2D488F] hover:text-blue-700">
-              Circle
-            </a>
-            <a href="/listing" className="text-[#2D488F] hover:text-blue-700">
-              Koach
-            </a>
-            <a href="/contact" className="text-[#2D488F] hover:text-blue-700">
-              Contact
-            </a>
-            
-            {/* Dashboard link - only show when user is logged in */}
-            {user && (
-              <a 
-                href={getDashboardPath()}
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center space-x-10 ml-16">
+            {/* Navigation Links with underline animation */}
+            <div className="flex space-x-10">
+              <a
+                href="/about"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleDashboardNavigation();
+                  navigate("/about");
                 }}
-                className="text-[#2D488F] hover:text-blue-700"
+                className="group relative text-gray-700 hover:text-gray-900 text-lg font-medium tracking-wide py-2 px-1 transition-colors duration-200"
               >
-                Dashboard
+                About Us
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2D488F] to-blue-500 transform origin-left transition-transform duration-300 ${isActive('/about') ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
               </a>
-            )}
+
+              <a
+                href="/circles"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/circles");
+                }}
+                className="group relative text-gray-700 hover:text-gray-900 text-lg font-medium tracking-wide py-2 px-1 transition-colors duration-200"
+              >
+                Circle
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2D488F] to-blue-500 transform origin-left transition-transform duration-300 ${isActive('/circles') ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+              </a>
+
+              <a
+                href="/listing"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/listing");
+                }}
+                className="group relative text-gray-700 hover:text-gray-900 text-lg font-medium tracking-wide py-2 px-1 transition-colors duration-200"
+              >
+                Koach
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2D488F] to-blue-500 transform origin-left transition-transform duration-300 ${isActive('/listing') ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+              </a>
+
+              <a
+                href="/contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/contact");
+                }}
+                className="group relative text-gray-700 hover:text-gray-900 text-lg font-medium tracking-wide py-2 px-1 transition-colors duration-200"
+              >
+                Contact
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2D488F] to-blue-500 transform origin-left transition-transform duration-300 ${isActive('/contact') ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+              </a>
+
+              {/* Dashboard link - only show when user is logged in */}
+              {user && (
+                <a
+                  href={getDashboardPath()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDashboardNavigation();
+                  }}
+                  className="group relative text-gray-700 hover:text-gray-900 text-lg font-medium tracking-wide py-2 px-1 transition-colors duration-200"
+                >
+                  Dashboard
+                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2D488F] to-blue-500 transform origin-left transition-transform duration-300 ${isActive('/dashboard') || isActive('/dashboard_mentor') ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+                </a>
+              )}
+            </div>
           </div>
 
-          {/* Desktop Auth */}
+          {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center space-x-4">
             <div className="flex items-center space-x-4">
               {user ? (
                 <>
-                  {/* Profile Picture with Initials */}
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-md">
-                    {getInitials(user.displayName || user.email)}
+                  {/* Profile Section */}
+                  <div className="flex items-center space-x-4">
+                    {/* Profile Picture with Initials */}
+                    <div 
+                      className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium text-sm shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+                      onClick={() => handleDashboardNavigation()}
+                    >
+                      {getInitials(user.displayName || user.email)}
+                    </div>
+                    
+                    {/* Logout Button */}
+                    <button
+                      onClick={() => {
+                        // Clear dashboard type on logout
+                        localStorage.removeItem('dashboardType');
+                        logout(navigate);
+                      }}
+                      className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium border border-gray-200 hover:border-gray-300 rounded-md transition-all duration-200 hover:shadow-sm"
+                    >
+                      Logout
+                    </button>
                   </div>
-                  
-                  {/* Logout Button */}
-                  <button
-                    onClick={() => {
-                      // Clear dashboard type on logout
-                      localStorage.removeItem('dashboardType');
-                      logout(navigate);
-                    }}
-                    className="text-gray-600 hover:text-white hover:bg-[#2D488F] border border-gray-300 hover:border-[#2D488F] px-4 py-2 rounded-md text-sm font-medium transition-all duration-300"
-                  >
-                    Logout
-                  </button>
                 </>
               ) : (
                 <>
+                  {/* Become a Mentor Button */}
+                  <button
+                    onClick={handleBecomeMentor}
+                    className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium border border-gray-200 hover:border-gray-300 rounded-md transition-all duration-200 hover:shadow-sm"
+                  >
+                    Become a Mentor
+                  </button>
+                  
+                  {/* Login Button */}
                   <a
                     href="/login"
-                    className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
+                    className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium transition-colors duration-200"
                   >
                     Log in
                   </a>
+                  
+                  {/* Get Started Button */}
                   <a
                     href="/signup"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                    className="bg-gradient-to-r from-[#2D488F] to-blue-500 text-white px-5 py-2.5 rounded-md text-sm font-medium hover:shadow-md transition-all duration-200 hover:opacity-95"
                   >
                     Get Started
                   </a>
@@ -194,7 +263,7 @@ function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Updated with same text styling as desktop */}
         {isMenuOpen && (
           <div
             ref={menuRef}
@@ -203,7 +272,7 @@ function Navigation() {
             <a
               href="/"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
             >
               Home
             </a>
@@ -211,7 +280,7 @@ function Navigation() {
             <a
               href="/about"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
             >
               About Us
             </a>
@@ -219,7 +288,7 @@ function Navigation() {
             <a
               href="/circles"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
             >
               Circle
             </a>
@@ -227,7 +296,7 @@ function Navigation() {
             <a
               href="/listing"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
             >
               Koach
             </a>
@@ -235,7 +304,7 @@ function Navigation() {
             <a
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+              className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
             >
               Contact
             </a>
@@ -249,15 +318,15 @@ function Navigation() {
                   handleDashboardNavigation();
                   setIsMenuOpen(false);
                 }}
-                className="block text-[#2D488F] hover:text-blue-700 py-3 px-4 rounded-2xl hover:bg-blue-50/70 transition-all duration-300 font-medium"
+                className="block text-gray-700 hover:text-gray-900 py-3 px-4 rounded-2xl hover:bg-gray-50/70 transition-all duration-200 font-medium tracking-wide hover:translate-x-1 hover:shadow-sm"
               >
                 Dashboard
               </a>
             )}
 
             {user ? (
-              <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30">
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-600 text-white font-semibold shadow-lg">
+              <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-gray-50/30 to-gray-50/30 hover:bg-gray-50/50 transition-all duration-200 hover:translate-x-1 hover:shadow-sm">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium shadow-sm hover:shadow-md transition-all duration-200">
                   {getInitials(user.displayName || user.email)}
                 </div>
                 <button
@@ -266,24 +335,33 @@ function Navigation() {
                     logout(navigate);
                     setIsMenuOpen(false);
                   }}
-                  className="text-sm text-[#2D488F] bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-5 py-2 rounded-full hover:bg-[#2D488F] hover:text-white transition-all duration-300 font-medium shadow-sm"
+                  className="text-sm text-gray-600 hover:text-gray-900 bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-gray-300 px-5 py-2 rounded-full transition-all duration-200 font-medium hover:shadow-sm"
                 >
                   Logout
                 </button>
               </div>
             ) : (
               <div className="space-y-3">
+                {/* Become a Mentor Button for Mobile - Updated styling */}
+                <button
+                  onClick={handleBecomeMentor}
+                  className="w-full text-gray-600 hover:text-gray-900 text-sm bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-gray-300 px-6 py-3 rounded-full text-center transition-all duration-200 font-medium hover:translate-x-1 hover:shadow-sm"
+                >
+                  Become a Mentor
+                </button>
+                
                 <a
                   href="/login"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-[#2D488F] hover:text-white text-sm bg-white/80 backdrop-blur-sm border border-[#2D488F]/20 px-6 py-3 rounded-full text-center hover:bg-[#2D488F] transition-all duration-300 font-medium shadow-sm"
+                  className="block text-gray-600 hover:text-gray-900 text-sm bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-gray-300 px-6 py-3 rounded-full text-center transition-all duration-200 font-medium hover:translate-x-1 hover:shadow-sm"
                 >
                   Log in
                 </a>
+                
                 <a
                   href="/signup"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-600 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-300 font-medium shadow-lg"
+                  className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-500 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-200 font-medium shadow-sm hover:shadow hover:translate-x-1"
                 >
                   Get Started
                 </a>
