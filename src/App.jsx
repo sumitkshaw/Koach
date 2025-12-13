@@ -15,6 +15,9 @@ import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
+import MentorLoginPage from "./pages/MentorLogin";
+import MentorSignupPage from "./pages/MentorSignup";
+
 import DemoCircle from "./components/circles/DemoCircle.jsx";
 
 import BioStep from "./pages/MenteeOnboard/BioStep";
@@ -74,7 +77,7 @@ function AppContent() {
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
      "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
      "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", 
-     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1"];
+     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -99,6 +102,9 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+
+        <Route path="/mentor-signup" element={<MentorSignupPage />} />
+        <Route path="/mentor-login" element={<MentorLoginPage />} />
 
         <Route path="/circles/research" element={<DemoCircle/>} /> 
 
