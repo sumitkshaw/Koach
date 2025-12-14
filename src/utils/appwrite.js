@@ -1,19 +1,16 @@
-import { Client, Account } from 'appwrite';
+// src/utils/appwrite.js - FOR APPWRITE 20+
+import { Client, Account, Databases } from 'appwrite';
 
-const client = new Client();
+// Create client
+export const client = new Client()
+  .setEndpoint('https://fra.cloud.appwrite.io/v1')
+  .setProject('68d6e7520021a096d289');
 
-// Get environment variables with safe fallbacks to avoid runtime crashes
-let endpoint = import.meta.env?.VITE_APPWRITE_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
-let projectId = import.meta.env?.VITE_APPWRITE_PROJECT_ID || '68d6e7520021a096d289';
+// Create services
+export const account = new Account(client);
+export const databases = new Databases(client);
 
-if (!import.meta.env?.VITE_APPWRITE_ENDPOINT || !import.meta.env?.VITE_APPWRITE_PROJECT_ID) {
-  console.warn('[Appwrite] Vite env vars missing. Using fallback endpoint/project. Ensure .env is loaded and restart Vite.');
-}
-
-client
-  .setEndpoint(endpoint)
-  .setProject(projectId);
-
-export const account = new Account(client); // This should be exported
+// Constants
+export const DATABASE_ID = 'user_profile';
+export const USER_PROFILES_COLLECTION_ID = 'user_profiles';
 export const oauthProviders = { google: 'google', linkedin: 'linkedin' };
-export default client;

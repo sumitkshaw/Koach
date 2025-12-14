@@ -1,39 +1,62 @@
-// src/pages/OAuthCallback.jsx
+// src/pages/OAuthCallback.jsx - FIXED VERSION
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
 import { getCurrentUser } from "../utils/auth";
+import {
+  createUserProfile,
+  getUserProfile,
+  checkOnboardingStatus,
+} from "../utils/database/profiles";
 
 export default function OAuthCallback() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth(); // Add setUser here
 
   useEffect(() => {
     const handleOAuthCallback = async () => {
-      try {
-        // Check if user exists after OAuth redirect
-        const user = await getCurrentUser();
-        
-        if (user) {
-          // User exists - set user in context
-          setUser(user);
-          
-          // Check if user has completed onboarding
-          // You might want to check for user profile data here
-          // For now, redirect to dashboard
-          navigate("/dashboard");
-        } else {
-          // User doesn't exist - redirect to signup/onboarding
-          navigate("/welcome-step");
-        }
-      } catch (error) {
-        console.error("OAuth callback error:", error);
-        navigate("/login");
-      }
-    };
+  try {
+    // Check if user exists after OAuth redirect
+    const currentUser = await getCurrentUser();
+    
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+    
+    // Set user in context
+    setUser(currentUser);
+    
+    // Get or create profile (idempotent - safe to call multiple times)
+    const userType = localStorage.getItem('signupUserType') || 'mentee';
+    const profile = await createUserProfile({
+      userId: currentUser.$id,
+      userType,
+      displayName: currentUser.name || '',
+    });
+    
+    localStorage.removeItem('signupUserType');
+    
+    console.log('✅ OAuth successful, profile:', profile);
+    
+    // Simple redirect logic
+    if (profile.userType === 'mentor' && !profile.onboardingComplete) {
+      navigate("/mentor-onboarding");
+    } else if (profile.userType === 'mentor') {
+      navigate("/dashboard_mentor");
+    } else {
+      navigate("/dashboard");
+    }
+    
+  } catch (error) {
+    console.error("OAuth callback error:", error);
+    // Even if profile creation fails, redirect to dashboard
+    navigate("/dashboard");
+  }
+};
 
     handleOAuthCallback();
-  }, [navigate, setUser]);
+  }, [navigate, setUser]); // Add setUser to dependencies
 
   return (
     <div className="flex items-center justify-center min-h-screen">

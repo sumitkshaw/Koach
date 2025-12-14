@@ -18,6 +18,8 @@ import SignUpPage from "./pages/SignUpPage";
 import MentorLoginPage from "./pages/MentorLogin";
 import MentorSignupPage from "./pages/MentorSignup";
 
+import MentorOnboardingPage from "./pages/MentorOnboardingPage";
+
 import DemoCircle from "./components/circles/DemoCircle.jsx";
 
 import BioStep from "./pages/MenteeOnboard/BioStep";
@@ -77,7 +79,7 @@ function AppContent() {
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
      "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
      "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", 
-     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login"];
+     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login", "/mentor-onboarding"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -107,6 +109,8 @@ function AppContent() {
         <Route path="/mentor-login" element={<MentorLoginPage />} />
 
         <Route path="/circles/research" element={<DemoCircle/>} /> 
+
+        <Route path="/mentor-onboarding" element={<MentorOnboardingPage />} />
 
         <Route path="/bio-step" element={<BioStep />} />
         <Route path="/bio-step1" element={<BioStep1 />} />
