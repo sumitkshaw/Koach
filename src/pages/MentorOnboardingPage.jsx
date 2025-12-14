@@ -228,62 +228,78 @@ export default function MentorOnboardingPage() {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Progress Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      {/* Fixed the padding-top: mobile gets pt-20, desktop gets pt-8 */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-8 pt-20 sm:pt-20">
+        {/* Progress Header - Consistent styling */}
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Complete Your Mentor Profile
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">
             {currentStepConfig.description}
           </p>
           
-          {/* Step Indicator */}
-          <div className="flex items-center justify-between mb-8">
-            {steps.map((step, index) => {
-              const stepNumber = index + 1;
-              const isActive = stepNumber === currentStep;
-              const isCompleted = stepNumber < currentStep;
-              
-              return (
-                <div key={stepNumber} className="flex-1 flex items-center">
-                  <div className="flex flex-col items-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
-                      isActive 
-                        ? 'bg-blue-600 text-white border-2 border-blue-600' 
-                        : isCompleted 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-white text-gray-400 border-2 border-gray-300'
-                    }`}>
-                      {isCompleted ? '✓' : stepNumber}
-                    </div>
-                    <span className={`text-sm font-medium ${
-                      isActive ? 'text-blue-600' : 
-                      isCompleted ? 'text-green-600' : 
-                      'text-gray-500'
-                    }`}>
-                      {step.title}
-                    </span>
-                  </div>
-                  
-                  {stepNumber < steps.length && (
-                    <div className={`flex-1 h-1 mx-4 ${
-                      stepNumber < currentStep ? 'bg-green-500' : 'bg-gray-200'
-                    }`} />
-                  )}
+          {/* Step Indicator - Mobile responsive with consistent colors */}
+          <div className="mb-6 sm:mb-8">
+            {/* Mobile Step Indicator */}
+            <div className="block sm:hidden text-center mb-4">
+              <div className="flex justify-center items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">
+                  {currentStep}
                 </div>
-              );
-            })}
+                <span className="text-sm font-medium">
+                  Step {currentStep} of {steps.length}: {currentStepConfig.title}
+                </span>
+              </div>
+            </div>
+            
+            {/* Desktop Step Indicator - Same styling as mobile */}
+            <div className="hidden sm:flex items-center justify-between">
+              {steps.map((step, index) => {
+                const stepNumber = index + 1;
+                const isActive = stepNumber === currentStep;
+                const isCompleted = stepNumber < currentStep;
+                
+                return (
+                  <div key={stepNumber} className="flex-1 flex items-center">
+                    <div className="flex flex-col items-center">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+                        isActive 
+                          ? 'bg-blue-600 text-white border-2 border-blue-600' 
+                          : isCompleted 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-white text-gray-400 border-2 border-gray-300'
+                      }`}>
+                        {isCompleted ? '✓' : stepNumber}
+                      </div>
+                      <span className={`text-sm font-medium text-center ${
+                        isActive ? 'text-blue-600' : 
+                        isCompleted ? 'text-green-600' : 
+                        'text-gray-500'
+                      }`}>
+                        {step.title}
+                      </span>
+                    </div>
+                    
+                    {stepNumber < steps.length && (
+                      <div className={`flex-1 h-1 mx-4 ${
+                        stepNumber < currentStep ? 'bg-green-500' : 'bg-gray-200'
+                      }`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
         
-        {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            Step {currentStep}: {currentStepConfig.title}
+        {/* Form Content - Consistent styling */}
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">
+            {currentStep === 1 ? '' : `Step ${currentStep}: `}{currentStepConfig.title}
           </h2>
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {currentStepConfig.fields.map((field) => (
               <div key={field.field} className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
@@ -313,7 +329,7 @@ export default function MentorOnboardingPage() {
                   <select
                     value={formData[field.field] || ''}
                     onChange={(e) => handleInputChange(field.field, e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                     required={field.required}
                   >
                     <option value="">Select an option</option>
@@ -326,7 +342,7 @@ export default function MentorOnboardingPage() {
                     value={formData[field.field] || ''}
                     onChange={(e) => handleInputChange(field.field, e.target.value)}
                     rows={field.rows || 4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                     placeholder={field.placeholder}
                     required={field.required}
                   />
@@ -338,7 +354,7 @@ export default function MentorOnboardingPage() {
                       onChange={(e) => handleInputChange(field.field, parseInt(e.target.value) || 0)}
                       min={field.min}
                       max={field.max}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                       required={field.required}
                     />
                     {field.min && field.max && (
@@ -352,7 +368,7 @@ export default function MentorOnboardingPage() {
                     type="text"
                     value={formData[field.field] || ''}
                     onChange={(e) => handleInputChange(field.field, e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
                     placeholder={field.placeholder}
                     required={field.required}
                   />
@@ -366,12 +382,12 @@ export default function MentorOnboardingPage() {
           </div>
         </div>
         
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
+        {/* Navigation Buttons - Consistent styling */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
           <button
             onClick={handleBack}
             disabled={currentStep === 1}
-            className={`px-8 py-3 rounded-lg font-medium transition-colors ${
+            className={`w-full sm:w-auto px-8 py-3 rounded-lg font-medium transition-colors ${
               currentStep === 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -380,14 +396,14 @@ export default function MentorOnboardingPage() {
             ← Back
           </button>
           
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 order-first sm:order-none">
             Step {currentStep} of {steps.length}
           </div>
           
           {currentStep < steps.length ? (
             <button
               onClick={handleNext}
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
             >
               Continue →
             </button>
@@ -395,7 +411,7 @@ export default function MentorOnboardingPage() {
             <button
               onClick={handleComplete}
               disabled={loading}
-              className="px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Saving...' : 'Complete Onboarding'}
             </button>
