@@ -299,14 +299,13 @@ export const AuthProvider = ({ children }) => {
 
       // Use different success URLs
       const successUrl = `${window.location.origin}/oauth-callback`;
-      const failureUrl = `${
-        window.location.origin
-      }/login?error=${encodeURIComponent(
-        JSON.stringify({
-          message: `${provider} authentication failed`,
-          type: "oauth_error",
-        })
-      )}`;
+      const failureUrl = `${window.location.origin
+        }/login?error=${encodeURIComponent(
+          JSON.stringify({
+            message: `${provider} authentication failed`,
+            type: "oauth_error",
+          })
+        )}`;
 
       await loginWithOAuth(provider, successUrl, failureUrl);
     } catch (error) {

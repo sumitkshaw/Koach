@@ -30,7 +30,7 @@ import WelcomeStep from "./pages/Welcome";
 import MentorExperience from "./pages/MentorOnboarding/MentorExperience";
 import Skills from "./pages/MentorOnboarding/Skills";
 import MentorExpert from "./pages/MentorOnboarding/MentorExpert";
-import Certifications  from "./pages/MentorOnboarding/Certifications";
+import Certifications from "./pages/MentorOnboarding/Certifications";
 import Planning from "./pages/MentorOnboarding/Plans";
 import Clients from "./pages/MentorOnboarding/Clients";
 import GoalsStep from "./pages/MentorOnboarding/Goals";
@@ -70,16 +70,18 @@ import Settings1 from "./components/dashboard-mentor/Settings2";
 import Settings2 from "./components/dashboard/Settings1";
 
 import OAuthCallback from './pages/OAuthCallback';
+import { ModalProvider } from "./context/ModalContext";
+import AuthModals from "./components/AuthModals";
 
 
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me", 
+  const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me",
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
-     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
-     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", 
-     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login", "/mentor-onboarding"];
+    "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
+    "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications",
+    "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login", "/mentor-onboarding"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -108,7 +110,7 @@ function AppContent() {
         <Route path="/mentor-signup" element={<MentorSignupPage />} />
         <Route path="/mentor-login" element={<MentorLoginPage />} />
 
-        <Route path="/circles/research" element={<DemoCircle/>} /> 
+        <Route path="/circles/research" element={<DemoCircle />} />
 
         <Route path="/mentor-onboarding" element={<MentorOnboardingPage />} />
 
@@ -137,28 +139,28 @@ function AppContent() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/goals" element={<Goals />} />
         <Route path="/dashboard/sessions" element={<Sessions />} />
         <Route path="/dashboard/messages" element={<Messages />} />
         <Route path="/dashboard/mentors" element={<Mentors />} />
-        <Route path="/dashboard/settings" element={<Settings2/>} />
+        <Route path="/dashboard/settings" element={<Settings2 />} />
 
-        <Route path="*" element={<NotFound/>} />
+        <Route path="*" element={<NotFound />} />
 
-        <Route path="/dashboard_mentor" element={<Dashmentor/>} />
+        <Route path="/dashboard_mentor" element={<Dashmentor />} />
         <Route path="/dashboard_mentor/earnings" element={<Earnings />} />
         <Route path="/dashboard_mentor/calendar" element={<Calen />} />
         <Route path="/dashboard_mentor/messages" element={<Message />} />
         <Route path="/dashboard_mentor/mentees" element={<Mentees />} />
         <Route path="/dashboard_mentor/settings" element={<Settings1 />} />
 
-        <Route path="/listing" element={<Listing/>}/>
-        <Route path="/listing/jessica" element={<Demo/>}/>
+        <Route path="/listing" element={<Listing />} />
+        <Route path="/listing/jessica" element={<Demo />} />
 
         <Route path="/oauth-callback" element={<OAuthCallback />} />
 
-       
+
 
         {/* Add more routes as needed */}
       </Routes>
@@ -170,7 +172,10 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent /> 
+        <ModalProvider>
+          <AppContent />
+          <AuthModals />
+        </ModalProvider>
       </AuthProvider>
     </Router>
   );

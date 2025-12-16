@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import image3 from "../assets/image3.png";
 import { useAuth } from "../utils/AuthContext";
 import { FaCloud } from "react-icons/fa";
+import { useModal } from "../context/ModalContext";
 
 function Navigation() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function Navigation() {
   const [showResourcesDropdown, setShowResourcesDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const { openModal } = useModal();
 
   // Get dashboard type from localStorage or determine from current path
   const getStoredDashboardType = () => {
@@ -25,7 +27,7 @@ function Navigation() {
       localStorage.setItem('dashboardType', 'mentee');
       return 'mentee';
     }
-    
+
     // Fallback to stored value or default
     const stored = localStorage.getItem('dashboardType');
     return stored || 'mentee'; // default to mentee if nothing stored
@@ -84,16 +86,16 @@ function Navigation() {
   };
 
   const handleBecomeMentor = () => {
-    // Redirect to mentor-signup page
-    navigate("/mentor-signup");
+    // Open mentor-signup modal
+    openModal('mentor-signup');
     setIsMenuOpen(false);
   };
 
   // Check if current path matches nav link
   const isActive = (path) => {
-    return location.pathname === path || 
-           (path === '/' && location.pathname === '/') ||
-           (path !== '/' && location.pathname.startsWith(path));
+    return location.pathname === path ||
+      (path === '/' && location.pathname === '/') ||
+      (path !== '/' && location.pathname.startsWith(path));
   };
 
   return (
@@ -191,13 +193,13 @@ function Navigation() {
                   {/* Profile Section */}
                   <div className="flex items-center space-x-4">
                     {/* Profile Picture with Initials */}
-                    <div 
+                    <div
                       className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium text-sm shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
                       onClick={() => handleDashboardNavigation()}
                     >
                       {getInitials(user.displayName || user.email)}
                     </div>
-                    
+
                     {/* Logout Button */}
                     <button
                       onClick={() => {
@@ -220,22 +222,22 @@ function Navigation() {
                   >
                     Become a Mentor
                   </button>
-                  
+
                   {/* Login Button */}
-                  <a
-                    href="/login"
+                  <button
+                    onClick={() => openModal('login')}
                     className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium transition-colors duration-200"
                   >
                     Log in
-                  </a>
-                  
+                  </button>
+
                   {/* Get Started Button */}
-                  <a
-                    href="/signup"
+                  <button
+                    onClick={() => openModal('signup')}
                     className="bg-gradient-to-r from-[#2D488F] to-blue-500 text-white px-5 py-2.5 rounded-md text-sm font-medium hover:shadow-md transition-all duration-200 hover:opacity-95"
                   >
                     Get Started
-                  </a>
+                  </button>
                 </>
               )}
             </div>
@@ -349,22 +351,26 @@ function Navigation() {
                 >
                   Become a Mentor
                 </button>
-                
-                <a
-                  href="/login"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block text-gray-600 hover:text-gray-900 text-sm bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-gray-300 px-6 py-3 rounded-full text-center transition-all duration-200 font-medium hover:translate-x-1 hover:shadow-sm"
+
+                <button
+                  onClick={() => {
+                    openModal('login');
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-gray-600 hover:text-gray-900 text-sm bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-gray-300 px-6 py-3 rounded-full text-center transition-all duration-200 font-medium hover:translate-x-1 hover:shadow-sm"
                 >
                   Log in
-                </a>
-                
-                <a
-                  href="/signup"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-500 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-200 font-medium shadow-sm hover:shadow hover:translate-x-1"
+                </button>
+
+                <button
+                  onClick={() => {
+                    openModal('signup');
+                    setIsMenuOpen(false);
+                  }}
+                  className="block w-full text-white hover:text-[#2D488F] text-sm bg-gradient-to-r from-[#2D488F] to-blue-500 hover:bg-white border hover:border-[#2D488F] px-6 py-3 rounded-full text-center transition-all duration-200 font-medium shadow-sm hover:shadow hover:translate-x-1"
                 >
                   Get Started
-                </a>
+                </button>
               </div>
             )}
           </div>
