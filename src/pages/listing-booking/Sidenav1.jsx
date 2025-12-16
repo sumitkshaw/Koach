@@ -92,6 +92,7 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
   };
 
   const handleDropdownSelect = (key, value) => {
+    // Clear the filter if the same option is clicked again
     setFilters(prev => ({
       ...prev,
       [key]: prev[key] === value ? null : value
@@ -212,7 +213,8 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
                           checked={filters[option.key] || false}
                           onChange={() => handleToggleChange(option.key)}
                         />
-                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white"></div>
+                        {/* Updated: Changed background to yellow when checked */}
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-400"></div>
                       </label>
                     </div>
                   ) : (
@@ -246,14 +248,8 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
                               <label 
                                 key={opt.value}
                                 className="flex items-center gap-2 cursor-pointer hover:text-gray-300 transition-colors"
+                                onClick={() => handleDropdownSelect(option.key, opt.value)}
                               >
-                                <input
-                                  type="radio"
-                                  name={option.key}
-                                  checked={filters[option.key] === opt.value}
-                                  onChange={() => handleDropdownSelect(option.key, opt.value)}
-                                  className="hidden"
-                                />
                                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                                   filters[option.key] === opt.value 
                                     ? 'border-yellow-400 bg-yellow-400' 
