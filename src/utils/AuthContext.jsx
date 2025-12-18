@@ -1,4 +1,3 @@
-// src/AuthContext.jsx - Updated with OAuth improvements
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import {
   getCurrentUser,
@@ -12,7 +11,10 @@ import {
   updatePassword,
   checkPasswordResetInUrl,
   resendVerification,
-  account, // Add this import
+  account,
+  checkUserVerification,
+  sendVerificationEmail,
+  getSessionStatus,
 } from "./auth";
 import {
   createUserProfile,
@@ -30,11 +32,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [needsVerification, setNeedsVerification] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const verificationHandledRef = useRef(false);
 
+  // Check verification status on load
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        // Handle verification from URL
         if (!verificationHandledRef.current) {
           const { userId, secret } = checkVerificationInUrl();
           if (userId && secret) {
@@ -43,6 +48,7 @@ export const AuthProvider = ({ children }) => {
               setVerificationMessage(
                 "Email verified successfully! You can now login."
               );
+              setIsVerified(true);
             } catch (error) {
               if (!verificationMessage) {
                 setVerificationMessage(
@@ -60,12 +66,12 @@ export const AuthProvider = ({ children }) => {
           }
         }
 
-        const currentUser = await getCurrentUser();
+        // Check current user and verification status
+        const { user: currentUser, isVerified: verified } = await checkUserVerification();
         setUser(currentUser);
+        setIsVerified(verified);
+        setNeedsVerification(currentUser && !verified);
 
-        if (currentUser && !currentUser.emailVerification) {
-          setNeedsVerification(true);
-        }
       } catch (error) {
         console.error("Auth initialization error:", error);
       } finally {
@@ -79,15 +85,11 @@ export const AuthProvider = ({ children }) => {
   // Helper: Create profile for new user
   const createUserProfileWithRole = async (userId, userData) => {
     if (!FEATURE_FLAGS.USE_NEW_PROFILE_SYSTEM) {
-      return null; // Feature flag disabled
+      return null;
     }
 
     try {
-      // Get userType from localStorage or default to 'mentee'
-      const userType =
-        localStorage.getItem("signupUserType") || userData.userType || "mentee";
-
-      // Clean up localStorage
+      const userType = localStorage.getItem("signupUserType") || userData.userType || "mentee";
       localStorage.removeItem("signupUserType");
 
       const profileData = {
@@ -104,13 +106,18 @@ export const AuthProvider = ({ children }) => {
       return profile;
     } catch (error) {
       console.error("❌ Failed to create user profile:", error);
-      // Don't block auth flow on profile creation failure
       return null;
     }
   };
 
-  // Helper: Handle post-login redirection based on profile
-  const handlePostLoginRedirection = async (userId, navigate) => {
+  // Helper: Handle post-login redirection with verification check
+  const handlePostLoginRedirection = async (userId, navigate, isVerified) => {
+    if (!isVerified) {
+      // User not verified, redirect to verification page
+      navigate("/verify-required");
+      return;
+    }
+
     if (!FEATURE_FLAGS.ENABLE_ROLE_BASED_ONBOARDING) {
       navigate("/dashboard");
       return;
@@ -119,15 +126,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const status = await checkOnboardingStatus(userId);
 
-      // AUTO-CREATE PROFILE IF NOT EXISTS
       if (!status.hasProfile) {
         const currentUser = await getCurrentUser();
         await createUserProfileWithRole(userId, {
           name: currentUser?.name || "",
-          userType: "mentee", // Default existing users to mentee
+          userType: "mentee",
         });
 
-        // Get updated status
         const newStatus = await checkOnboardingStatus(userId);
         redirectBasedOnStatus(newStatus, navigate);
         return;
@@ -149,26 +154,11 @@ export const AuthProvider = ({ children }) => {
         navigate("/dashboard_mentor");
       }
     } else {
-      // Mentee
       navigate("/dashboard");
-      // Note: Profile completion is non-blocking for mentees
     }
   };
 
-  // ---- NEW: Helper to check if user exists with OAuth ----
-  const checkUserExistsAfterOAuth = async () => {
-    try {
-      const user = await getCurrentUser();
-      if (user) {
-        setUser(user);
-        return { exists: true, user };
-      }
-      return { exists: false, user: null };
-    } catch (error) {
-      return { exists: false, user: null, error };
-    }
-  };
-
+  // Signup function - FIXED
   const signup = async (
     name,
     email,
@@ -178,10 +168,9 @@ export const AuthProvider = ({ children }) => {
     userType = "mentee"
   ) => {
     try {
-      // Store userType for profile creation
       localStorage.setItem("signupUserType", userType);
+      localStorage.setItem("signupEmail", email);
 
-      // Check if user is already logged in
       const currentUser = await getCurrentUser();
       if (currentUser) {
         navigate("/dashboard");
@@ -191,9 +180,7 @@ export const AuthProvider = ({ children }) => {
       const result = await appwriteCreateAccount(email, password, name);
 
       // Show verification message
-      setVerificationMessage(
-        result.message || "Account created. Please verify email."
-      );
+      setVerificationMessage(result.message);
       setNeedsVerification(true);
 
       // Create user profile
@@ -202,37 +189,34 @@ export const AuthProvider = ({ children }) => {
         await createUserProfileWithRole(user.$id, { name, userType });
       }
 
-      // Redirect based on role
-      if (userType === "mentor") {
-        navigate("/mentor-onboarding");
+      // Redirect based on verification status
+      if (!result.message?.includes('sent')) {
+        // Verification not sent, redirect to verify-required
+        navigate("/verify-required");
+      } else if (userType === "mentor") {
+        navigate("/verify-required");
       } else {
-        navigate("/dashboard");
+        navigate("/verify-required");
       }
+
     } catch (error) {
       console.error("Sign-up error", error);
-      localStorage.removeItem("signupUserType"); // Clean up on error
+      localStorage.removeItem("signupUserType");
+      localStorage.removeItem("signupEmail");
 
-      if (
-        error.message &&
-        error.message.toLowerCase().includes("already exists")
-      ) {
-        setError(
-          '❌ Account already exists with this email! Please try logging in or use "Forgot Password".'
-        );
+      if (error.message?.toLowerCase().includes("already exists")) {
+        setError('❌ Account already exists! Please try logging in or use "Forgot Password".');
         setTimeout(() => navigate("/login"), 2000);
-      } else if (
-        error.message &&
-        error.message.toLowerCase().includes("verification")
-      ) {
-        setError(
-          "Account created but verification email failed. Please check your inbox or resend verification from login."
-        );
+      } else if (error.message?.toLowerCase().includes("verification")) {
+        setError("Account created but verification failed. Please login and resend verification.");
+        setTimeout(() => navigate("/login"), 2000);
       } else {
         setError(error.message || "Sign-up failed. Please try again.");
       }
     }
   };
-  // ---- UPDATED: login now redirects to /past-experience ----
+
+  // Login function - UPDATED with verification check
   const login = async (
     email,
     password,
@@ -241,36 +225,32 @@ export const AuthProvider = ({ children }) => {
     userType = null
   ) => {
     try {
-      // Store userType if provided (for mentor login page)
       if (userType) {
         localStorage.setItem("signupUserType", userType);
       }
 
-      // Check if user is already logged in
       const currentUser = await getCurrentUser();
       if (currentUser) {
-        await handlePostLoginRedirection(currentUser.$id, navigate);
+        const { isVerified } = await checkUserVerification();
+        await handlePostLoginRedirection(currentUser.$id, navigate, isVerified);
         return;
       }
 
       const result = await appwriteLogin(email, password);
       setUser(result.user);
+      setIsVerified(result.isVerified || result.user?.emailVerification);
 
-      // Handle post-login redirection
-      await handlePostLoginRedirection(result.user.$id, navigate);
+      // Handle redirection with verification check
+      await handlePostLoginRedirection(result.user.$id, navigate, result.isVerified || result.user?.emailVerification);
     } catch (error) {
       console.error("Login error", error);
 
-      if ((error.message || "").toLowerCase().includes("verify your email")) {
-        setError(
-          "❌ Please verify your email first! Check your inbox for verification link."
-        );
+      if (error.message?.includes('verify your email')) {
+        setError("❌ Please verify your email first! Check your inbox.");
         setNeedsVerification(true);
-      } else if ((error.message || "").toLowerCase().includes("invalid")) {
-        setError(
-          "❌ Invalid email or password. Please check your credentials."
-        );
-      } else if ((error.message || "").toLowerCase().includes("rate limit")) {
+      } else if (error.message?.includes('Invalid')) {
+        setError("❌ Invalid email or password. Please check your credentials.");
+      } else if (error.message?.includes('rate limit')) {
         setError("⏰ Too many login attempts. Please wait a few minutes.");
       } else {
         setError(error.message || "Login failed. Please try again.");
@@ -278,6 +258,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // OAuth functions
   const loginWithOAuthAndRedirect = async (
     provider,
     navigate,
@@ -285,36 +266,39 @@ export const AuthProvider = ({ children }) => {
     userType = null
   ) => {
     try {
-      // Store userType if provided
       if (userType) {
         localStorage.setItem("signupUserType", userType);
       }
 
-      // Clear any existing session first
+      const oauthAttempt = {
+        provider,
+        timestamp: Date.now(),
+        email: localStorage.getItem('lastEmailAttempt') || '',
+        isSignupFlow
+      };
+      localStorage.setItem('lastOAuthAttempt', JSON.stringify(oauthAttempt));
+      
       try {
         await account.deleteSession("current");
-      } catch (e) {
-        // Ignore errors if no session exists
-      }
+      } catch (e) {}
 
-      // Use different success URLs
       const successUrl = `${window.location.origin}/oauth-callback`;
-      const failureUrl = `${window.location.origin
-        }/login?error=${encodeURIComponent(
-          JSON.stringify({
-            message: `${provider} authentication failed`,
-            type: "oauth_error",
-          })
-        )}`;
+      const failureUrl = `${window.location.origin}/login?error=${encodeURIComponent(
+        JSON.stringify({
+          message: `${provider} authentication failed`,
+          type: "oauth_error",
+        })
+      )}`;
 
       await loginWithOAuth(provider, successUrl, failureUrl);
     } catch (error) {
       console.error(`${provider} OAuth error:`, error);
+      localStorage.removeItem('lastOAuthAttempt');
+      localStorage.removeItem('lastEmailAttempt');
       throw error;
     }
   };
 
-  // Update the individual OAuth functions:
   const loginWithGoogle = async (
     navigate,
     isSignupFlow = false,
@@ -336,11 +320,28 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
+  // Send verification email
+  const sendVerification = async (setError, setSuccess) => {
+    try {
+      await sendVerificationEmail();
+      setSuccess("✅ Verification email sent! Check your inbox and spam folder.");
+    } catch (error) {
+      console.error("Send verification error:", error);
+      setError("Failed to send verification email. Please try again.");
+    }
+  };
+
   const logout = async (navigate) => {
     try {
       await appwriteLogout();
       setUser(null);
       setNeedsVerification(false);
+      setIsVerified(false);
+      
+      localStorage.removeItem('lastOAuthAttempt');
+      localStorage.removeItem('lastEmailAttempt');
+      localStorage.removeItem('signupEmail');
+      
       navigate("/");
     } catch (error) {
       console.error("Logout error", error);
@@ -387,7 +388,7 @@ export const AuthProvider = ({ children }) => {
       await resendVerification(email, password);
       setSuccess("✅ Verification email sent! Check your inbox.");
     } catch (error) {
-      console.error("Resend verification error", error);
+      console.error("Resend verification error:", error);
       setError(error.message || "Failed to resend verification email.");
     }
   };
@@ -398,6 +399,7 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         isAuthenticated: !!user,
+        isVerified,
         needsVerification,
         verificationMessage,
         loading,
@@ -410,7 +412,8 @@ export const AuthProvider = ({ children }) => {
         resetPassword,
         confirmPasswordReset,
         resendVerificationEmail,
-        checkUserExistsAfterOAuth, // Export this new function
+        sendVerification,
+        checkUserVerification,
       }}
     >
       {children}

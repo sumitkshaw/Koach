@@ -73,6 +73,10 @@ import OAuthCallback from './pages/OAuthCallback';
 import { ModalProvider } from "./context/ModalContext";
 import AuthModals from "./components/AuthModals";
 
+import AddPasswordPage from './pages/AddPasswordPage';
+
+import VerifyRequiredPage from './pages/VerifyRequiredPage';
+import VerifySuccessPage from './pages/VerifySuccessPage';
 
 
 function AppContent() {
@@ -160,7 +164,10 @@ function AppContent() {
 
         <Route path="/oauth-callback" element={<OAuthCallback />} />
 
+        <Route path="/add-password" element={<AddPasswordPage/>}/>
 
+        <Route path="/verify-required" element={<VerifyRequiredPage/>}/>
+        <Route path="/verify-success" element={<VerifySuccessPage/>}/>
 
         {/* Add more routes as needed */}
       </Routes>

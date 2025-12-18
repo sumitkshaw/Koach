@@ -106,8 +106,46 @@ export default function MentorLoginPage() {
       localStorage.removeItem("mentorLoginEmail");
     } catch (err) {
       console.error("Login error:", err);
-      // setError will also be set by the context in most cases; fallback:
-      if (!error) setError("Login failed. Please try again.");
+      
+      // SMART ERROR DETECTION FOR MIXED AUTH
+      if (err.message?.includes('Invalid email or password')) {
+        // Check if this might be an OAuth account
+        const savedOAuthAccounts = JSON.parse(localStorage.getItem('oauthAccounts') || '{}');
+        const lowerEmail = email.toLowerCase();
+        
+        if (savedOAuthAccounts[lowerEmail]) {
+          setError(
+            <div>
+              <p className="font-semibold">Account created with {savedOAuthAccounts[lowerEmail]}!</p>
+              <p>Please use "Login with {savedOAuthAccounts[lowerEmail]}" or </p>
+              <button
+                onClick={() => navigate('/forgot-password')}
+                className="text-blue-600 hover:underline mt-1"
+              >
+                reset your password
+              </button>
+              <p className="text-sm mt-2">
+                <button
+                  onClick={() => {
+                    savedOAuthAccounts[lowerEmail] === 'google' 
+                      ? handleGoogleLogin()
+                      : handleLinkedInLogin();
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Login with {savedOAuthAccounts[lowerEmail]}
+                </button>
+              </p>
+            </div>
+          );
+        } else {
+          setError("Invalid email or password. Please check your credentials.");
+        }
+      } else if (err.message?.includes('verify your email')) {
+        setError("❌ Please verify your email first! Check your inbox.");
+      } else {
+        setError(err.message || "Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -116,6 +154,10 @@ export default function MentorLoginPage() {
   // Social logins - they either redirect (OAuth) or throw
   const handleGoogleLogin = async () => {
     try {
+      // Store email for OAuth tracking
+      if (email) {
+        localStorage.setItem('lastEmailAttempt', email);
+      }
       // Pass false for isSignupFlow and 'mentor' as userType
       await loginWithGoogle(navigate, false, 'mentor');
     } catch (err) {
@@ -126,6 +168,10 @@ export default function MentorLoginPage() {
 
   const handleLinkedInLogin = async () => {
     try {
+      // Store email for OAuth tracking
+      if (email) {
+        localStorage.setItem('lastEmailAttempt', email);
+      }
       // Pass false for isSignupFlow and 'mentor' as userType
       await loginWithLinkedIn(navigate, false, 'mentor');
     } catch (err) {

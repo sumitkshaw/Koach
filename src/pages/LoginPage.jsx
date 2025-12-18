@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, X, Mail, AlertCircle } from "lucide-react";
 import Logo from "../assets/image3.png";
 import LoginImage from "../assets/loginimage.png";
 import { useAuth } from "../utils/AuthContext";
-import { getCurrentUser } from "../utils/auth";
+import { getCurrentUser, checkUserVerification } from "../utils/auth";
 import Footer from '../components/Footer';
 
 export default function LoginPage() {
@@ -13,6 +13,9 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationInfo, setVerificationInfo] = useState("");
+  const [isVerificationLoading, setIsVerificationLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const {
@@ -22,7 +25,8 @@ export default function LoginPage() {
     loginWithLinkedIn,
     verificationMessage,
     clearVerificationMessage,
-    resendVerificationEmail
+    resendVerificationEmail,
+    sendVerification
   } = useAuth();
 
   // Handle OAuth callback - check for errors but also verify if user is actually logged in
@@ -75,6 +79,14 @@ export default function LoginPage() {
     });
   }, [location.search, navigate]);
 
+  // Show verification modal when verificationMessage exists
+  useEffect(() => {
+    if (verificationMessage) {
+      setVerificationInfo(verificationMessage);
+      setShowVerificationModal(true);
+    }
+  }, [verificationMessage]);
+
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
@@ -90,7 +102,27 @@ export default function LoginPage() {
     }
   }, []); // run once
 
-  // Login handler - AuthContext.login will navigate to /past-experience on success
+  // Check verification status before login - FIX FOR WAITING LOOP
+  const checkAndHandleLogin = async () => {
+    try {
+      // First try to create session to check verification
+      const { user: currentUser, isVerified } = await checkUserVerification();
+      
+      if (currentUser && !isVerified) {
+        // User exists but not verified - show modal instead of error
+        setVerificationInfo("Please verify your email first. Check your inbox for the verification link or resend it.");
+        setShowVerificationModal(true);
+        return { shouldLogin: false, verified: false };
+      }
+      
+      return { shouldLogin: true, verified: isVerified };
+    } catch (error) {
+      // If can't check verification, proceed with normal login
+      return { shouldLogin: true, verified: false };
+    }
+  };
+
+  // Login handler - FIXED VERSION
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -99,14 +131,62 @@ export default function LoginPage() {
     clearVerificationMessage();
 
     try {
+      // Check verification status first
+      const { shouldLogin, verified } = await checkAndHandleLogin();
+      
+      if (!shouldLogin) {
+        setIsLoading(false);
+        return; // Already handled (showing verification modal)
+      }
+
       await login(email, password, navigate, setError);
       // Successful login will cause AuthContext.login to call navigate("/past-experience")
       // Clean up saved email after successful attempt
       localStorage.removeItem("loginEmail");
     } catch (err) {
       console.error("Login error:", err);
-      // setError will also be set by the context in most cases; fallback:
-      if (!error) setError("Login failed. Please try again.");
+      
+      // SMART ERROR DETECTION FOR MIXED AUTH
+      if (err.message?.includes('Invalid email or password')) {
+        // Check if this might be an OAuth account
+        const savedOAuthAccounts = JSON.parse(localStorage.getItem('oauthAccounts') || '{}');
+        const lowerEmail = email.toLowerCase();
+        
+        if (savedOAuthAccounts[lowerEmail]) {
+          setError(
+            <div>
+              <p className="font-semibold">Account created with {savedOAuthAccounts[lowerEmail]}!</p>
+              <p>Please use "Login with {savedOAuthAccounts[lowerEmail]}" or </p>
+              <button
+                onClick={() => navigate('/forgot-password')}
+                className="text-blue-600 hover:underline mt-1"
+              >
+                reset your password
+              </button>
+              <p className="text-sm mt-2">
+                <button
+                  onClick={() => {
+                    savedOAuthAccounts[lowerEmail] === 'google' 
+                      ? handleGoogleLogin()
+                      : handleLinkedInLogin();
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Login with {savedOAuthAccounts[lowerEmail]}
+                </button>
+              </p>
+            </div>
+          );
+        } else {
+          setError("Invalid email or password. Please check your credentials.");
+        }
+      } else if (err.message?.includes('verify your email')) {
+        // Show verification modal instead of inline error
+        setVerificationInfo("❌ Please verify your email first! Check your inbox for verification link.");
+        setShowVerificationModal(true);
+      } else {
+        setError(err.message || "Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -115,6 +195,10 @@ export default function LoginPage() {
   // Social logins - they either redirect (OAuth) or throw
   const handleGoogleLogin = async () => {
     try {
+      // Store email for OAuth tracking
+      if (email) {
+        localStorage.setItem('lastEmailAttempt', email);
+      }
       // Pass false for isSignupFlow (or omit, default is false)
       await loginWithGoogle(navigate, false);
     } catch (err) {
@@ -125,6 +209,10 @@ export default function LoginPage() {
 
   const handleLinkedInLogin = async () => {
     try {
+      // Store email for OAuth tracking
+      if (email) {
+        localStorage.setItem('lastEmailAttempt', email);
+      }
       // Pass false for isSignupFlow (or omit, default is false)
       await loginWithLinkedIn(navigate, false);
     } catch (err) {
@@ -133,7 +221,31 @@ export default function LoginPage() {
     }
   };
 
-  // Resend verification email (requires email and password)
+  // Handle resend verification from modal
+  const handleModalResendVerification = async () => {
+    if (!email) {
+      setError("Please enter your email address first.");
+      setShowVerificationModal(false);
+      return;
+    }
+
+    setIsVerificationLoading(true);
+    try {
+      await sendVerification(
+        (errorMsg) => setError(errorMsg),
+        (successMsg) => {
+          setSuccess(successMsg);
+          setVerificationInfo("✅ Verification email sent! Check your inbox and spam folder.");
+        }
+      );
+    } catch (err) {
+      setError("Failed to send verification email. Please try again.");
+    } finally {
+      setIsVerificationLoading(false);
+    }
+  };
+
+  // Original resend verification (requires password)
   const handleResendVerification = async () => {
     if (!email) {
       setError("Please enter your email address first.");
@@ -160,17 +272,68 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Verification banner (from AuthContext) */}
-      {verificationMessage && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative m-4">
-          <span className="block sm:inline">{verificationMessage}</span>
-          <button
-            onClick={clearVerificationMessage}
-            className="absolute top-0 bottom-0 right-0 px-4 py-3"
-            aria-label="Close verification message"
-          >
-            <span className="text-2xl">×</span>
-          </button>
+      {/* Verification Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative">
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setShowVerificationModal(false);
+                clearVerificationMessage();
+              }}
+              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={20} />
+            </button>
+            
+            {/* Modal Content */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
+                <AlertCircle className="w-8 h-8 text-yellow-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Verification Required
+              </h3>
+              <p className="text-gray-600">
+                {verificationInfo}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <button
+                onClick={handleModalResendVerification}
+                disabled={isVerificationLoading}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+              >
+                {isVerificationLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5 mr-2" />
+                    Resend Verification Email
+                  </>
+                )}
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowVerificationModal(false);
+                  clearVerificationMessage();
+                }}
+                className="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+            
+            <p className="text-xs text-gray-500 mt-4 text-center">
+              Check your spam folder if you don't see the email
+            </p>
+          </div>
         </div>
       )}
 
@@ -222,19 +385,19 @@ export default function LoginPage() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:outline-only transition-colors"
                   required
                 />
               </div>
 
               {/* Error / Success */}
               {error && (
-                <div className="text-red-600 text-sm bg-red-50 border border-red-200 p-2 rounded">
+                <div className="text-red-600 text-sm bg-red-50 border border-red-200 p-3 rounded">
                   {error}
                 </div>
               )}
               {success && (
-                <div className="text-green-700 text-sm bg-green-50 border border-green-200 p-2 rounded">
+                <div className="text-green-700 text-sm bg-green-50 border border-green-200 p-3 rounded">
                   {success}
                 </div>
               )}
