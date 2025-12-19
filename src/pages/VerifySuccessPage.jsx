@@ -25,7 +25,7 @@ export default function VerifySuccessPage() {
         </h1>
         
         <p className="text-gray-600 mb-8">
-          Your email has been successfully verified. You now have full access to your account.
+          Your email has been successfully verified. You may now login to your account.
         </p>
         
         <div className="animate-pulse">
