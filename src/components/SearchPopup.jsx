@@ -1,5 +1,6 @@
 import { X, Search as SearchIcon, MapPin, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SearchPopup = ({ isOpen, onClose }) => {
   const [selectedSkills, setSelectedSkills] = useState([]);
@@ -10,6 +11,7 @@ const SearchPopup = ({ isOpen, onClose }) => {
   const [customLocation, setCustomLocation] = useState('');
   const [showCustomLocationInput, setShowCustomLocationInput] = useState(false);
   const contentRef = useRef(null);
+  const navigate = useNavigate();
 
   const skillCategories = {
     'Technology': [
@@ -40,6 +42,114 @@ const SearchPopup = ({ isOpen, onClose }) => {
 
   const allSkills = Object.values(skillCategories).flat();
 
+  // Map homepage skills to listing page skillset values
+  const skillToSkillsetMap = {
+    // Technology Skills
+    'Web Development': 'javascript',
+    'Mobile Development': 'react',
+    'Data Science': 'python',
+    'AI/ML Engineering': 'python',
+    'DevOps': 'nodejs',
+    'Cloud Computing': 'nodejs',
+    'Cybersecurity': 'security',
+    'Blockchain': 'javascript',
+    'UI/UX Design': 'react',
+    
+    // Business Skills
+    'Startup Consulting': 'marketing-strategy',
+    'Business Strategy': 'project-management',
+    'Digital Marketing': 'marketing-strategy',
+    'Product Management': 'project-management',
+    'Growth Hacking': 'marketing-strategy',
+    'Financial Planning': 'finance',
+    'Sales & Business Development': 'marketing-strategy',
+    'Entrepreneurship': 'project-management',
+    
+    // Creative Skills
+    'Graphic Design': 'marketing-strategy',
+    'Content Creation': 'marketing-strategy',
+    'Video Production': 'marketing-strategy',
+    'Photography': 'marketing-strategy',
+    'Creative Writing': 'marketing-strategy',
+    'Branding': 'marketing-strategy',
+    
+    // Personal Development Skills
+    'Leadership': 'project-management',
+    'Public Speaking': 'project-management',
+    'Career Growth': 'project-management',
+    'Time Management': 'project-management',
+    'Emotional Intelligence': 'project-management',
+    'Mindfulness': 'project-management'
+  };
+
+  // Map homepage locations to listing page location values
+  const locationToRegionMap = {
+    'Mumbai': 'asia',
+    'Bangalore': 'asia',
+    'Delhi NCR': 'asia',
+    'Hyderabad': 'asia',
+    'Singapore': 'asia',
+    'Dubai': 'asia',
+    'New York': 'north-america',
+    'London': 'europe',
+    'Remote (India)': 'asia',
+    'Remote (Global)': 'north-america'
+  };
+
+  // Map custom locations to regions
+  const getRegionFromCustomLocation = (location) => {
+    const locationLower = location.toLowerCase();
+    if (locationLower.includes('usa') || locationLower.includes('america') || 
+        locationLower.includes('canada') || locationLower.includes('mexico')) {
+      return 'north-america';
+    } else if (locationLower.includes('uk') || locationLower.includes('britain') || 
+               locationLower.includes('france') || locationLower.includes('germany') || 
+               locationLower.includes('italy') || locationLower.includes('spain')) {
+      return 'europe';
+    } else if (locationLower.includes('australia') || locationLower.includes('nz') || 
+               locationLower.includes('zealand')) {
+      return 'australia';
+    } else if (locationLower.includes('india') || locationLower.includes('singapore') || 
+               locationLower.includes('dubai') || locationLower.includes('china') || 
+               locationLower.includes('japan')) {
+      return 'asia';
+    }
+    return 'north-america'; // default
+  };
+
+  // Map skills to service categories
+  const skillToServiceCategoryMap = {
+    'Web Development': 'backend',
+    'Mobile Development': 'frontend',
+    'Data Science': 'backend',
+    'AI/ML Engineering': 'backend',
+    'DevOps': 'backend',
+    'Cloud Computing': 'backend',
+    'Cybersecurity': 'security',
+    'Blockchain': 'backend',
+    'UI/UX Design': 'frontend',
+    'Startup Consulting': 'marketing',
+    'Business Strategy': 'project-management',
+    'Digital Marketing': 'marketing',
+    'Product Management': 'project-management',
+    'Growth Hacking': 'marketing',
+    'Financial Planning': 'finance',
+    'Sales & Business Development': 'marketing',
+    'Entrepreneurship': 'project-management',
+    'Graphic Design': 'marketing',
+    'Content Creation': 'marketing',
+    'Video Production': 'marketing',
+    'Photography': 'marketing',
+    'Creative Writing': 'marketing',
+    'Branding': 'marketing',
+    'Leadership': 'project-management',
+    'Public Speaking': 'project-management',
+    'Career Growth': 'project-management',
+    'Time Management': 'project-management',
+    'Emotional Intelligence': 'project-management',
+    'Mindfulness': 'project-management'
+  };
+
   const toggleSkill = (skill) => {
     setSelectedSkills(prev => 
       prev.includes(skill) 
@@ -58,11 +168,63 @@ const SearchPopup = ({ isOpen, onClose }) => {
 
   const handleSearch = () => {
     if (selectedSkills.length > 0 || selectedLocations.length > 0) {
-      const params = new URLSearchParams();
-      if (selectedSkills.length > 0) params.append('skills', selectedSkills.join(','));
-      if (selectedLocations.length > 0) params.append('locations', selectedLocations.join(','));
-      window.location.href = `/listing?${params.toString()}`;
+      // Prepare the filter state for the listing page
+      const filters = {};
+      
+      // Set skillset filter (use the first selected skill)
+      if (selectedSkills.length > 0) {
+        const firstSkill = selectedSkills[0];
+        filters.skillset = skillToSkillsetMap[firstSkill] || 'javascript';
+      }
+      
+      // Set location filter (use the first selected location)
+      if (selectedLocations.length > 0) {
+        const firstLocation = selectedLocations[0];
+        if (locationToRegionMap[firstLocation]) {
+          filters.location = locationToRegionMap[firstLocation];
+        } else {
+          // For custom locations, determine region
+          filters.location = getRegionFromCustomLocation(firstLocation);
+        }
+      }
+      
+      // Set service category filter based on skills
+      if (selectedSkills.length > 0) {
+        const firstSkill = selectedSkills[0];
+        const serviceCategory = skillToServiceCategoryMap[firstSkill];
+        if (serviceCategory) {
+          filters.serviceCategory = serviceCategory;
+        }
+      }
+      
+      // Create search query based on skills (if any)
+      let searchQuery = '';
+      if (selectedSkills.length > 0) {
+        // Use the first skill as the search query
+        searchQuery = selectedSkills[0].split(' ')[0]; // Take first word of skill
+      }
+      
+      // Navigate to listing page with filters as URL parameters
+      navigate('/listing', {
+        state: {
+          filters: filters,
+          searchQuery: searchQuery,
+          fromHomepage: true
+        }
+      });
+      
+      // Close the popup
+      onClose();
     }
+  };
+
+  // Clear all selections
+  const clearAllSelections = () => {
+    setSelectedSkills([]);
+    setSelectedLocations([]);
+    setSearchTerm('');
+    setCustomSkill('');
+    setCustomLocation('');
   };
 
   if (!isOpen) return null;
@@ -304,41 +466,52 @@ const SearchPopup = ({ isOpen, onClose }) => {
 
         {/* Footer */}
         <div className="border-t border-gray-100 p-4 bg-gray-50">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {selectedSkills.map(skill => (
-              <span 
-                key={`skill-${skill}`}
-                className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#2D488F] text-white"
-              >
-                {skill}
-                <button 
-                  onClick={() => toggleSkill(skill)}
-                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 hover:bg-white/30"
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap gap-2">
+              {selectedSkills.map(skill => (
+                <span 
+                  key={`skill-${skill}`}
+                  className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#2D488F] text-white"
                 >
-                  <X size={10} />
-                </button>
-              </span>
-            ))}
-            {selectedLocations.map(location => (
-              <span 
-                key={`loc-${location}`}
-                className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#2D488F] text-white"
-              >
-                {location}
-                <button 
-                  onClick={() => toggleLocation(location)}
-                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 hover:bg-white/30"
+                  {skill}
+                  <button 
+                    onClick={() => toggleSkill(skill)}
+                    className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 hover:bg-white/30"
+                  >
+                    <X size={10} />
+                  </button>
+                </span>
+              ))}
+              {selectedLocations.map(location => (
+                <span 
+                  key={`loc-${location}`}
+                  className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#2D488F] text-white"
                 >
-                  <X size={10} />
-                </button>
-              </span>
-            ))}
+                  {location}
+                  <button 
+                    onClick={() => toggleLocation(location)}
+                    className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 hover:bg-white/30"
+                  >
+                    <X size={10} />
+                  </button>
+                </span>
+              ))}
+            </div>
+            {(selectedSkills.length > 0 || selectedLocations.length > 0) && (
+              <button
+                onClick={clearAllSelections}
+                className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1 hover:bg-gray-200 rounded"
+              >
+                Clear All
+              </button>
+            )}
           </div>
           <button
             onClick={handleSearch}
             disabled={selectedSkills.length === 0 && selectedLocations.length === 0}
-            className="w-full py-3 px-6 bg-[#2D488F] hover:bg-[#1e3a8a] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 px-6 bg-[#2D488F] hover:bg-[#1e3a8a] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
+            <SearchIcon className="mr-2 h-5 w-5" />
             Search {selectedSkills.length + selectedLocations.length} {selectedSkills.length + selectedLocations.length === 1 ? 'Filter' : 'Filters'}
           </button>
         </div>

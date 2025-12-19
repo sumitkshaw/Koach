@@ -1,6 +1,6 @@
 import { Search, Star, Filter } from 'lucide-react';
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Sidenav1 from './Sidenav1';
 import AlexBricks from '../../assets/AlexBricks.jpg';
@@ -24,6 +24,30 @@ function Listing() {
     skillset: null
   });
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Apply homepage filters when component mounts or location state changes
+  useEffect(() => {
+    // Check if we're coming from homepage with filters
+    if (location.state?.fromHomepage && location.state?.filters) {
+      // Apply the filters from homepage
+      setFilters(prev => ({
+        ...prev,
+        ...location.state.filters
+      }));
+      
+      // Apply search query if provided
+      if (location.state.searchQuery) {
+        setSearchQuery(location.state.searchQuery);
+      }
+      
+      // Optionally open the sidebar to show filters are applied
+      setSidebarOpen(true);
+      
+      // Clear the location state to prevent re-application on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const mentors = [
     {
