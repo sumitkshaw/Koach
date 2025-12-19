@@ -231,28 +231,17 @@ export const AuthProvider = ({ children }) => {
 
       const currentUser = await getCurrentUser();
       if (currentUser) {
-<<<<<<< HEAD
-        await handlePostLoginRedirection(currentUser.$id, navigate);
-        return true;
-=======
         const { isVerified } = await checkUserVerification();
         await handlePostLoginRedirection(currentUser.$id, navigate, isVerified);
         return;
->>>>>>> 2412c430fa3f8cc3c69ac24f82267a0d0df7af22
       }
 
       const result = await appwriteLogin(email, password);
       setUser(result.user);
       setIsVerified(result.isVerified || result.user?.emailVerification);
 
-<<<<<<< HEAD
-      // Handle post-login redirection
-      await handlePostLoginRedirection(result.user.$id, navigate);
-      return true;
-=======
       // Handle redirection with verification check
       await handlePostLoginRedirection(result.user.$id, navigate, result.isVerified || result.user?.emailVerification);
->>>>>>> 2412c430fa3f8cc3c69ac24f82267a0d0df7af22
     } catch (error) {
       console.error("Login error", error);
 
@@ -266,7 +255,6 @@ export const AuthProvider = ({ children }) => {
       } else {
         setError(error.message || "Login failed. Please try again.");
       }
-      return false;
     }
   };
 
