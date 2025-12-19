@@ -24,13 +24,25 @@ export default function LoginForm({ onSwitchToSignup, onClose, initialUserType =
         setIsLoading(true);
         setError("");
         setSuccess("");
+
+        // Since AuthContext.login doesn't return a success status, 
+        // we track if it calls setError to detect failure.
+        let loginFailed = false;
+        const trackedSetError = (msg) => {
+            setError(msg);
+            if (msg) loginFailed = true;
+        };
+
         try {
             const type = userType === 'mentor' ? 'mentor' : undefined;
-            const isSuccess = await login(email, password, navigate, setError, type);
-            if (isSuccess && onClose) {
+            // logic
+            await login(email, password, navigate, trackedSetError, type);
+            if (!loginFailed && onClose) {
                 onClose();
             }
         } catch (err) {
+            // This block might not be reached if AuthContext swallows errors,
+            // but just in case.
             if (!error) setError("Login failed.");
         } finally {
             setIsLoading(false);

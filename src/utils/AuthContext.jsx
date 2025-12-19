@@ -199,6 +199,7 @@ export const AuthProvider = ({ children }) => {
         navigate("/verify-required");
       }
 
+
     } catch (error) {
       console.error("Sign-up error", error);
       localStorage.removeItem("signupUserType");
@@ -213,6 +214,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setError(error.message || "Sign-up failed. Please try again.");
       }
+      return false;
     }
   };
 
@@ -277,10 +279,10 @@ export const AuthProvider = ({ children }) => {
         isSignupFlow
       };
       localStorage.setItem('lastOAuthAttempt', JSON.stringify(oauthAttempt));
-      
+
       try {
         await account.deleteSession("current");
-      } catch (e) {}
+      } catch (e) { }
 
       const successUrl = `${window.location.origin}/oauth-callback`;
       const failureUrl = `${window.location.origin}/login?error=${encodeURIComponent(
@@ -337,11 +339,11 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setNeedsVerification(false);
       setIsVerified(false);
-      
+
       localStorage.removeItem('lastOAuthAttempt');
       localStorage.removeItem('lastEmailAttempt');
       localStorage.removeItem('signupEmail');
-      
+
       navigate("/");
     } catch (error) {
       console.error("Logout error", error);
