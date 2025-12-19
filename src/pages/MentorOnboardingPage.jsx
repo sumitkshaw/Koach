@@ -7,6 +7,7 @@ import { saveOnboardingProgress, completeMentorOnboarding } from '../utils/datab
 export default function MentorOnboardingPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     // Step 1: Expertise
     expertise: [],
@@ -62,6 +63,10 @@ export default function MentorOnboardingPage() {
       ...prev,
       [field]: value
     }));
+    // Clear error for this field when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: null }));
+    }
   };
 
   const handleArrayToggle = (field, value) => {
@@ -72,10 +77,45 @@ export default function MentorOnboardingPage() {
         : [...currentArray, value];
       return { ...prev, [field]: newArray };
     });
+    // Clear error for this field when user selects something
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: null }));
+    }
+  };
+
+  // Validate current step before proceeding
+  const validateCurrentStep = () => {
+    const currentStepConfig = steps[currentStep - 1];
+    const errors = {};
+    
+    currentStepConfig.fields.forEach(field => {
+      if (field.required) {
+        const value = formData[field.field];
+        
+        if (field.type === 'multiselect') {
+          if (!value || value.length === 0) {
+            errors[field.field] = `Please select at least one ${field.label.toLowerCase()}`;
+          }
+        } else if (field.type === 'select' || field.type === 'number') {
+          if (!value && value !== 0) {
+            errors[field.field] = `Please select a ${field.label.toLowerCase()}`;
+          }
+        } else if (field.type === 'textarea' || field.type === 'text') {
+          if (!value || value.trim() === '') {
+            errors[field.field] = `Please fill in ${field.label.toLowerCase()}`;
+          }
+        }
+      }
+    });
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleNext = () => {
-    setCurrentStep(prev => prev + 1);
+    if (validateCurrentStep()) {
+      setCurrentStep(prev => prev + 1);
+    }
   };
 
   const handleBack = () => {
@@ -84,6 +124,27 @@ export default function MentorOnboardingPage() {
 
   const handleComplete = async () => {
     if (!user?.$id) return;
+    
+    // Validate all steps before completion
+    const allStepsValid = steps.every((step, index) => {
+      return step.fields.every(field => {
+        if (!field.required) return true;
+        const value = formData[field.field];
+        
+        if (field.type === 'multiselect') {
+          return value && value.length > 0;
+        } else if (field.type === 'select' || field.type === 'number') {
+          return value !== undefined && value !== null && value !== '';
+        } else {
+          return value && value.trim() !== '';
+        }
+      });
+    });
+    
+    if (!allStepsValid) {
+      alert('Please complete all required fields before completing onboarding.');
+      return;
+    }
     
     setLoading(true);
     try {
@@ -253,7 +314,7 @@ export default function MentorOnboardingPage() {
               </div>
             </div>
             
-            {/* Desktop Step Indicator - Same styling as mobile */}
+            {/* Desktop Step Indicator - Fixed dashes, added subtle hover */}
             <div className="hidden sm:flex items-center justify-between">
               {steps.map((step, index) => {
                 const stepNumber = index + 1;
@@ -262,28 +323,41 @@ export default function MentorOnboardingPage() {
                 
                 return (
                   <div key={stepNumber} className="flex-1 flex items-center">
-                    <div className="flex flex-col items-center">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+                    <div className="flex flex-col items-center relative group">
+                      {/* Step circle with subtle hover effect */}
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-200 ${
                         isActive 
-                          ? 'bg-blue-600 text-white border-2 border-blue-600' 
+                          ? 'bg-blue-600 text-white border-2 border-blue-600 transform scale-105' 
                           : isCompleted 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-white text-gray-400 border-2 border-gray-300'
+                          ? 'bg-green-500 text-white hover:bg-green-600' 
+                          : 'bg-white text-gray-400 border-2 border-gray-300 hover:border-gray-400'
                       }`}>
-                        {isCompleted ? '✓' : stepNumber}
+                        {isCompleted ? (
+                          <span className="font-medium">✓</span>
+                        ) : (
+                          <span className={`font-medium ${isActive ? 'text-white' : 'text-current'}`}>
+                            {stepNumber}
+                          </span>
+                        )}
                       </div>
-                      <span className={`text-sm font-medium text-center ${
-                        isActive ? 'text-blue-600' : 
-                        isCompleted ? 'text-green-600' : 
-                        'text-gray-500'
+                      {/* Step title with subtle hover effect */}
+                      <span className={`text-sm font-medium text-center transition-colors duration-200 ${
+                        isActive 
+                          ? 'text-blue-600 font-semibold' 
+                          : isCompleted 
+                          ? 'text-green-600 hover:text-green-700' 
+                          : 'text-gray-500 hover:text-gray-600'
                       }`}>
                         {step.title}
                       </span>
                     </div>
                     
+                    {/* Dash between steps - Always visible between all steps */}
                     {stepNumber < steps.length && (
-                      <div className={`flex-1 h-1 mx-4 ${
-                        stepNumber < currentStep ? 'bg-green-500' : 'bg-gray-200'
+                      <div className={`flex-1 h-0.5 mx-4 transition-all duration-200 ${
+                        stepNumber < currentStep 
+                          ? 'bg-green-500' 
+                          : 'bg-gray-200 group-hover:bg-gray-300'
                       }`} />
                     )}
                   </div>
@@ -314,38 +388,59 @@ export default function MentorOnboardingPage() {
                         key={option}
                         type="button"
                         onClick={() => handleArrayToggle(field.field, option)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                           formData[field.field]?.includes(option)
-                            ? 'bg-blue-100 text-blue-700 border border-blue-300'
-                            : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200'
+                            ? 'bg-blue-100 text-blue-700 border border-blue-300 shadow-sm'
+                            : 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 hover:border-gray-400'
                         }`}
                       >
                         {option}
                         {formData[field.field]?.includes(option) && ' ✓'}
                       </button>
                     ))}
+                    {formErrors[field.field] && (
+                      <p className="text-sm text-red-500 mt-1">{formErrors[field.field]}</p>
+                    )}
                   </div>
                 ) : field.type === 'select' ? (
-                  <select
-                    value={formData[field.field] || ''}
-                    onChange={(e) => handleInputChange(field.field, e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
-                    required={field.required}
-                  >
-                    <option value="">Select an option</option>
-                    {field.options.map((option) => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={formData[field.field] || ''}
+                      onChange={(e) => handleInputChange(field.field, e.target.value)}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition-colors duration-200 ${
+                        formErrors[field.field] 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                      required={field.required}
+                    >
+                      <option value="">Select an option</option>
+                      {field.options.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                    {formErrors[field.field] && (
+                      <p className="text-sm text-red-500 mt-1">{formErrors[field.field]}</p>
+                    )}
+                  </div>
                 ) : field.type === 'textarea' ? (
-                  <textarea
-                    value={formData[field.field] || ''}
-                    onChange={(e) => handleInputChange(field.field, e.target.value)}
-                    rows={field.rows || 4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
-                    placeholder={field.placeholder}
-                    required={field.required}
-                  />
+                  <div className="relative">
+                    <textarea
+                      value={formData[field.field] || ''}
+                      onChange={(e) => handleInputChange(field.field, e.target.value)}
+                      rows={field.rows || 4}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition-colors duration-200 ${
+                        formErrors[field.field] 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                    />
+                    {formErrors[field.field] && (
+                      <p className="text-sm text-red-500 mt-1">{formErrors[field.field]}</p>
+                    )}
+                  </div>
                 ) : field.type === 'number' ? (
                   <div>
                     <input
@@ -354,7 +449,11 @@ export default function MentorOnboardingPage() {
                       onChange={(e) => handleInputChange(field.field, parseInt(e.target.value) || 0)}
                       min={field.min}
                       max={field.max}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition-colors duration-200 ${
+                        formErrors[field.field] 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
                       required={field.required}
                     />
                     {field.min && field.max && (
@@ -362,20 +461,28 @@ export default function MentorOnboardingPage() {
                         Range: {field.min} - {field.max} years
                       </p>
                     )}
+                    {formErrors[field.field] && (
+                      <p className="text-sm text-red-500 mt-1">{formErrors[field.field]}</p>
+                    )}
                   </div>
                 ) : (
-                  <input
-                    type="text"
-                    value={formData[field.field] || ''}
-                    onChange={(e) => handleInputChange(field.field, e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
-                    placeholder={field.placeholder}
-                    required={field.required}
-                  />
-                )}
-                
-                {field.required && !formData[field.field] && currentStep === steps.length && (
-                  <p className="text-sm text-red-500">This field is required</p>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={formData[field.field] || ''}
+                      onChange={(e) => handleInputChange(field.field, e.target.value)}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition-colors duration-200 ${
+                        formErrors[field.field] 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                    />
+                    {formErrors[field.field] && (
+                      <p className="text-sm text-red-500 mt-1">{formErrors[field.field]}</p>
+                    )}
+                  </div>
                 )}
               </div>
             ))}
@@ -387,10 +494,10 @@ export default function MentorOnboardingPage() {
           <button
             onClick={handleBack}
             disabled={currentStep === 1}
-            className={`w-full sm:w-auto px-8 py-3 rounded-lg font-medium transition-colors ${
+            className={`w-full sm:w-auto px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
               currentStep === 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-sm'
             }`}
           >
             ← Back
@@ -403,7 +510,7 @@ export default function MentorOnboardingPage() {
           {currentStep < steps.length ? (
             <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:shadow-md transition-all duration-200"
             >
               Continue →
             </button>
@@ -411,7 +518,7 @@ export default function MentorOnboardingPage() {
             <button
               onClick={handleComplete}
               disabled={loading}
-              className="w-full sm:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Saving...' : 'Complete Onboarding'}
             </button>
