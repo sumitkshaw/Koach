@@ -98,6 +98,14 @@ export default function SignUpPage() {
 
   const handleGoogleSignUp = async () => {
     try {
+      // Store OAuth method for this email
+      if (email) {
+        const oauthAccounts = JSON.parse(localStorage.getItem('oauthAccounts') || '{}');
+        oauthAccounts[email.toLowerCase()] = 'google';
+        localStorage.setItem('oauthAccounts', JSON.stringify(oauthAccounts));
+        localStorage.setItem('lastEmailAttempt', email);
+      }
+      
       // Pass true for isSignupFlow
       await loginWithGoogle(navigate, true);
     } catch (error) {
@@ -108,6 +116,14 @@ export default function SignUpPage() {
 
   const handleLinkedInSignUp = async () => {
     try {
+      // Store OAuth method for this email
+      if (email) {
+        const oauthAccounts = JSON.parse(localStorage.getItem('oauthAccounts') || '{}');
+        oauthAccounts[email.toLowerCase()] = 'linkedin';
+        localStorage.setItem('oauthAccounts', JSON.stringify(oauthAccounts));
+        localStorage.setItem('lastEmailAttempt', email);
+      }
+      
       // Pass true for isSignupFlow
       await loginWithLinkedIn(navigate, true);
     } catch (error) {
