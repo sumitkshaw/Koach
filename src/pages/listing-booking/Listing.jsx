@@ -215,8 +215,9 @@ function Listing() {
     });
   }, [mentors, searchQuery, filters]);
 
-  const handleCardClick = (mentorName) => {
-    navigate(`/listing/${mentorName.toLowerCase().replace(' ', '-')}`);
+  // All cards redirect to Jessica's profile
+  const handleCardClick = () => {
+    navigate('/listing/jessica');
   };
 
   return (
@@ -303,7 +304,7 @@ function Listing() {
                 {filteredMentors.map((mentor) => (
                   <div
                     key={mentor.id}
-                    onClick={() => handleCardClick(mentor.name)}
+                    onClick={handleCardClick} // All cards redirect to same page
                     className="bg-white rounded-xl sm:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group"
                   >
                     <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gray-100">

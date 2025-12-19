@@ -1,20 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Trophy, Users, BookOpen, Target, Award, Star, Clock, ChevronRight } from 'lucide-react';
+import { Calendar, Trophy, Users, BookOpen, Target, Award, Star, Clock, ChevronRight, Shield, Mail } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
 import { useAuth } from '../../utils/AuthContext';
 import { getUserProfile } from '../../utils/database/profiles';
 import ProfileWarning from '../../components/ProfileWarning';
+import { getCurrentUser } from '../../utils/auth';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const [showVerificationOverlay, setShowVerificationOverlay] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const { user, sendVerification } = useAuth();
 
   useEffect(() => {
+    const checkVerificationStatus = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        
+        if (!currentUser) {
+          setLoading(false);
+          return;
+        }
+        
+        setUserEmail(currentUser.email);
+        
+        // Check if user is verified
+        if (!currentUser.emailVerification) {
+          console.log('⚠️ User not verified, showing overlay');
+          setShowVerificationOverlay(true);
+        } else {
+          console.log('✅ User verified, loading profile');
+          loadUserProfile();
+        }
+        
+      } catch (error) {
+        console.error('Error checking verification:', error);
+        setLoading(false);
+      }
+    };
+    
     const loadUserProfile = async () => {
       if (!user?.$id) {
         setLoading(false);
@@ -30,7 +59,6 @@ const Dashboard = () => {
         // Auto-create profile if doesn't exist (for existing users)
         if (!profile) {
           console.log('📝 No profile found, checking if auto-creation needed...');
-          // Profile will be auto-created by AuthContext, just wait and reload
           setTimeout(() => {
             loadUserProfile();
           }, 1000);
@@ -48,14 +76,27 @@ const Dashboard = () => {
         
       } catch (error) {
         console.error('❌ Error loading profile:', error);
-        // Don't block UI on error
       } finally {
         setLoading(false);
       }
     };
     
-    loadUserProfile();
+    checkVerificationStatus();
   }, [user]);
+
+  const handleSendVerification = async () => {
+    try {
+      await sendVerification(
+        () => {}, // setError function
+        (message) => {
+          alert(message);
+        }
+      );
+    } catch (error) {
+      console.error('Failed to send verification:', error);
+      alert('Failed to send verification email. Please try again.');
+    }
+  };
 
   // Loading state
   if (loading) {
@@ -67,6 +108,158 @@ const Dashboard = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your dashboard...</p>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Verification Overlay
+  if (showVerificationOverlay) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+        <Navigation />
+        <Sidenav sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} currentRoute="/dashboard" />
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="fixed top-20 left-4 z-30 lg:hidden bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+        >
+          <div className="w-6 h-6 flex flex-col justify-center gap-1">
+            <div className="w-full h-0.5 bg-gray-600 rounded"></div>
+            <div className="w-full h-0.5 bg-gray-600 rounded"></div>
+            <div className="w-full h-0.5 bg-gray-600 rounded"></div>
+          </div>
+        </button>
+
+        {/* Main Content with Blur Overlay */}
+        <div className="pt-16">
+          <div className="px-4 sm:px-6 lg:px-8 py-6">
+            <div className="pt-6 max-w-7xl mx-auto">
+              {/* Verification Modal - Centered */}
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
+                      <Shield className="w-8 h-8 text-yellow-600" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Verification Required
+                    </h2>
+                    <p className="text-gray-600">
+                      Please verify your email to access the dashboard
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Email: <span className="font-semibold">{userEmail}</span>
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <button
+                      onClick={handleSendVerification}
+                      className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
+                    >
+                      <Mail className="w-5 h-5 mr-2" />
+                      Send Verification Email
+                    </button>
+                    
+                    <a
+                      href="/verify-required"
+                      className="block w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-center"
+                    >
+                      Go to Verification Page
+                    </a>
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 mt-4 text-center">
+                    Check your spam folder if you don't see the email
+                  </p>
+                </div>
+              </div>
+              
+              {/* Blurry Dashboard Content */}
+              <div className="filter blur-sm pointer-events-none">
+                {/* Header */}
+                <div className="mb-8 flex items-start justify-between">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-500 rounded-full mr-4 flex items-center justify-center shadow-lg">
+                      <span className="text-white font-bold text-2xl">U</span>
+                    </div>
+                    <div>
+                      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
+                        Welcome Friend! 
+                        <span className="ml-2 text-2xl">👋</span>
+                      </h1>
+                      <p className="text-gray-600 mt-1">
+                        Ready to learn something new today?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Dashboard content remains the same but blurred */}
+                  <div className="lg:col-span-2 space-y-6">
+                    {/* Track Your Progress */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
+                      <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">📈</span>
+                        </div>
+                        Track your Progress
+                      </h2>
+                    </div>
+                    
+                    {/* Milestones */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
+                      <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">🎯</span>
+                        </div>
+                        Milestones
+                      </h2>
+                    </div>
+                    
+                    {/* Badges */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
+                      <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-lg flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">⭐</span>
+                        </div>
+                        Badges
+                      </h2>
+                    </div>
+                  </div>
+                  
+                  {/* Right Column */}
+                  <div className="space-y-6">
+                    {/* Next Session Date */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                          <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                          Next Session Date
+                        </h3>
+                      </div>
+                    </div>
+                    
+                    {/* Progress towards Goals */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                          <Target className="w-5 h-5 mr-2 text-green-600" />
+                          Progress towards Goals
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Footer */}
+          <Footer />
         </div>
       </div>
     );
@@ -90,6 +283,7 @@ const Dashboard = () => {
     return 'U';
   };
 
+  // Normal dashboard when verified
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <Navigation/>

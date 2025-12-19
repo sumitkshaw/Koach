@@ -124,14 +124,33 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
       {/* Filter Toggle Button for Mobile */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-20 left-4 z-50 bg-gradient-to-r from-blue-100 to-indigo-400 text-white p-3 rounded-xl shadow-2xl hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 transform hover:scale-105 lg:hidden"
+        className="fixed top-20 left-4 z-50 lg:hidden flex items-center gap-2 transition-all duration-300 group"
       >
-        <div className={`transition-transform duration-300 ${sidebarOpen ? 'rotate-180' : 'rotate-0'}`}>
-          {sidebarOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Filter className="w-5 h-5" />
-          )}
+        {/* Icon Container with Background */}
+        <div className={`p-3 rounded-xl shadow-2xl transition-all duration-300 ${
+          sidebarOpen 
+            ? 'bg-white rotate-90' 
+            : 'bg-gradient-to-r from-blue-100 to-indigo-400'
+        }`}>
+          <div className="transition-transform duration-300">
+            {sidebarOpen ? (
+              <X className={`w-5 h-5 ${sidebarOpen ? 'text-gray-900' : 'text-white'}`} />
+            ) : (
+              <Filter className="w-5 h-5 text-white" />
+            )}
+          </div>
+        </div>
+        
+        {/* Text Container - Plain text, no background */}
+        <div className="flex flex-col items-start">
+          <span className={`text-sm font-medium transition-all duration-300 ${
+            sidebarOpen ? 'text-white' : 'text-gray-700'
+          }`}>
+            {sidebarOpen ? 'Hide' : 'Sort by'}
+          </span>
+          <span className="text-xs text-gray-500 font-normal">
+            Filters
+          </span>
         </div>
       </button>
 
@@ -163,7 +182,7 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
         <div className="flex-1 overflow-y-auto px-6 py-8">
           
           {/* Availability Section */}
-          <div className="mb-8 lg:mt-0">
+          {/* <div className="mb-8 lg:mt-0">
             <h3 className="text-xl font-bold mb-4">Availability</h3>
             <div className="space-y-3">
               <div>
@@ -186,7 +205,7 @@ const Sidenav1 = ({ sidebarOpen, setSidebarOpen, filters, setFilters, applyFilte
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Sort By Section */}
           <div className="mb-6">
