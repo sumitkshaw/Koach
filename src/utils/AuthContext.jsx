@@ -250,7 +250,7 @@ export const AuthProvider = ({ children }) => {
       const currentUser = await getCurrentUser();
       if (currentUser) {
         await handlePostLoginRedirection(currentUser.$id, navigate);
-        return;
+        return true;
       }
 
       const result = await appwriteLogin(email, password);
@@ -258,6 +258,7 @@ export const AuthProvider = ({ children }) => {
 
       // Handle post-login redirection
       await handlePostLoginRedirection(result.user.$id, navigate);
+      return true;
     } catch (error) {
       console.error("Login error", error);
 
@@ -275,6 +276,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setError(error.message || "Login failed. Please try again.");
       }
+      return false;
     }
   };
 

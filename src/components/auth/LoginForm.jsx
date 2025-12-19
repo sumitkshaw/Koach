@@ -26,7 +26,10 @@ export default function LoginForm({ onSwitchToSignup, onClose, initialUserType =
         setSuccess("");
         try {
             const type = userType === 'mentor' ? 'mentor' : undefined;
-            await login(email, password, navigate, setError, type);
+            const isSuccess = await login(email, password, navigate, setError, type);
+            if (isSuccess && onClose) {
+                onClose();
+            }
         } catch (err) {
             if (!error) setError("Login failed.");
         } finally {
