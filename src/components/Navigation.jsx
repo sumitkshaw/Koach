@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, Search, Bell } from "lucide-react";
+import { Menu, Search, Bell, User, LogOut, Settings } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import image3 from "../assets/image3.png";
 import { useAuth } from "../utils/AuthContext";
@@ -23,6 +23,10 @@ function Navigation() {
     { id: 2, message: "New mentor available in your area.", time: "1h ago", read: false },
     { id: 3, message: "Your circle has new activity.", time: "3h ago", read: false },
   ]);
+
+  // Profile Menu States
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileRef = useRef(null);
   const navigate = useNavigate();
   const { openModal } = useModal();
 
@@ -80,6 +84,17 @@ function Navigation() {
     const handleClickOutside = (event) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target)) {
         setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
       }
     };
 
@@ -274,25 +289,62 @@ function Navigation() {
                         </div>
                       )}
                     </div>
-                    {/* Profile Picture with Initials */}
-                    <div
-                      className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium text-sm shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
-                      onClick={() => handleDashboardNavigation()}
-                    >
-                      {getInitials(user.displayName || user.email)}
-                    </div>
+                    {/* Profile Picture with Dropdown */}
+                    <div className="relative" ref={profileRef}>
+                      <div
+                        className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium text-sm shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                      >
+                        {getInitials(user.name || user.email)}
+                      </div>
 
-                    {/* Logout Button */}
-                    <button
-                      onClick={() => {
-                        // Clear dashboard type on logout
-                        localStorage.removeItem('dashboardType');
-                        logout(navigate);
-                      }}
-                      className="text-gray-600 hover:text-gray-900 px-4 py-2 text-sm font-medium border border-gray-200 hover:border-gray-300 rounded-md transition-all duration-200 hover:shadow-sm"
-                    >
-                      Logout
-                    </button>
+                      {/* Profile Dropdown */}
+                      {showProfileMenu && (
+                        <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-[60] animate-in fade-in slide-in-from-top-2 duration-200">
+                          <div className="p-4 border-b border-gray-50 bg-gray-50/50">
+                            <p className="font-semibold text-gray-900 truncate">{user.name || user.email?.split('@')[0] || "User"}</p>
+                            <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
+                          </div>
+
+                          <div className="p-2">
+                            <button
+                              onClick={() => {
+                                setShowProfileMenu(false);
+                                navigate(`${getDashboardPath()}/settings`);
+                              }}
+                              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <User className="w-4 h-4 text-gray-400" />
+                              My Profile
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setShowProfileMenu(false);
+                                handleDashboardNavigation();
+                              }}
+                              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <Settings className="w-4 h-4 text-gray-400" />
+                              Dashboard
+                            </button>
+
+                            <div className="h-px bg-gray-100 my-1"></div>
+
+                            <button
+                              onClick={() => {
+                                localStorage.removeItem('dashboardType');
+                                logout(navigate);
+                              }}
+                              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                              <LogOut className="w-4 h-4" />
+                              Logout
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </>
               ) : (
@@ -429,7 +481,7 @@ function Navigation() {
           {user ? (
             <div className="flex items-center gap-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-gray-50/30 to-gray-50/30 hover:bg-gray-50/50 transition-all duration-200 hover:translate-x-1 hover:shadow-sm">
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium shadow-sm hover:shadow-md transition-all duration-200">
-                {getInitials(user.displayName || user.email)}
+                {getInitials(user.name || user.email)}
               </div>
               <button
                 onClick={() => {
