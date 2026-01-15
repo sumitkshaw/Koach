@@ -32,6 +32,10 @@ function Navigation() {
   const [showMobileProfileMenu, setShowMobileProfileMenu] = useState(false);
   const mobileProfileRef = useRef(null);
 
+  // Mobile Notification States
+  const [showMobileNotifications, setShowMobileNotifications] = useState(false);
+  const mobileNotificationRef = useRef(null);
+
   const navigate = useNavigate();
   const { openModal } = useModal();
 
@@ -111,6 +115,17 @@ function Navigation() {
     const handleClickOutside = (event) => {
       if (mobileProfileRef.current && !mobileProfileRef.current.contains(event.target)) {
         setShowMobileProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileNotificationRef.current && !mobileNotificationRef.current.contains(event.target)) {
+        setShowMobileNotifications(false);
       }
     };
 
@@ -395,6 +410,67 @@ function Navigation() {
 
           {/* Mobile Hamburger with "Menu" text - SIMPLIFIED VERSION */}
           <div className="md:hidden flex items-center gap-4">
+            {/* Mobile Notification Icon */}
+            {user && (
+              <div className="relative" ref={mobileNotificationRef}>
+                <button
+                  onClick={() => setShowMobileNotifications(!showMobileNotifications)}
+                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all duration-200 relative focus:outline-none"
+                >
+                  <Bell className="w-5 h-5" />
+                  {notifications.length > 0 && (
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                  )}
+                  {notifications.length > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white font-bold ring-2 ring-white">
+                      {notifications.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Mobile Notification Dropdown */}
+                {showMobileNotifications && (
+                  <div className="absolute top-full right-[-60px] mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-[60] animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="p-3 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
+                      <h3 className="font-semibold text-gray-900 text-sm">Notifications</h3>
+                      <button
+                        className="text-xs text-[#2D488F] hover:text-blue-700 font-medium transition-colors"
+                        onClick={() => setNotifications([])}
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                    <div className="max-h-80 overflow-y-auto custom-scrollbar">
+                      {notifications.length > 0 ? (
+                        notifications.map((notif) => (
+                          <div key={notif.id} className="p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 cursor-pointer group">
+                            <div className="flex gap-3">
+                              <div className="flex-shrink-0 mt-1">
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              </div>
+                              <div>
+                                <p className="text-sm text-gray-800 leading-snug group-hover:text-[#2D488F] transition-colors">{notif.message}</p>
+                                <p className="text-xs text-gray-400 mt-1 font-medium">{notif.time}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-8 text-center text-gray-500 text-sm">
+                          <p>No new notifications</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-2 bg-gray-50 text-center border-t border-gray-100">
+                      <button className="text-xs text-[#2D488F] hover:text-blue-800 font-medium transition-colors w-full py-1">
+                        View all notifications
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Mobile Profile Icon */}
             {user && (
               <div className="relative" ref={mobileProfileRef}>
