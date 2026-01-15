@@ -3,6 +3,7 @@ import { User, Mail, Lock, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/image3.png";
 import { useAuth } from "../../utils/AuthContext";
+import { useToast } from "../../context/ToastContext";
 
 export default function SignUpForm({ onSwitchToLogin, onClose, initialUserType = "mentee", enableToggle = true }) {
     const [userType, setUserType] = useState(initialUserType);
@@ -13,6 +14,7 @@ export default function SignUpForm({ onSwitchToLogin, onClose, initialUserType =
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const { user, signup, loginWithGoogle, loginWithLinkedIn } = useAuth();
+    // const { showToast } = useToast(); // Not needed here anymore if we delay it
 
     useEffect(() => {
         if (user) {
@@ -28,14 +30,15 @@ export default function SignUpForm({ onSwitchToLogin, onClose, initialUserType =
 
         try {
             const type = userType === 'mentor' ? 'mentor' : undefined;
+            // Set toast message for dashboard to pick up
+            localStorage.setItem("welcome_toast", `Welcome to Koach, ${name}!`);
+
             await signup(name, email, password, navigate, setError, type);
-            // On success, the signup function usually navigates. 
-            // If it stays here, we might want to close the modal or switch to login logic if it requires verification?
-            // Assuming signup redirects or logs in.
             if (onClose) onClose();
         } catch (error) {
             console.error("Sign-up error:", error);
             setError("Sign-up failed. Please try again.");
+            localStorage.removeItem("welcome_toast"); // Cleanup if failed
         } finally {
             setIsLoading(false);
         }
@@ -43,21 +46,28 @@ export default function SignUpForm({ onSwitchToLogin, onClose, initialUserType =
 
     const handleGoogleSignUp = async () => {
         try {
+            // Set toast message (generic since name isn't known yet locally, though OAuthCallback will handle it)
+            // OAuthCallback will likely handle the toast for OAuth flows actually.
+            // But let's set it here just in case the redirect is instant handled by AuthContext without full reload
+            localStorage.setItem("welcome_toast", "Welcome to Koach!");
             await loginWithGoogle(navigate, true, userType === 'mentor' ? 'mentor' : undefined);
             if (onClose) onClose();
         } catch (error) {
             console.error("Google sign-up error:", error);
             setError("Google sign-up failed.");
+            localStorage.removeItem("welcome_toast");
         }
     };
 
     const handleLinkedInSignUp = async () => {
         try {
+            localStorage.setItem("welcome_toast", "Welcome to Koach!");
             await loginWithLinkedIn(navigate, true, userType === 'mentor' ? 'mentor' : undefined);
             if (onClose) onClose();
         } catch (error) {
             console.error("LinkedIn sign-up error:", error);
             setError("LinkedIn sign-up unavailable.");
+            localStorage.removeItem("welcome_toast");
         }
     };
 

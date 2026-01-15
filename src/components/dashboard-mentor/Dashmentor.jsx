@@ -4,6 +4,7 @@ import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
 import { useAuth } from '../../utils/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import { getUserProfile } from '../../utils/database/profiles';
 
 const Dashmentor = () => {
@@ -13,6 +14,7 @@ const Dashmentor = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { showToast } = useToast();
 
   // Load user profile
   useEffect(() => {
@@ -21,13 +23,21 @@ const Dashmentor = () => {
         setLoading(false);
         return;
       }
-      
+
       try {
         setLoading(true);
+
+        // Show welcome toast if flagged
+        const welcomeToast = localStorage.getItem("welcome_toast");
+        if (welcomeToast) {
+          showToast(welcomeToast);
+          localStorage.removeItem("welcome_toast");
+        }
+
         console.log('🔄 Loading mentor profile for:', user.$id);
-        
+
         const profile = await getUserProfile(user.$id);
-        
+
         // Auto-create profile if doesn't exist
         if (!profile) {
           console.log('📝 No mentor profile found, waiting for auto-creation...');
@@ -37,10 +47,10 @@ const Dashmentor = () => {
           }, 1000);
           return;
         }
-        
+
         setUserProfile(profile);
         console.log('✅ Mentor profile loaded:', profile);
-        
+
       } catch (error) {
         console.error('❌ Error loading mentor profile:', error);
         // Don't break UI on error
@@ -48,7 +58,7 @@ const Dashmentor = () => {
         setLoading(false);
       }
     };
-    
+
     loadUserProfile();
   }, [user]);
 
@@ -97,7 +107,7 @@ const Dashmentor = () => {
       status: "Scheduled"
     },
     {
-      name: "Sarah Miller", 
+      name: "Sarah Miller",
       courseName: "UX Design Fundamentals",
       assignments: "6/8",
       tests: "2/4",
@@ -108,7 +118,7 @@ const Dashmentor = () => {
     {
       name: "David Chen",
       courseName: "Data Science Bootcamp",
-      assignments: "7/8", 
+      assignments: "7/8",
       tests: "4/4",
       progress: 90,
       meeting: "Friday",
@@ -139,7 +149,7 @@ const Dashmentor = () => {
       color: "from-blue-500 via-blue-600 to-indigo-600"
     },
     {
-      title: "Design & Creative", 
+      title: "Design & Creative",
       description: "Share knowledge in FinTech, Finance, Banking and associated courses",
       members: 15,
       totalCircles: "8 Members",
@@ -147,7 +157,7 @@ const Dashmentor = () => {
     },
     {
       title: "Data Science",
-      description: "Share knowledge in FinTech, Finance, Banking and associated courses", 
+      description: "Share knowledge in FinTech, Finance, Banking and associated courses",
       members: 6,
       totalCircles: "5 Members",
       color: "from-purple-500 via-indigo-500 to-blue-600"
@@ -169,7 +179,7 @@ const Dashmentor = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-      <Navigation/>
+      <Navigation />
       <Sidenav sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} currentRoute="/dashmentor" />
 
       {/* Mobile Menu Button */}
@@ -201,7 +211,7 @@ const Dashmentor = () => {
                     Welcome back, {getMentorDisplayName()}!
                   </h1>
                   <p className="text-gray-600">
-                    {userProfile?.onboardingComplete 
+                    {userProfile?.onboardingComplete
                       ? 'Ready to mentor your next session?'
                       : 'Complete your profile to start mentoring'}
                   </p>
@@ -218,7 +228,7 @@ const Dashmentor = () => {
                     <Users className="w-6 h-6 mr-2 text-indigo-600" />
                     Student Progress Tracker
                   </h2>
-                  
+
                   <div className="space-y-3">
                     {studentProgress.map((student, index) => (
                       <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/50 to-blue-50/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100/50">
@@ -256,7 +266,7 @@ const Dashmentor = () => {
                       <span className="text-sm font-semibold text-indigo-600">65%</span>
                     </div>
                     <div className="bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-500" style={{width: '65%'}}></div>
+                      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-500" style={{ width: '65%' }}></div>
                     </div>
                   </div>
                 </div>
@@ -269,7 +279,7 @@ const Dashmentor = () => {
                       Analytics
                     </h2>
                     <div className="relative">
-                      <select 
+                      <select
                         value={selectedPeriod}
                         onChange={(e) => setSelectedPeriod(e.target.value)}
                         className="appearance-none bg-white/80 backdrop-blur-sm rounded-lg px-4 py-2 pr-8 border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 cursor-pointer text-sm"
@@ -285,15 +295,15 @@ const Dashmentor = () => {
                   {/* Profile Visits */}
                   <div className="mb-6">
                     <h3 className="text-md font-semibold text-gray-700 mb-4">Profile Visits</h3>
-                    
+
                     {/* Chart Area */}
                     <div className="h-32 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl mb-4 flex items-end justify-center p-4">
                       <div className="flex items-end space-x-1 sm:space-x-2 h-full">
                         {[20, 40, 60, 45, 70, 35, 80, 55, 65, 50, 75, 60].map((height, index) => (
-                          <div 
+                          <div
                             key={index}
                             className="bg-gradient-to-t from-purple-400 to-purple-600 rounded-sm flex-1 max-w-2 sm:max-w-3 transition-all duration-300 hover:from-purple-500 hover:to-purple-700"
-                            style={{height: `${height}%`}}
+                            style={{ height: `${height}%` }}
                           ></div>
                         ))}
                       </div>
@@ -326,7 +336,7 @@ const Dashmentor = () => {
                     </h2>
                     <ChevronRight className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" />
                   </div>
-                  
+
                   <div className="space-y-3">
                     {upcomingEvents.map((event, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50/50 to-blue-50/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100/50">
@@ -354,7 +364,7 @@ const Dashmentor = () => {
                       Your earnings
                     </h2>
                     <div className="relative">
-                      <select 
+                      <select
                         value={selectedEarningsPeriod}
                         onChange={(e) => setSelectedEarningsPeriod(e.target.value)}
                         className="appearance-none bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 pr-6 border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-300 cursor-pointer text-sm"
@@ -366,7 +376,7 @@ const Dashmentor = () => {
                       <ChevronDown className="absolute right-1 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">$96,000</div>
                     <div className="flex items-center justify-center space-x-1">
@@ -384,7 +394,7 @@ const Dashmentor = () => {
                 <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Your Circles</h2>
                 <button className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors text-sm sm:text-base">See more</button>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {circles.map((circle, index) => (
                   <div key={index} className="bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
@@ -399,7 +409,7 @@ const Dashmentor = () => {
                       <p className="text-gray-600 text-sm mb-4 leading-relaxed">{circle.description}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex -space-x-2">
-                          {Array.from({length: Math.min(circle.members, 5)}).map((_, idx) => (
+                          {Array.from({ length: Math.min(circle.members, 5) }).map((_, idx) => (
                             <div key={idx} className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full border-2 border-white flex items-center justify-center text-sm shadow-sm">
                             </div>
                           ))}
@@ -419,7 +429,7 @@ const Dashmentor = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Footer */}
         <Footer />
       </div>

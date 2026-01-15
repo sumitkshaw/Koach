@@ -3,6 +3,7 @@ import { Mail, Lock, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/image3.png";
 import { useAuth } from "../../utils/AuthContext";
+import { useToast } from "../../context/ToastContext";
 
 export default function LoginForm({ onSwitchToSignup, onClose, initialUserType = "mentee" }) {
     const [userType, setUserType] = useState(initialUserType);
@@ -18,6 +19,7 @@ export default function LoginForm({ onSwitchToSignup, onClose, initialUserType =
         loginWithLinkedIn,
         resendVerificationEmail
     } = useAuth();
+    // const { showToast } = useToast();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -36,14 +38,19 @@ export default function LoginForm({ onSwitchToSignup, onClose, initialUserType =
         try {
             const type = userType === 'mentor' ? 'mentor' : undefined;
             // logic
+            localStorage.setItem("welcome_toast", "Welcome Back!");
             await login(email, password, navigate, trackedSetError, type);
             if (!loginFailed && onClose) {
+                // showToast("Welcome Back!");
                 onClose();
+            } else if (loginFailed) {
+                localStorage.removeItem("welcome_toast");
             }
         } catch (err) {
             // This block might not be reached if AuthContext swallows errors,
             // but just in case.
             if (!error) setError("Login failed.");
+            localStorage.removeItem("welcome_toast");
         } finally {
             setIsLoading(false);
         }
@@ -59,12 +66,24 @@ export default function LoginForm({ onSwitchToSignup, onClose, initialUserType =
         await resendVerificationEmail(email, password, setError, setSuccess);
     };
 
-    const handleGoogleLogin = () => {
-        loginWithGoogle(navigate, false, userType === 'mentor' ? 'mentor' : undefined);
+    const handleGoogleLogin = async () => {
+        try {
+            localStorage.setItem("welcome_toast", "Welcome Back!");
+            await loginWithGoogle(navigate, false, userType === 'mentor' ? 'mentor' : undefined);
+        } catch (error) {
+            console.error(error);
+            localStorage.removeItem("welcome_toast");
+        }
     }
 
-    const handleLinkedInLogin = () => {
-        loginWithLinkedIn(navigate, false, userType === 'mentor' ? 'mentor' : undefined);
+    const handleLinkedInLogin = async () => {
+        try {
+            localStorage.setItem("welcome_toast", "Welcome Back!");
+            await loginWithLinkedIn(navigate, false, userType === 'mentor' ? 'mentor' : undefined);
+        } catch (error) {
+            console.error(error);
+            localStorage.removeItem("welcome_toast");
+        }
     }
 
     return (

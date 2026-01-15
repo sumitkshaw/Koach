@@ -4,6 +4,7 @@ import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
 import { useAuth } from '../../utils/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import { getUserProfile } from '../../utils/database/profiles';
 import ProfileWarning from '../../components/ProfileWarning';
 import { getCurrentUser } from '../../utils/auth';
@@ -16,19 +17,27 @@ const Dashboard = () => {
   const [showVerificationOverlay, setShowVerificationOverlay] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const { user, sendVerification } = useAuth();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const checkVerificationStatus = async () => {
       try {
         const currentUser = await getCurrentUser();
-        
+
         if (!currentUser) {
           setLoading(false);
           return;
         }
-        
+
+        // Show welcome toast if flagged (after successful login/signup)
+        const welcomeToast = localStorage.getItem("welcome_toast");
+        if (welcomeToast) {
+          showToast(welcomeToast);
+          localStorage.removeItem("welcome_toast");
+        }
+
         setUserEmail(currentUser.email);
-        
+
         // Check if user is verified
         if (!currentUser.emailVerification) {
           console.log('⚠️ User not verified, showing overlay');
@@ -37,25 +46,25 @@ const Dashboard = () => {
           console.log('✅ User verified, loading profile');
           loadUserProfile();
         }
-        
+
       } catch (error) {
         console.error('Error checking verification:', error);
         setLoading(false);
       }
     };
-    
+
     const loadUserProfile = async () => {
       if (!user?.$id) {
         setLoading(false);
         return;
       }
-      
+
       try {
         setLoading(true);
         console.log('🔄 Loading user profile for:', user.$id);
-        
+
         const profile = await getUserProfile(user.$id);
-        
+
         // Auto-create profile if doesn't exist (for existing users)
         if (!profile) {
           console.log('📝 No profile found, checking if auto-creation needed...');
@@ -64,30 +73,30 @@ const Dashboard = () => {
           }, 1000);
           return;
         }
-        
+
         setUserProfile(profile);
         console.log('✅ Profile loaded:', profile);
-        
+
         // Show warning for mentees with incomplete profiles
         if (profile?.userType === 'mentee' && !profile.profileComplete) {
           console.log('⚠️ Showing profile warning for mentee');
           setShowWarning(true);
         }
-        
+
       } catch (error) {
         console.error('❌ Error loading profile:', error);
       } finally {
         setLoading(false);
       }
     };
-    
+
     checkVerificationStatus();
   }, [user]);
 
   const handleSendVerification = async () => {
     try {
       await sendVerification(
-        () => {}, // setError function
+        () => { }, // setError function
         (message) => {
           alert(message);
         }
@@ -153,7 +162,7 @@ const Dashboard = () => {
                       Email: <span className="font-semibold">{userEmail}</span>
                     </p>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <button
                       onClick={handleSendVerification}
@@ -162,7 +171,7 @@ const Dashboard = () => {
                       <Mail className="w-5 h-5 mr-2" />
                       Send Verification Email
                     </button>
-                    
+
                     <a
                       href="/verify-required"
                       className="block w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-center"
@@ -170,13 +179,13 @@ const Dashboard = () => {
                       Go to Verification Page
                     </a>
                   </div>
-                  
+
                   <p className="text-xs text-gray-500 mt-4 text-center">
                     Check your spam folder if you don't see the email
                   </p>
                 </div>
               </div>
-              
+
               {/* Blurry Dashboard Content */}
               <div className="filter blur-sm pointer-events-none">
                 {/* Header */}
@@ -187,7 +196,7 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
-                        Welcome Friend! 
+                        Welcome Friend!
                         <span className="ml-2 text-2xl">👋</span>
                       </h1>
                       <p className="text-gray-600 mt-1">
@@ -209,7 +218,7 @@ const Dashboard = () => {
                         Track your Progress
                       </h2>
                     </div>
-                    
+
                     {/* Milestones */}
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
                       <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
@@ -219,7 +228,7 @@ const Dashboard = () => {
                         Milestones
                       </h2>
                     </div>
-                    
+
                     {/* Badges */}
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
                       <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
@@ -230,7 +239,7 @@ const Dashboard = () => {
                       </h2>
                     </div>
                   </div>
-                  
+
                   {/* Right Column */}
                   <div className="space-y-6">
                     {/* Next Session Date */}
@@ -242,7 +251,7 @@ const Dashboard = () => {
                         </h3>
                       </div>
                     </div>
-                    
+
                     {/* Progress towards Goals */}
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100/50">
                       <div className="flex items-center justify-between mb-4">
@@ -257,7 +266,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Footer */}
           <Footer />
         </div>
@@ -286,7 +295,7 @@ const Dashboard = () => {
   // Normal dashboard when verified
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <Navigation/>
+      <Navigation />
       <Sidenav sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} currentRoute="/dashboard" />
 
       {/* Mobile Menu Button */}
@@ -315,7 +324,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
-                    Welcome {getUserDisplayName()}! 
+                    Welcome {getUserDisplayName()}!
                     <span className="ml-2 text-2xl">👋</span>
                   </h1>
                   <p className="text-gray-600 mt-1">
@@ -336,7 +345,7 @@ const Dashboard = () => {
                     </div>
                     Track your Progress
                   </h2>
-                  
+
                   {/* Progress Chart */}
                   <div className="mb-6">
                     <div className="flex items-end justify-center space-x-4 sm:space-x-6 md:space-x-8 h-48 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
@@ -345,13 +354,12 @@ const Dashboard = () => {
                         const isDone = index < 2;
                         return (
                           <div key={day} className="flex flex-col items-center group">
-                            <div 
-                              className={`w-10 sm:w-12 rounded-lg transition-all duration-500 ${
-                                isDone 
-                                  ? 'bg-gradient-to-t from-blue-500 to-blue-600' 
-                                  : 'bg-gradient-to-t from-gray-300 to-gray-400'
-                              } group-hover:scale-105`}
-                              style={{height: `${heights[index]}px`}}
+                            <div
+                              className={`w-10 sm:w-12 rounded-lg transition-all duration-500 ${isDone
+                                ? 'bg-gradient-to-t from-blue-500 to-blue-600'
+                                : 'bg-gradient-to-t from-gray-300 to-gray-400'
+                                } group-hover:scale-105`}
+                              style={{ height: `${heights[index]}px` }}
                             ></div>
                             <span className="text-sm font-medium text-gray-700 mt-3">{day}</span>
                             <span className={`text-xs ${isDone ? 'text-gray-500' : 'text-blue-600 font-medium'}`}>
@@ -372,7 +380,7 @@ const Dashboard = () => {
                     </div>
                     Milestones
                   </h2>
-                  
+
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {[
                       { icon: Clock, value: '100 mins', label: 'Time Saved', color: 'from-blue-500 to-blue-600' },
@@ -382,7 +390,7 @@ const Dashboard = () => {
                       { icon: Target, value: '5', label: 'Goals Achieved', color: 'from-red-500 to-pink-600' },
                       { icon: Award, value: '3', label: 'Projects Completed', color: 'from-indigo-500 to-indigo-600' },
                     ].map((item, index) => (
-                      <div 
+                      <div
                         key={index}
                         className="text-center p-5 bg-gradient-to-br from-gray-50 to-white rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 group"
                       >
@@ -404,7 +412,7 @@ const Dashboard = () => {
                     </div>
                     Badges
                   </h2>
-                  
+
                   <div className="grid grid-cols-3 gap-6">
                     {[
                       { title: 'First Post', icon: Award, color: 'from-blue-500 to-blue-600' },
@@ -463,20 +471,20 @@ const Dashboard = () => {
                     </h3>
                     <ChevronRight className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" />
                   </div>
-                  
+
                   {/* Progress bars */}
                   <div className="flex items-center justify-between mb-4 text-xs text-gray-500">
                     <span>0%</span>
                     <span>25%</span>
                     <span>100%</span>
                   </div>
-                  
+
                   <div className="h-2 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full overflow-hidden mb-4">
                     <div className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full w-1/4"></div>
                   </div>
-                  
+
                   <p className="text-sm text-gray-600 mb-4">Your Goals for the Next 30 Days</p>
-                  
+
                   <div className="space-y-2">
                     <div className="flex flex-wrap gap-2">
                       {['Front End Development', 'Leadership', 'Web Development', 'Project Management'].map((goal) => (
@@ -532,7 +540,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Footer */}
         <Footer />
       </div>

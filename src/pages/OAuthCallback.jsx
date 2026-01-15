@@ -17,26 +17,26 @@ export default function OAuthCallback() {
       try {
         // Check if user exists after OAuth redirect
         const currentUser = await getCurrentUser();
-        
+
         if (!currentUser) {
           navigate("/login");
           return;
         }
-        
+
         // Set user in context
         setUser(currentUser);
-        
+
         // Get provider from localStorage tracking
         const lastOAuthAttempt = JSON.parse(localStorage.getItem('lastOAuthAttempt') || '{}');
         const provider = lastOAuthAttempt.provider || 'google';
-        
+
         // Track successful OAuth login
         if (currentUser.email) {
           const oauthAccounts = JSON.parse(localStorage.getItem('oauthAccounts') || '{}');
           oauthAccounts[currentUser.email.toLowerCase()] = provider;
           localStorage.setItem('oauthAccounts', JSON.stringify(oauthAccounts));
         }
-        
+
         // Get or create profile (idempotent - safe to call multiple times)
         const userType = localStorage.getItem('signupUserType') || 'mentee';
         const profile = await createUserProfile({
@@ -44,15 +44,25 @@ export default function OAuthCallback() {
           userType,
           displayName: currentUser.name || '',
         });
-        
+
         // Clean up localStorage
         localStorage.removeItem('signupUserType');
         localStorage.removeItem('lastOAuthAttempt');
         localStorage.removeItem('lastEmailAttempt');
-        
+
         console.log('✅ OAuth successful, profile:', profile);
-        
+
         // Simple redirect logic
+        const welcomeMsg = isSignupFlow ? "Welcome to Koach!" : "Welcome Back!"; // Ideally pass 'isSignupFlow' or infer it, but 'Welcome Back' or 'Welcome to Koach' works general.
+        // Actually, if it's signup, we passed `isSignupFlow` to loginWithOAuth... wait, OAuthCallback doesn't know flow type unless we store it.
+        // But for now, let's just use "Welcome Back!" if returning user, or generic welcome.
+
+        // If we just created a profile implies signup (or first login).
+        // Let's rely on what was set in SignIn/SignUp forms if possible? No, redirect clears context sometimes?
+        // Actually OAuthCallback handles the return. 
+        // We can just set a message here.
+        localStorage.setItem("welcome_toast", "Welcome to Koach!"); // Set generic welcome for OAuth success
+
         if (profile.userType === 'mentor' && !profile.onboardingComplete) {
           navigate("/mentor-onboarding");
         } else if (profile.userType === 'mentor') {
@@ -60,7 +70,7 @@ export default function OAuthCallback() {
         } else {
           navigate("/dashboard");
         }
-        
+
       } catch (error) {
         console.error("OAuth callback error:", error);
         // Even if profile creation fails, redirect to dashboard

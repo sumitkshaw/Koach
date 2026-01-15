@@ -84,7 +84,7 @@ function AppContent() {
   const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me",
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
-    "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications","/mentor-onboarding",
+    "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/mentor-onboarding",
     "/planning", "/clients", "/goals", "/welcome-user", "/bio-step1", "/mentor-signup", "/mentor-login", "/mentor-onboarding"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
@@ -164,10 +164,10 @@ function AppContent() {
 
         <Route path="/oauth-callback" element={<OAuthCallback />} />
 
-        <Route path="/add-password" element={<AddPasswordPage/>}/>
+        <Route path="/add-password" element={<AddPasswordPage />} />
 
-        <Route path="/verify-required" element={<VerifyRequiredPage/>}/>
-        <Route path="/verify-success" element={<VerifySuccessPage/>}/>
+        <Route path="/verify-required" element={<VerifyRequiredPage />} />
+        <Route path="/verify-success" element={<VerifySuccessPage />} />
 
         {/* Add more routes as needed */}
       </Routes>
@@ -175,13 +175,17 @@ function AppContent() {
   );
 }
 
+import { ToastProvider } from "./context/ToastContext";
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <ModalProvider>
-          <AppContent />
-          <AuthModals />
+          <ToastProvider>
+            <AppContent />
+            <AuthModals />
+          </ToastProvider>
         </ModalProvider>
       </AuthProvider>
     </Router>
