@@ -190,6 +190,7 @@ const Settings2 = () => {
           </div>
         </div>
 
+
         {/* Resume/Download Section */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -250,6 +251,30 @@ const Settings2 = () => {
           )}
         </div>
 
+        {/* Skills & Expertise Section - Moved to Right Column for visibility */}
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold text-gray-900">Skills & Expertise</h3>
+            <button className="text-gray-400 hover:text-blue-600 transition-colors p-2 hover:bg-gray-50 rounded-lg">
+              <Edit2 className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5">
+            {['React Native', 'System Design', 'JavaScript', 'Technical Leadership', 'Career Mentoring', 'Python', 'Cloud Architecture', 'Startups'].map((skill, index) => (
+              <div
+                key={index}
+                className="group flex items-center gap-2 bg-blue-50/50 hover:bg-blue-50 text-[#2D488F] px-3 py-2 rounded-xl text-xs font-bold border border-blue-100/50 hover:border-blue-200 transition-all duration-200 cursor-default"
+              >
+                <span>{skill}</span>
+              </div>
+            ))}
+            <button className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-gray-500 border border-dashed border-gray-300 hover:border-[#2D488F] hover:text-[#2D488F] transition-all duration-200">
+              <span>+ Add</span>
+            </button>
+          </div>
+        </div>
+
         {/* Social presence widget */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-6">
@@ -306,7 +331,7 @@ const Settings2 = () => {
         </div>
 
       </div>
-    </div>
+    </div >
   );
 
   const GeneralContent = () => (
@@ -344,8 +369,8 @@ const Settings2 = () => {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Settings</h1>
-                <p className="text-sm text-gray-500 mt-1 font-medium">Manage your account settings and preferences.</p>
+                <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Settings</h1>
+                <p className="text-base text-gray-500 mt-2 font-medium">Manage your account settings and preferences.</p>
               </div>
             </div>
 
