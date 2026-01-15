@@ -27,6 +27,11 @@ function Navigation() {
   // Profile Menu States
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileRef = useRef(null);
+
+  // Mobile Profile Menu States
+  const [showMobileProfileMenu, setShowMobileProfileMenu] = useState(false);
+  const mobileProfileRef = useRef(null);
+
   const navigate = useNavigate();
   const { openModal } = useModal();
 
@@ -95,6 +100,17 @@ function Navigation() {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setShowProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileProfileRef.current && !mobileProfileRef.current.contains(event.target)) {
+        setShowMobileProfileMenu(false);
       }
     };
 
@@ -378,40 +394,101 @@ function Navigation() {
           </div>
 
           {/* Mobile Hamburger with "Menu" text - SIMPLIFIED VERSION */}
-          <div className="md:hidden flex items-center gap-2">
-            {/* Menu text */}
-            <span className={`text-sm font-medium transition-all duration-300 select-none ${isMenuOpen ? 'text-gray-900' : 'text-gray-600'
-              }`}>
-              {isMenuOpen ? 'Close' : 'Menu'}
-            </span>
-
-            {/* Simplified hamburger/X button */}
-            <button
-              className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all duration-300 focus:outline-none"
-              onClick={toggleMenu}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {isMenuOpen ? (
-                // X icon - simple and clean
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+          <div className="md:hidden flex items-center gap-4">
+            {/* Mobile Profile Icon */}
+            {user && (
+              <div className="relative" ref={mobileProfileRef}>
+                <div
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-r from-[#2D488F] to-blue-500 text-white font-medium text-sm shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+                  onClick={() => setShowMobileProfileMenu(!showMobileProfileMenu)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                // Hamburger icon
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+                  {getInitials(user.name || user.email)}
+                </div>
+
+                {/* Mobile Profile Dropdown */}
+                {showMobileProfileMenu && (
+                  <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-[60] animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="p-4 border-b border-gray-50 bg-gray-50/50">
+                      <p className="font-semibold text-gray-900 truncate">{user.name || user.email?.split('@')[0] || "User"}</p>
+                      <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
+                    </div>
+
+                    <div className="p-2">
+                      <button
+                        onClick={() => {
+                          setShowMobileProfileMenu(false);
+                          navigate(`${getDashboardPath()}/settings`);
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <User className="w-4 h-4 text-gray-400" />
+                        My Profile
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setShowMobileProfileMenu(false);
+                          handleDashboardNavigation();
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <Settings className="w-4 h-4 text-gray-400" />
+                        Dashboard
+                      </button>
+
+                      <div className="h-px bg-gray-100 my-1"></div>
+
+                      <button
+                        onClick={() => {
+                          localStorage.removeItem('dashboardType');
+                          logout(navigate);
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="flex items-center gap-2">
+              {/* Menu text */}
+              <span className={`text-sm font-medium transition-all duration-300 select-none ${isMenuOpen ? 'text-gray-900' : 'text-gray-600'
+                }`}>
+                {isMenuOpen ? 'Close' : 'Menu'}
+              </span>
+
+              {/* Simplified hamburger/X button */}
+              <button
+                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all duration-300 focus:outline-none"
+                onClick={toggleMenu}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              >
+                {isMenuOpen ? (
+                  // X icon - simple and clean
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  // Hamburger icon
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
