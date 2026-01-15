@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Settings as SettingsIcon, User, Bell, Target, BookOpen, Users, Shield, HelpCircle, ExternalLink, Globe, Calendar, MapPin, Briefcase, Star, Mail, Phone, Map, Linkedin, Link as LinkIcon, Edit2, Download, FileText, Menu, ChevronDown, Check } from 'lucide-react';
+import { Settings as SettingsIcon, User, Bell, Target, BookOpen, Users, Shield, HelpCircle, ExternalLink, Globe, Calendar, MapPin, Briefcase, Star, Mail, Phone, Map, Linkedin, Link as LinkIcon, Edit2, Download, FileText, Menu, ChevronDown, Check, Flame, Trophy, Clock } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
@@ -15,6 +15,33 @@ const Settings1 = () => {
   const [careerStatus, setCareerStatus] = useState('Open to Work');
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const statusRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const [profileImage, setProfileImage] = useState(null);
+
+  // Load saved profile image
+  useEffect(() => {
+    if (user?.$id) {
+      const savedImage = localStorage.getItem(`profile_image_${user.$id}`);
+      if (savedImage) {
+        setProfileImage(savedImage);
+      }
+    }
+  }, [user]);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setProfileImage(base64String);
+        if (user?.$id) {
+          localStorage.setItem(`profile_image_${user.$id}`, base64String);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const careerOptions = [
     { label: 'Open to Work', color: 'text-green-600', icon: Target },
@@ -61,10 +88,30 @@ const Settings1 = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8">
             {/* Avatar */}
             <div className="relative group flex-shrink-0">
-              <div className="w-24 h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-[#2D488F] to-blue-600 rounded-3xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-100">
-                {getInitials(user?.name || user?.email)}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="hidden"
+              />
+              <div
+                className={`w-24 h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-[#2D488F] to-blue-600 rounded-3xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-100 overflow-hidden ${profileImage ? 'bg-white' : ''}`}
+              >
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  getInitials(user?.name || user?.email)
+                )}
               </div>
-              <button className="absolute -bottom-3 -right-3 bg-white p-2.5 rounded-xl shadow-md border border-gray-100 text-blue-600 hover:text-blue-700 hover:scale-105 transition-all">
+              <button
+                onClick={() => fileInputRef.current.click()}
+                className="absolute -bottom-3 -right-3 bg-white p-2.5 rounded-xl shadow-md border border-gray-100 text-blue-600 hover:text-blue-700 hover:scale-105 transition-all"
+              >
                 <Edit2 className="w-4 h-4" />
               </button>
             </div>
@@ -210,6 +257,55 @@ const Settings1 = () => {
 
       {/* Right Column (Widgets) */}
       <div className="xl:col-span-4 space-y-6">
+
+        {/* Learning Activity Widget */}
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <h3 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
+            <Flame className="w-5 h-5 text-orange-500" />
+            Learning Activity
+          </h3>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-orange-50/50 border border-orange-100 hover:border-orange-200 transition-colors group">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-orange-500 shadow-sm border border-orange-100 group-hover:scale-105 transition-transform duration-300">
+                <Flame className="w-6 h-6 fill-current" />
+              </div>
+              <div>
+                <div className="flex items-baseline gap-1">
+                  <p className="text-2xl font-bold text-gray-900">12</p>
+                  <span className="text-xs font-semibold text-orange-600">DAYS</span>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">Current Streak</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-blue-50/50 border border-blue-100 hover:border-blue-200 transition-colors group">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm border border-blue-100 group-hover:scale-105 transition-transform duration-300">
+                <Clock className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-baseline gap-1">
+                  <p className="text-2xl font-bold text-gray-900">145</p>
+                  <span className="text-xs font-semibold text-blue-600">TOTAL</span>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">Days Learning</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-purple-50/50 border border-purple-100 hover:border-purple-200 transition-colors group">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-purple-500 shadow-sm border border-purple-100 group-hover:scale-105 transition-transform duration-300">
+                <Trophy className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-baseline gap-1">
+                  <p className="text-2xl font-bold text-gray-900">24</p>
+                  <span className="text-xs font-semibold text-purple-600">SESSIONS</span>
+                </div>
+                <p className="text-xs text-gray-500 font-medium">Completed</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Career Status Widget Dropdown */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 relative z-10" ref={statusRef}>
