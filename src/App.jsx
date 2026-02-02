@@ -1,17 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navigation from "./components/Navigation";
-import Hero from "./components/Hero";
-import MetricSection from "./components/MetricSection";
-import KoachJourney from "./components/koachJourney";
+import Home from "./pages/Home";
 import Contact from "./components/Contact";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import FAQ from "./pages/Faq";
-import AboutSection from "./components/AboutSection";
-import JoinSection from "./components/JoinSection";
-import Testimonials from "./components/Testimonials";
-import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
@@ -81,7 +75,7 @@ import VerifySuccessPage from './pages/VerifySuccessPage';
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup", "/bio-step", "/mentor-expert", "/about-me",
+  const hideNavbarRoutes = ["/", "/login", "/signup", "/bio-step", "/mentor-expert", "/about-me",
     "/welcome-step", "/mentor-experience", "/skills", "/forgot-password", "/reset-password", "/welcome", "/dashboard",
     "/dashboard/goals", "/dashboard/sessions", "/dashboard/settings", "/welcome-aboard", "/dashboard/mentors",
     "/past-experience", "/qualities", "/reasons", "/sessions", "/timeline", "/dashboard/mentees", "/certifications", "/mentor-onboarding",
@@ -94,17 +88,7 @@ function AppContent() {
       <Routes>
         <Route
           path="/"
-          element={
-            <>
-              <Hero />
-              <MetricSection />
-              <KoachJourney />
-              <AboutSection />
-              <Testimonials />
-              <JoinSection />
-              <Footer />
-            </>
-          }
+          element={<Home />}
         />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

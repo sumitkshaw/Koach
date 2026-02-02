@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Settings as SettingsIcon, User, Bell, Target, BookOpen, Users, Shield, HelpCircle, ExternalLink, Globe, Calendar, MapPin, Briefcase, Star, Mail, Phone, Map, Linkedin, Link as LinkIcon, Edit2, Download, FileText, Menu, ChevronDown, Check, Flame, Trophy, Clock } from 'lucide-react';
+import { Settings as SettingsIcon, User, Bell, Target, BookOpen, Users, Shield, HelpCircle, ExternalLink, Globe, Calendar, MapPin, Briefcase, Star, Mail, Phone, Map, Linkedin, Link as LinkIcon, Edit2, Download, FileText, Menu, ChevronDown, Check, Flame, Trophy, Clock, CheckCircle, Smartphone } from 'lucide-react';
 import Navigation from '../Navigation';
 import Sidenav from './Sidenav';
 import Footer from '../Footer';
@@ -44,10 +44,10 @@ const Settings1 = () => {
   };
 
   const careerOptions = [
-    { label: 'Open to Work', color: 'text-green-600', icon: Target },
-    { label: 'Currently Employed', color: 'text-blue-600', icon: Briefcase },
-    { label: 'Freelancing', color: 'text-purple-600', icon: Star },
-    { label: 'Not Looking', color: 'text-gray-500', icon: Shield }
+    { label: 'Open to Work', color: 'text-emerald-600', icon: Target, bg: 'bg-emerald-50' },
+    { label: 'Currently Employed', color: 'text-blue-600', icon: Briefcase, bg: 'bg-blue-50' },
+    { label: 'Freelancing', color: 'text-purple-600', icon: Star, bg: 'bg-purple-50' },
+    { label: 'Not Looking', color: 'text-slate-500', icon: Shield, bg: 'bg-slate-50' }
   ];
 
   useEffect(() => {
@@ -72,20 +72,22 @@ const Settings1 = () => {
   const sidebarItems = [
     { name: 'General', icon: SettingsIcon },
     { name: 'Profile', icon: User },
-    { name: 'Notifications', icon: Bell },
+    // { name: 'Notifications', icon: Bell },
     { name: 'Goals', icon: Target },
     { name: 'Password & Privacy', icon: Shield },
-    { name: 'Security & 2FA', icon: Shield }
+    // { name: 'Security & 2FA', icon: Shield }
   ];
 
   const ProfileContent = () => (
-    <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8">
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8 animate-in slide-in-from-bottom-4 duration-700">
       {/* Left Column (Main Content) */}
       <div className="xl:col-span-8 space-y-6 lg:space-y-8">
 
         {/* Main Header Card */}
-        <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8">
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50/50 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none group-hover:bg-blue-100/50 transition-colors duration-500"></div>
+
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
             {/* Avatar */}
             <div className="relative group flex-shrink-0">
               <input
@@ -96,7 +98,7 @@ const Settings1 = () => {
                 className="hidden"
               />
               <div
-                className={`w-24 h-24 lg:w-28 lg:h-28 bg-gradient-to-br from-[#2D488F] to-blue-600 rounded-3xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-100 overflow-hidden ${profileImage ? 'bg-white' : ''}`}
+                className={`w-28 h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-[2rem] flex items-center justify-center text-white text-4xl font-bold shadow-2xl shadow-blue-500/30 overflow-hidden transform group-hover:scale-105 transition-all duration-300 ${profileImage ? 'bg-white' : ''}`}
               >
                 {profileImage ? (
                   <img
@@ -110,60 +112,63 @@ const Settings1 = () => {
               </div>
               <button
                 onClick={() => fileInputRef.current.click()}
-                className="absolute -bottom-3 -right-3 bg-white p-2.5 rounded-xl shadow-md border border-gray-100 text-blue-600 hover:text-blue-700 hover:scale-105 transition-all"
+                className="absolute -bottom-2 -right-2 bg-white p-3 rounded-2xl shadow-lg border border-slate-100 text-blue-600 hover:text-blue-700 hover:scale-110 transition-all"
               >
-                <Edit2 className="w-4 h-4" />
+                <Edit2 className="w-5 h-5" />
               </button>
             </div>
 
             {/* Info */}
-            <div className="flex-1 text-center md:text-left w-full min-w-0">
+            <div className="flex-1 text-center md:text-left w-full min-w-0 space-y-4">
               <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
                 <div>
-                  <h2 className="text-xl lg:text-2xl font-bold text-gray-900 truncate max-w-[200px] md:max-w-md">{user?.name || "User Name"}</h2>
-                  <p className="text-gray-500 font-medium mt-1 text-sm lg:text-base">Software Engineer</p>
+                  <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 truncate max-w-[200px] md:max-w-md tracking-tight">{user?.name || "User Name"}</h2>
+                  <p className="text-slate-500 font-medium text-lg">Mentee • Software Engineer</p>
                 </div>
-                <button className="flex items-center gap-2 bg-[#0077B5] text-white px-5 py-2.5 rounded-xl hover:bg-[#006097] transition-all shadow-sm shadow-blue-100 text-sm font-medium whitespace-nowrap">
+                <button className="flex items-center gap-2 bg-[#0077B5] text-white px-6 py-3 rounded-xl hover:bg-[#006097] transition-all shadow-lg shadow-blue-500/20 text-sm font-bold whitespace-nowrap hover:-translate-y-1">
                   <Linkedin className="w-4 h-4" />
-                  <span>LinkedIn Account</span>
+                  <span>Connect LinkedIn</span>
                 </button>
               </div>
 
               {/* Internal Tabs */}
-              <div className="flex items-center gap-6 lg:gap-8 mt-8 border-b border-gray-100 w-full overflow-x-auto no-scrollbar mask-linear-fade">
-                <button className="pb-3 text-blue-600 font-bold border-b-2 border-blue-600 text-xs lg:text-sm whitespace-nowrap">Overview</button>
-                <button className="pb-3 text-gray-400 font-medium hover:text-gray-600 transition-colors text-xs lg:text-sm whitespace-nowrap">Notes</button>
-                <button className="pb-3 text-gray-400 font-medium hover:text-gray-600 transition-colors text-xs lg:text-sm whitespace-nowrap">Tests</button>
-                <button className="pb-3 text-gray-400 font-medium hover:text-gray-600 transition-colors text-xs lg:text-sm whitespace-nowrap">History</button>
+              <div className="flex items-center gap-1 bg-slate-50/50 p-1.5 rounded-2xl w-fit mx-auto md:mx-0 border border-slate-100/50">
+                <button className="px-5 py-2.5 bg-white text-slate-900 font-bold rounded-xl shadow-sm text-sm">Overview</button>
+                <button className="px-5 py-2.5 text-slate-500 font-bold hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition-all text-sm">Notes</button>
+                <button className="px-5 py-2.5 text-slate-500 font-bold hover:text-slate-700 hover:bg-slate-100/50 rounded-xl transition-all text-sm">History</button>
               </div>
             </div>
           </div>
         </div>
 
         {/* Personal Information Form */}
-        <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100">
-          <div className="flex justify-between items-center mb-6 lg:mb-8">
-            <h3 className="text-lg font-bold text-gray-900">All Personal Information</h3>
-            <button className="text-gray-400 hover:text-blue-600 transition-colors p-2 hover:bg-gray-50 rounded-lg">
-              <Edit2 className="w-4 h-4" />
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100">
+          <div className="flex justify-between items-center mb-8">
+            <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                <User className="w-5 h-5" />
+              </div>
+              Personal Information
+            </h3>
+            <button className="text-slate-400 hover:text-blue-600 transition-colors p-2 hover:bg-blue-50 rounded-xl">
+              <Edit2 className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Email Field */}
             <div className="group">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 group-hover:bg-orange-100 transition-all duration-300">
-                  <Mail className="w-5 h-5" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-slate-100 hover:border-blue-200 hover:bg-slate-50 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                  <Mail className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Email Address</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5 block">Email Address</label>
                   <input
                     type="email"
                     defaultValue={user?.email}
                     disabled
-                    className="w-full bg-transparent border-none text-gray-900 font-semibold p-0 focus:ring-0 text-sm h-auto placeholder-gray-400 truncate"
-                    placeholder="Add email"
+                    className="w-full bg-transparent border-none text-slate-900 font-bold p-0 focus:ring-0 text-base h-auto placeholder-slate-400 truncate"
                   />
                 </div>
               </div>
@@ -171,86 +176,79 @@ const Settings1 = () => {
 
             {/* Language Field */}
             <div className="group">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl bg-blue-50 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:bg-blue-100 transition-all duration-300">
-                  <Globe className="w-5 h-5" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-slate-100 hover:border-blue-200 hover:bg-slate-50 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                  <Globe className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Language</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5 block">Language</label>
                   <input
                     type="text"
                     defaultValue="English, Spanish"
-                    className="w-full bg-transparent border-none text-gray-900 font-semibold p-0 focus:ring-0 text-sm h-auto placeholder-gray-400"
+                    className="w-full bg-transparent border-none text-slate-900 font-bold p-0 focus:ring-0 text-base h-auto placeholder-slate-400"
                   />
                 </div>
               </div>
             </div>
 
             <div className="group">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl bg-purple-50 flex-shrink-0 flex items-center justify-center text-purple-500 group-hover:bg-purple-100 transition-all duration-300">
-                  <Briefcase className="w-5 h-5" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-slate-100 hover:border-blue-200 hover:bg-slate-50 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-purple-50 flex-shrink-0 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform">
+                  <Briefcase className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Job Title</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5 block">Job Title</label>
                   <input
                     type="text"
                     defaultValue="Software Engineer"
-                    className="w-full bg-transparent border-none text-gray-900 font-semibold p-0 focus:ring-0 text-sm h-auto placeholder-gray-400"
+                    className="w-full bg-transparent border-none text-slate-900 font-bold p-0 focus:ring-0 text-base h-auto placeholder-slate-400"
                   />
                 </div>
               </div>
             </div>
 
             <div className="group">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl bg-green-50 flex-shrink-0 flex items-center justify-center text-green-500 group-hover:bg-green-100 transition-all duration-300">
-                  <MapPin className="w-5 h-5" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-slate-100 hover:border-blue-200 hover:bg-slate-50 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-green-50 flex-shrink-0 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform">
+                  <MapPin className="w-6 h-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">Location</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5 block">Location</label>
                   <input
                     type="text"
                     placeholder="Add Location"
-                    className="w-full bg-transparent border-none text-gray-900 font-semibold p-0 focus:ring-0 text-sm h-auto placeholder-gray-400"
+                    className="w-full bg-transparent border-none text-slate-900 font-bold p-0 focus:ring-0 text-base h-auto placeholder-slate-400"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="col-span-full pt-4 border-t border-gray-50 mt-2">
-              <div className="flex gap-4">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl bg-gray-50 flex-shrink-0 flex items-center justify-center text-gray-500">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div className="flex-1 space-y-2">
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">Bio</label>
-                  <textarea
-                    className="w-full bg-gray-50/50 border border-gray-100 rounded-xl p-4 text-sm text-gray-700 resize-none focus:ring-2 focus:ring-blue-100 focus:bg-white transition-all font-medium leading-relaxed"
-                    rows="3"
-                    placeholder="Tell us about yourself..."
-                  ></textarea>
-                </div>
-              </div>
+            <div className="col-span-full">
+              <label className="text-sm font-bold text-slate-900 mb-3 block ml-1">Learning Bio</label>
+              <textarea
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 text-base text-slate-700 resize-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-medium leading-relaxed"
+                rows="4"
+                placeholder="Tell us about yourself..."
+              ></textarea>
             </div>
 
           </div>
         </div>
 
         {/* Resume/Download Section */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4 w-full sm:w-auto">
-            <div className="w-12 h-12 lg:w-14 lg:h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600">
-              <FileText className="w-6 h-6 lg:w-7 lg:h-7" />
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6 hover:-translate-y-1 transition-transform duration-300">
+          <div className="flex items-center gap-6 w-full sm:w-auto">
+            <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600 shadow-sm">
+              <FileText className="w-8 h-8" />
             </div>
             <div className="min-w-0">
-              <h4 className="font-bold text-gray-900 truncate">resume-file.pdf</h4>
-              <p className="text-xs text-gray-500 font-medium truncate">2.4 MB • Uploaded on Feb 2, 2024</p>
+              <h4 className="font-bold text-slate-900 truncate text-lg">resume-file.pdf</h4>
+              <p className="text-sm text-slate-500 font-medium truncate">2.4 MB • Uploaded on Feb 2, 2024</p>
             </div>
           </div>
-          <button className="w-full sm:w-auto bg-[#2D488F] text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center justify-center gap-2 whitespace-nowrap">
-            <Download className="w-4 h-4" />
-            Download
+          <button className="w-full sm:w-auto bg-[#2D488F] text-white px-8 py-4 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 whitespace-nowrap hover:scale-105">
+            <Download className="w-5 h-5" />
+            Download Resume
           </button>
         </div>
       </div>
@@ -259,84 +257,86 @@ const Settings1 = () => {
       <div className="xl:col-span-4 space-y-6">
 
         {/* Learning Activity Widget */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-          <h3 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
-            <Flame className="w-5 h-5 text-orange-500" />
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100">
+          <h3 className="font-bold text-slate-900 mb-6 text-xl flex items-center gap-2">
+            <Flame className="w-6 h-6 text-orange-500 fill-orange-500" />
             Learning Activity
           </h3>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-orange-50/50 border border-orange-100 hover:border-orange-200 transition-colors group">
-              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-orange-500 shadow-sm border border-orange-100 group-hover:scale-105 transition-transform duration-300">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-orange-50 border border-orange-100/50 hover:bg-white hover:shadow-md transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-orange-500 shadow-sm border border-orange-100 group-hover:scale-110 transition-transform duration-300">
                 <Flame className="w-6 h-6 fill-current" />
               </div>
               <div>
                 <div className="flex items-baseline gap-1">
-                  <p className="text-2xl font-bold text-gray-900">12</p>
-                  <span className="text-xs font-semibold text-orange-600">DAYS</span>
+                  <p className="text-2xl font-bold text-slate-900">12</p>
+                  <span className="text-xs font-bold text-orange-600 tracking-wider">DAYS</span>
                 </div>
-                <p className="text-xs text-gray-500 font-medium">Current Streak</p>
+                <p className="text-xs text-slate-500 font-bold uppercase tracking-wide">Current Streak</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-blue-50/50 border border-blue-100 hover:border-blue-200 transition-colors group">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-blue-50 border border-blue-100/50 hover:bg-white hover:shadow-md transition-all group">
               <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm border border-blue-100 group-hover:scale-105 transition-transform duration-300">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
                 <div className="flex items-baseline gap-1">
-                  <p className="text-2xl font-bold text-gray-900">145</p>
-                  <span className="text-xs font-semibold text-blue-600">TOTAL</span>
+                  <p className="text-2xl font-bold text-slate-900">145</p>
+                  <span className="text-xs font-bold text-blue-600 tracking-wider">TOTAL</span>
                 </div>
-                <p className="text-xs text-gray-500 font-medium">Days Learning</p>
+                <p className="text-xs text-slate-500 font-bold uppercase tracking-wide">Days Learning</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-purple-50/50 border border-purple-100 hover:border-purple-200 transition-colors group">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-purple-50 border border-purple-100/50 hover:bg-white hover:shadow-md transition-all group">
               <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-purple-500 shadow-sm border border-purple-100 group-hover:scale-105 transition-transform duration-300">
                 <Trophy className="w-6 h-6" />
               </div>
               <div>
                 <div className="flex items-baseline gap-1">
-                  <p className="text-2xl font-bold text-gray-900">24</p>
-                  <span className="text-xs font-semibold text-purple-600">SESSIONS</span>
+                  <p className="text-2xl font-bold text-slate-900">24</p>
+                  <span className="text-xs font-bold text-purple-600 tracking-wider">SESSIONS</span>
                 </div>
-                <p className="text-xs text-gray-500 font-medium">Completed</p>
+                <p className="text-xs text-slate-500 font-bold uppercase tracking-wide">Completed</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Career Status Widget Dropdown */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 relative z-10" ref={statusRef}>
-          <h3 className="font-bold text-gray-900 mb-4 text-lg">Career Status</h3>
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100 relative z-20" ref={statusRef}>
+          <h3 className="font-bold text-slate-900 mb-6 text-xl">Career Status</h3>
           <div
-            className="bg-gray-50 rounded-2xl p-4 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-all border border-gray-50 group"
+            className="bg-slate-50 rounded-2xl p-4 flex justify-between items-center cursor-pointer hover:bg-slate-100 transition-all border border-slate-200 group relative"
             onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
           >
-            <span className={`text-sm font-semibold transition-colors ${careerOptions.find(o => o.label === careerStatus)?.color || 'text-gray-700'
-              }`}>
-              {careerStatus}
-            </span>
-            <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${statusDropdownOpen ? 'rotate-180' : ''}`} />
+            <div className="flex items-center gap-3">
+              <div className={`w-2.5 h-2.5 rounded-full ${careerOptions.find(o => o.label === careerStatus)?.color.replace('text-', 'bg-') || 'bg-slate-400'} animate-pulse`}></div>
+              <span className={`text-sm font-bold transition-colors ${careerOptions.find(o => o.label === careerStatus)?.color || 'text-slate-700'}`}>
+                {careerStatus}
+              </span>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${statusDropdownOpen ? 'rotate-180' : ''}`} />
           </div>
 
           {/* Dropdown Menu */}
           {statusDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="absolute top-[85%] left-8 right-8 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
               {careerOptions.map((option) => (
                 <div
                   key={option.label}
-                  className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="flex items-center gap-3 p-4 hover:bg-slate-50 cursor-pointer transition-colors border-b border-slate-50 last:border-0"
                   onClick={() => {
                     setCareerStatus(option.label);
                     setStatusDropdownOpen(false);
                   }}
                 >
-                  <div className={`p-1.5 rounded-lg bg-gray-50 ${option.color}`}>
+                  <div className={`p-2 rounded-lg ${option.bg} ${option.color}`}>
                     <option.icon className="w-4 h-4" />
                   </div>
-                  <span className={`text-sm font-medium ${option.label === careerStatus ? 'text-gray-900' : 'text-gray-600'}`}>
+                  <span className={`text-sm font-bold ${option.label === careerStatus ? 'text-slate-900' : 'text-slate-500'}`}>
                     {option.label}
                   </span>
                   {option.label === careerStatus && <Check className="w-4 h-4 ml-auto text-blue-600" />}
@@ -346,57 +346,35 @@ const Settings1 = () => {
           )}
         </div>
 
+
         {/* Social presence widget */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20 border border-slate-100">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-gray-900 text-lg">Social Accounts</h3>
-            <button className="text-blue-600 text-sm font-semibold hover:text-blue-700">Edit</button>
+            <h3 className="font-bold text-slate-900 text-xl">Social Accounts</h3>
+            <button className="text-blue-600 text-sm font-bold hover:underline">Edit</button>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-50 hover:border-blue-100 transition-all group">
-              <div className="w-10 h-10 bg-[#0077B5] rounded-xl flex items-center justify-center text-white shadow-sm">
-                <Linkedin className="w-5 h-5" />
+            <div className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:bg-white hover:shadow-lg transition-all group cursor-pointer">
+              <div className="w-12 h-12 bg-[#0077B5] rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+                <Linkedin className="w-6 h-6" />
               </div>
               <div className="flex-1 overflow-hidden">
-                <p className="text-sm font-bold text-gray-900 truncate">LinkedIn</p>
-                <a href="#" className="text-xs text-gray-500 truncate block hover:text-blue-600 font-medium mt-0.5">linkedin.com/in/user</a>
+                <p className="text-sm font-bold text-slate-900 truncate">LinkedIn</p>
+                <p className="text-xs text-slate-500 truncate font-medium mt-0.5 group-hover:text-blue-600">linkedin.com/in/user</p>
               </div>
+              <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-blue-500" />
             </div>
 
-            <div className="flex items-center gap-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-50 hover:border-gray-200 transition-all group">
-              <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center text-white shadow-sm">
-                <LinkIcon className="w-5 h-5" />
+            <div className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:border-gray-200 hover:bg-white hover:shadow-lg transition-all group cursor-pointer">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg shadow-slate-900/30 group-hover:scale-110 transition-transform">
+                <LinkIcon className="w-6 h-6" />
               </div>
               <div className="flex-1 overflow-hidden">
-                <p className="text-sm font-bold text-gray-900 truncate">Portfolio</p>
-                <a href="#" className="text-xs text-gray-500 truncate block hover:text-blue-600 font-medium mt-0.5">portfolio.com</a>
+                <p className="text-sm font-bold text-slate-900 truncate">Portfolio</p>
+                <p className="text-xs text-slate-500 truncate font-medium mt-0.5 group-hover:text-amber-600">portfolio.com</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Personnel Information / Additional */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-          <h3 className="font-bold text-gray-900 mb-6 text-lg">Additional Info</h3>
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 group">
-              <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-100 transition-colors">
-                <Phone className="w-6 h-6" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-gray-900 truncate">+1 (555) 000-0000</p>
-                <p className="text-xs text-gray-500 font-medium">Phone Number</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 group">
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 group-hover:bg-orange-100 transition-colors">
-                <Mail className="w-6 h-6" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-gray-900 truncate">{user?.email}</p>
-                <p className="text-xs text-gray-500 font-medium">Primary Email</p>
-              </div>
+              <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-slate-900" />
             </div>
           </div>
         </div>
@@ -406,9 +384,9 @@ const Settings1 = () => {
   );
 
   const GeneralContent = () => (
-    <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100">
-      <h3 className="text-lg font-bold text-gray-900 mb-4">General Settings</h3>
-      <p className="text-gray-600">General settings content will be displayed here.</p>
+    <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl shadow-slate-200/20 border border-slate-100 animate-in slide-in-from-bottom-4 duration-700">
+      <h3 className="text-2xl font-bold text-slate-900 mb-4">General Settings</h3>
+      <p className="text-slate-500 font-medium text-lg">General settings content will be displayed here.</p>
     </div>
   );
 
@@ -420,70 +398,78 @@ const Settings1 = () => {
         return <GeneralContent />;
       default:
         return (
-          <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">{activeTab}</h3>
-            <p className="text-gray-600">{activeTab} settings content will be displayed here.</p>
+          <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-xl shadow-slate-200/20 border border-slate-100 animate-in slide-in-from-bottom-4 duration-700">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">{activeTab}</h3>
+            <p className="text-slate-500 font-medium text-lg">{activeTab} settings content will be displayed here.</p>
           </div>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 font-sans">
-      <Navigation />
-      <Sidenav sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} currentRoute="/dashboard/settings" />
+    <div className="min-h-screen bg-[#F8FAFC] font-dm relative overflow-x-hidden">
 
-      {/* Main Content - Dynamic Left Margin */}
-      <div className={`pt-20 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'}`}>
-        <div className="px-4 sm:px-6 lg:px-8 py-8 flex justify-center">
-          <div className="w-full max-w-6xl">
-            {/* Page Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Settings</h1>
-                <p className="text-base text-gray-500 mt-2 font-medium">Manage your account settings and preferences.</p>
-              </div>
-            </div>
+      {/* Background Atmosphere */}
+      <div className="fixed top-0 left-0 w-full h-[800px] bg-gradient-to-b from-blue-50/50 via-indigo-50/30 to-transparent pointer-events-none z-0"></div>
+      <div className="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-indigo-100/40 blur-[120px] pointer-events-none z-0"></div>
 
-            {/* Layout Grid */}
-            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-              {/* Settings Sidebar - Horizontal scroll on mobile */}
-              <div className="w-full lg:w-64 flex-shrink-0">
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden lg:sticky lg:top-28">
-                  <nav className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible p-3 gap-1 custom-scrollbar">
-                    {sidebarItems.map((item) => {
-                      const IconComponent = item.icon;
-                      const isActive = activeTab === item.name;
+      <div className="relative z-10">
+        <Navigation />
+        <Sidenav sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} currentRoute="/dashboard/settings" />
 
-                      return (
-                        <button
-                          key={item.name}
-                          onClick={() => setActiveTab(item.name)}
-                          className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 text-sm font-semibold whitespace-nowrap lg:whitespace-normal group flex-shrink-0 ${isActive
-                            ? 'bg-[#2D488F]/5 text-[#2D488F]'
-                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                            }`}
-                        >
-                          <IconComponent className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? 'text-[#2D488F]' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                          <span>{item.name}</span>
-                        </button>
-                      );
-                    })}
-                  </nav>
+        {/* Main Content - Dynamic Left Margin */}
+        <div className={`pt-24 transition-all duration-300 ${sidebarOpen ? 'lg:ml-20' : 'lg:ml-0'}`}>
+          <div className="px-4 sm:px-6 lg:px-8 py-8 flex justify-center">
+            <div className="w-full max-w-[1400px]">
+              {/* Page Header */}
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pl-4">
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+                    Account <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Settings</span>
+                  </h1>
                 </div>
               </div>
 
-              {/* Main Content Area */}
-              <div className="flex-1 min-w-0">
-                {renderContent()}
+              {/* Layout Grid */}
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Settings Sidebar - Sticky & Premium */}
+                <div className="w-full lg:w-72 flex-shrink-0">
+                  <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/20 border border-slate-100 overflow-hidden lg:sticky lg:top-32 p-4">
+                    <nav className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 custom-scrollbar p-1">
+                      {sidebarItems.map((item) => {
+                        const IconComponent = item.icon;
+                        const isActive = activeTab === item.name;
+
+                        return (
+                          <button
+                            key={item.name}
+                            onClick={() => setActiveTab(item.name)}
+                            className={`flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 text-sm font-bold whitespace-nowrap lg:whitespace-normal group flex-shrink-0 ${isActive
+                              ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20 scale-100'
+                              : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                              }`}
+                          >
+                            <IconComponent className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                            <span>{item.name}</span>
+                            {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse hidden lg:block"></div>}
+                          </button>
+                        );
+                      })}
+                    </nav>
+                  </div>
+                </div>
+
+                {/* Main Content Area */}
+                <div className="flex-1 min-w-0">
+                  {renderContent()}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="pb-8">
-          <Footer />
+          <div className="pb-8">
+            <Footer />
+          </div>
         </div>
       </div>
     </div>

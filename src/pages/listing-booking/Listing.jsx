@@ -1,8 +1,9 @@
-import { Search, Star, Filter } from 'lucide-react';
+import { Search, Star, Filter, Heart, ChevronRight, User } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Sidenav1 from './Sidenav1';
+import Navigation from '../../components/Navigation';
 import AlexBricks from '../../assets/AlexBricks.jpg';
 import DannyBlue from '../../assets/DannyBlue.jpg';
 import BiancaLorenzo from '../../assets/BiancaLorenzo.jpg';
@@ -35,15 +36,15 @@ function Listing() {
         ...prev,
         ...location.state.filters
       }));
-      
+
       // Apply search query if provided
       if (location.state.searchQuery) {
         setSearchQuery(location.state.searchQuery);
       }
-      
+
       // Optionally open the sidebar to show filters are applied
       setSidebarOpen(true);
-      
+
       // Clear the location state to prevent re-application on refresh
       window.history.replaceState({}, document.title);
     }
@@ -171,9 +172,9 @@ function Listing() {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        if (!mentor.name.toLowerCase().includes(query) && 
-            !mentor.role.toLowerCase().includes(query) &&
-            !mentor.company.toLowerCase().includes(query)) {
+        if (!mentor.name.toLowerCase().includes(query) &&
+          !mentor.role.toLowerCase().includes(query) &&
+          !mentor.company.toLowerCase().includes(query)) {
           return false;
         }
       }
@@ -245,150 +246,170 @@ function Listing() {
   };
 
   return (
-    <div className="w-full bg-[#ECF0F6] min-h-screen">
-      {/* Sidenav with filter props */}
-      <Sidenav1 
-        sidebarOpen={sidebarOpen} 
-        setSidebarOpen={setSidebarOpen}
-        filters={filters}
-        setFilters={setFilters}
-        applyFilters={applyFilters}
-      />
+    <div className="min-h-screen bg-[#F8FAFC] font-dm relative overflow-x-hidden">
 
-      {/* Filter Toggle Button - Mobile */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-20 left-4 z-50 bg-[#0A1F44] text-white p-3 rounded-xl shadow-2xl hover:bg-[#0d2855] transition-all duration-300 transform hover:scale-105 lg:hidden"
-      >
-        <Filter className="w-5 h-5" />
-      </button>
+      {/* Background Atmosphere (Matches Dashboard) */}
+      <div className="fixed top-0 left-0 w-full h-[800px] bg-gradient-to-b from-blue-50/50 via-indigo-50/30 to-transparent pointer-events-none z-0"></div>
+      <div className="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-indigo-100/40 blur-[120px] pointer-events-none z-0"></div>
 
-      {/* Main Content */}
-      <div className={`transition-all duration-500 ${sidebarOpen ? 'lg:ml-80' : 'lg:ml-0'}`}>
-        {/* Header Section - Reduced Spacing */}
-        <section className="bg-white px-4 sm:px-6 md:px-12 lg:px-16 py-6 md:py-8 pt-32 sm:pt-28 md:pt-20">
+      <div className="relative z-10">
+        <Navigation />
 
-          <div className="max-w-7xl mx-auto">
+        {/* Sidenav with filter props */}
+        <Sidenav1
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          filters={filters}
+          setFilters={setFilters}
+          applyFilters={applyFilters}
+        />
 
-            <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-[#2D488F] mb-1 md:mb-2">
-              Mentors
-            </h1>
+        {/* Main Content */}
+        {/* Added extra padding-top on mobile (pt-44) to clear the fixed 'Sort by' button */}
+        <div className={`transition-all duration-500 pt-44 lg:pt-28 ${sidebarOpen ? 'lg:ml-80' : 'lg:ml-0'}`}>
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-12">
 
-            <div className="flex items-center gap-2 mb-3 md:mb-4">
-              <span className="text-sm sm:text-base text-gray-600 font-medium">
-                {filteredMentors.length} results
-              </span>
-              {Object.values(filters).some(filter => filter && filter !== false) && (
-                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                  Filters applied
-                </span>
-              )}
-            </div>
-
-            {/* Desktop Filter Button placed below results */}
-            <div className="hidden lg:block mb-4">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="flex items-center gap-2 bg-[#0A1F44] text-white px-5 py-2.5 rounded-xl shadow-lg hover:bg-[#0d2855] transition-all duration-300 text-sm"
-              >
-                <Filter className="w-4 h-4" />
-                <span className="font-semibold">{sidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
-              </button>
-            </div>
-
-            {/* Search Bar */}
-            <div className="relative max-w-3xl">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-              <input
-                type="text"
-                placeholder="Search by name, profession"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2D488F] focus:border-transparent outline-none text-sm sm:text-base"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Mentors Grid - Reduced Spacing */}
-        <section className="px-4 sm:px-6 md:px-12 lg:px-16 py-6 md:py-8">
-          <div className="max-w-7xl mx-auto">
-            {filteredMentors.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 mb-4">
-                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+            {/* Header Section */}
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4 md:mb-8 animate-in slide-in-from-bottom-4 duration-500">
+              <div>
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">
+                  Explore
+                </p>
+                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+                  Find Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Perfect Mentor</span>
+                </h1>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-sm font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">{filteredMentors.length} results found</span>
+                  {Object.values(filters).some(filter => filter && filter !== false) && (
+                    <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                      Filters active
+                    </span>
+                  )}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">No mentors found</h3>
-                <p className="text-gray-500">Try adjusting your filters or search terms</p>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-                {filteredMentors.map((mentor) => (
-                  <div
-                    key={mentor.id}
-                    onClick={handleCardClick} // All cards redirect to same page
-                    className="bg-white rounded-xl sm:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group"
-                  >
-                    <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gray-100">
-                      <img 
-                        src={mentor.image} 
-                        alt={mentor.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
 
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Desktop Filter Toggle */}
+                <div className="hidden lg:block relative">
+                  <button
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    className={`flex items-center gap-2 px-5 py-3 rounded-2xl shadow-sm transition-all duration-300 font-bold text-sm border
+                                    ${sidebarOpen ? 'bg-blue-600 text-white border-blue-600 shadow-blue-500/30' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span>{sidebarOpen ? 'Hide Filters' : 'Show Filters'}</span>
+                  </button>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative group w-full md:w-80">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search Name, Role, Company..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="block w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 shadow-sm transition-all hover:bg-slate-50"
+                  />
+                </div>
+              </div>
+            </header>
+
+            {/* Mentors Grid */}
+            <section className="animate-in slide-in-from-bottom-8 duration-700 delay-100">
+              {filteredMentors.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-[2.5rem] border border-dashed border-slate-300">
+                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400">
+                    <Search className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-1">No mentors found</h3>
+                  <p className="text-slate-500 font-medium">Try adjusting your filters or search terms</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+                  {filteredMentors.map((mentor) => (
+                    <div
+                      key={mentor.id}
+                      onClick={handleCardClick}
+                      className="bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-lg shadow-slate-200/20 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group flex flex-col h-full relative overflow-hidden"
+                    >
+                      {/* Availability Badge */}
                       {mentor.badge && (
-                        <div className={`absolute top-2 sm:top-3 left-2 sm:left-3 px-2 sm:px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          mentor.badgeType === 'primary'
-                            ? 'bg-blue-100 text-blue-700'
-                            : mentor.badgeType === 'gold'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-gray-100 text-gray-700'
-                        }`}>
+                        <div className={`absolute top-6 left-6 z-10 px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-wide border shadow-sm backdrop-blur-md
+                                            ${mentor.badgeType === 'primary' ? 'bg-blue-50/90 text-blue-700 border-blue-100' :
+                            mentor.badgeType === 'gold' ? 'bg-yellow-50/90 text-yellow-700 border-yellow-100' :
+                              'bg-slate-50/90 text-slate-700 border-slate-100'
+                          }
+                                        `}>
                           {mentor.badge}
                         </div>
                       )}
 
-                      {mentor.topContributor && (
-                        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 px-2 sm:px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                          Top Contributor
+                      {/* Image Section */}
+                      <div className="relative mb-6">
+                        <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 shadow-inner">
+                          <img
+                            src={mentor.image}
+                            alt={mentor.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          />
                         </div>
-                      )}
+                        <button className="absolute bottom-3 right-3 p-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg text-slate-400 hover:text-red-500 hover:scale-110 transition-all">
+                          <Heart className="w-5 h-5" />
+                        </button>
+                      </div>
+
+                      {/* Content Section */}
+                      <div className="flex-1 flex flex-col">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="text-xl font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">
+                                {mentor.name}
+                              </h3>
+                              <span className="text-xl filter grayscale group-hover:grayscale-0 transition-all">{mentor.country}</span>
+                            </div>
+                            <p className="text-sm font-medium text-slate-500 flex items-center gap-1.5">
+                              <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-xs font-bold">{mentor.role}</span>
+                              <span>@</span>
+                              <span className="font-bold text-slate-700">{mentor.company}</span>
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <div className="flex items-center gap-1 bg-amber-50 text-amber-600 px-2 py-1 rounded-lg border border-amber-100">
+                              <Star className="w-3.5 h-3.5 fill-current" />
+                              <span className="text-xs font-bold">{mentor.rating}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Experience</span>
+                            <span className="text-sm font-bold text-slate-700">{mentor.experience}</span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Hourly</span>
+                            <div className="flex items-baseline">
+                              <span className="text-lg font-bold text-slate-900">${mentor.hourlyCharge}</span>
+                              <span className="text-xs font-medium text-slate-400">/hr</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
+                  ))}
+                </div>
+              )}
+            </section>
 
-                    <div className="p-4 sm:p-5">
-                      <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-800">{mentor.name}</h3>
-                        <span className="text-lg sm:text-xl">{mentor.country}</span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 text-gray-600 mb-3 sm:mb-4">
-                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        <span className="text-xs sm:text-sm truncate">{mentor.role} - {mentor.company}</span>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs text-gray-500 mb-0.5">Experience</p>
-                          <p className="text-sm font-semibold text-gray-800">{mentor.experience}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-base sm:text-lg font-bold text-gray-800">{mentor.rating}</span>
-                          <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
-        </section>
+          <Footer />
+        </div>
 
-        <Footer />
       </div>
     </div>
   );

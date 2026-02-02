@@ -351,19 +351,20 @@ const Dashboard = () => {
             {/* --- RIGHT COLUMN (Sidebar Widgets) --- */}
             <div className="lg:col-span-4 space-y-6 animate-in slide-in-from-bottom-8 duration-700 delay-200">
 
-              {/* D. Up Next Card (Featured) */}
-              <div className="bg-gradient-to-br from-[#2D4FE0] to-[#1E3A8A] rounded-[2.5rem] p-8 text-white shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+              {/* D. Up Next Card (Featured Light) */}
+              <div className="bg-white rounded-[2.5rem] p-8 text-slate-900 shadow-2xl shadow-slate-200/20 relative overflow-hidden group border border-slate-100">
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-6">
-                    <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10">Up Next</span>
+                    <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-blue-100">Up Next</span>
                     <div className="text-right">
-                      <p className="text-2xl font-bold">3:00 <span className="text-lg opacity-60">PM</span></p>
+                      <p className="text-2xl font-bold text-slate-900">3:00 <span className="text-lg text-slate-400">PM</span></p>
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold leading-tight mb-2">Frontend Architecture</h3>
-                  <p className="text-sm opacity-80 mb-6">with Andrea Watson</p>
-                  <button className="w-full bg-white text-blue-900 py-3 rounded-xl font-bold text-sm hover:bg-blue-50 transition-colors shadow-lg">
+                  <h3 className="text-xl font-bold leading-tight mb-2 text-slate-900">Frontend Architecture</h3>
+                  <p className="text-sm font-medium text-slate-500 mb-6">with Andrea Watson</p>
+                  <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors shadow-lg">
                     Join Loop
                   </button>
                 </div>

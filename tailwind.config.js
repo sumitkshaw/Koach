@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        dm: ['"DM Sans"', 'sans-serif'],
+      },
       animation: {
         marquee: "marquee 8s linear infinite",
       },

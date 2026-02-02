@@ -326,25 +326,24 @@ const Dashmentor = () => {
           {/* RIGHT COLUMN (4 cols) */}
           <div className="lg:col-span-4 space-y-6 animate-in slide-in-from-bottom-8 duration-700 delay-200 order-first lg:order-last">
 
-            {/* Earnings Card (Premium) */}
-            <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155] rounded-[2.5rem] p-8 text-white shadow-2xl shadow-slate-900/20 relative overflow-hidden group">
-              {/* Shine Effect */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none group-hover:scale-125 transition-transform duration-1000"></div>
+            {/* Earnings Card (Premium Light) */}
+            <div className="bg-white rounded-[2.5rem] p-8 text-slate-900 shadow-2xl shadow-slate-200/20 relative overflow-hidden group border border-slate-100">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
 
               <div className="relative z-10 flex flex-col h-full justify-between min-h-[220px]">
                 <div className="flex justify-between items-start">
-                  <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
-                    <Trophy className="w-6 h-6 text-amber-400" />
+                  <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600">
+                    <Trophy className="w-6 h-6" />
                   </div>
-                  <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 flex items-center gap-1">
+                  <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-xs font-bold border border-emerald-100 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" /> +8.4%
                   </span>
                 </div>
 
                 <div>
                   <p className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-1">Total Earnings</p>
-                  <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">$96,000<span className="text-2xl text-slate-500">.00</span></h3>
-                  <button className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors shadow-lg">View Withdrawals</button>
+                  <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">$96,000<span className="text-2xl text-slate-400">.00</span></h3>
+                  <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors shadow-lg">View Withdrawals</button>
                 </div>
               </div>
             </div>
